@@ -1,14 +1,16 @@
 # ERS Studio
 
-ERS Studio je mali A4 editor za materijale predmeta **Elementi razvoja softvera**. Napravljen je kao React + Vite + TypeScript aplikacija i nema serverski backend.
+ERS Studio je A4 editor za materijale predmeta **Elementi razvoja softvera**. Napravljen je kao React + Vite + TypeScript aplikacija i nema serverski backend.
+
+Repo: `https://github.com/owlCoder/ers-motion-web`
 
 ## Šta je uključeno
 
 - A4 portrait dokumenti sa ručnim stranicama i page-break kontrolom
 - lokalna biblioteka dokumenata u IndexedDB-u
 - početni **Praktikum 2026/27** i **Specifikacija projektnog zadatka 2026/27**
-- tekst, naslovi, liste, callout blokovi, tabele, slike, vektorski dijagrami i code blokovi
-- code blokovi su uvek u **light mode-u** radi štampe i čitljivosti
+- tekst, naslovi, liste, callout blokovi, tabele, slike, vektorski/responsive dijagrami i code blokovi
+- code blokovi su uvek u **light mode-u** radi štampe, projektora i čitljivosti
 - syntax highlighting za C#, Bash, JSON, Markdown i TypeScript
 - Open / Save preko `.ersdoc.json` formata
 - autosave u browseru
@@ -56,7 +58,7 @@ Dugme **PDF** otvara sistemski Print dijalog. Izabrati `Save as PDF`. Print CSS 
 
 ## Struktura
 
-- `src/seeds/praktikum.json` — početni praktikum
+- `src/seeds/praktikum.part1.txt` + `src/seeds/praktikum.chunk*.txt` — transportni delovi početnog praktikuma; `src/seed.ts` ih spaja i parsira kao jedan dokument
 - `src/seeds/project-spec.json` — početna projektna specifikacija
 - `src/components/PageCanvas.tsx` — A4 stranica
 - `src/components/BlockView.tsx` — prikaz blokova i vektorskih dijagrama
@@ -64,11 +66,12 @@ Dugme **PDF** otvara sistemski Print dijalog. Izabrati `Save as PDF`. Print CSS 
 - `src/db.ts` — IndexedDB persistence
 - `src/fileIO.ts` — Open / Save JSON
 
+Transportni delovi praktikuma postoje samo zato što je početni dokument veliki za pojedinačni remote upload. Oni nisu poseban format dokumenta; aplikacija ih pri buildu spaja u isti `CourseDocument` objekat.
+
 ## Napomena
 
 Aplikacija je namerno client-only. Ako kasnije bude potreban zajednički rad više asistenata ili sinhronizacija između računara, persistence sloj se može zameniti REST/API ili cloud storage adapterom bez promene formata dokumenta.
 
-
 ## AI-assisted lokalni setup
 
-`LUNA_LOCAL_SETUP_PROMPT.md` sadrži gotov prompt za lokalnog coding agenta. Pre korišćenja zameniti `{{REPO_URL}}` URL-om privatnog GitHub repozitorijuma.
+`LUNA_LOCAL_SETUP_PROMPT.md` sadrži gotov prompt za lokalnog coding agenta. Prompt već koristi ovaj privatni repozitorijum i vodi agenta kroz clone, dependency install, build, smoke test i pokretanje na `http://localhost:5173`.
