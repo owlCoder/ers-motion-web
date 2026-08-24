@@ -59,6 +59,16 @@ export function createBlock(type: Block['type']): Block {
       }
     case 'image':
       return { id: uid('block'), type: 'image', src: '', caption: 'Opis slike', widthPercent: 100 }
+    case 'institution':
+      return {
+        id: uid('block'),
+        type: 'institution',
+        university: 'Univerzitet u Novom Sadu',
+        faculty: 'Fakultet tehničkih nauka',
+        department: '',
+        leftLogoSrc: '/brand/university.svg',
+        rightLogoSrc: '/brand/ftn.svg',
+      }
     case 'divider':
       return { id: uid('block'), type: 'divider' }
   }
