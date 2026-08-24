@@ -76,16 +76,27 @@ export type ImageBlock = {
   widthPercent?: number
 }
 
+export type InstitutionBlock = {
+  id: string
+  type: 'institution'
+  university: string
+  faculty: string
+  department?: string
+  leftLogoSrc?: string
+  rightLogoSrc?: string
+}
+
 export type DividerBlock = {
   id: string
   type: 'divider'
 }
 
-export type Block = TextBlock | ListBlock | CodeBlock | CalloutBlock | TableBlock | DiagramBlock | ImageBlock | DividerBlock
+export type Block = TextBlock | ListBlock | CodeBlock | CalloutBlock | TableBlock | DiagramBlock | ImageBlock | InstitutionBlock | DividerBlock
 
 export type DocumentPage = {
   id: string
   label?: string
+  layout?: 'standard' | 'cover'
   blocks: Block[]
 }
 
