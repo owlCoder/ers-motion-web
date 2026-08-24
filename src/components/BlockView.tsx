@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import type { Block, CalloutBlock, CodeBlock, DiagramBlock, ImageBlock, ListBlock, TableBlock, TextBlock } from '../types'
-import { ACCENTS, highlightCode } from '../utils'
+import type { Block, CalloutBlock, CodeBlock, DiagramBlock, ImageBlock, InstitutionBlock, ListBlock, TableBlock, TextBlock } from '../types'
+import { ACCENTS, highlightCode, uid } from '../utils'
 import { EditableText } from './EditableText'
 import { Icon } from './Icon'
 
@@ -13,7 +13,7 @@ function BlockChrome({ selected, onSelect, onAction, onDragStart, children }: { 
         <button className="drag-handle" draggable onDragStart={onDragStart} title="Prevuci blok" aria-label="Prevuci blok">⋮⋮</button>
         <button onClick={() => onAction('up')} title="Pomeri gore"><Icon name="up" size={15} /></button>
         <button onClick={() => onAction('down')} title="Pomeri dole"><Icon name="down" size={15} /></button>
-        <button onClick={() => onAction('duplicate')} title="Dupliraj"><Icon name="copy" size={15} /></button>
+        <button onClick={() => onAction('duplicate')} title="Kopiraj"><Icon name="copy" size={15} /></button>
         <button className="danger" onClick={() => onAction('delete')} title="Obriši"><Icon name="trash" size={15} /></button>
       </div>
       {children}
@@ -44,9 +44,10 @@ function ListView({ block, update, select }: { block: ListBlock; update: (b: Blo
 function CodeView({ block }: { block: CodeBlock }) {
   const html = useMemo(() => highlightCode(block.code, block.language), [block.code, block.language])
   const lines = block.code.split('\n')
+  const languageLabel = ({ csharp: 'C#', bash: 'Shell', json: 'JSON', markdown: 'Markdown', typescript: 'TypeScript', text: 'Text' } as const)[block.language]
   return (
     <figure className="code-figure">
-      <div className="code-header"><span>{block.language}</span><span className="code-light-badge">LIGHT</span></div>
+      <div className="code-header"><span>{languageLabel}</span></div>
       <pre className={`code-block ${block.lineNumbers ? 'with-lines' : ''}`}>
         {block.lineNumbers && <span className="line-numbers">{lines.map((_, i) => <span key={i}>{i + 1}</span>)}</span>}
         <code dangerouslySetInnerHTML={{ __html: html }} />
@@ -56,12 +57,12 @@ function CodeView({ block }: { block: CodeBlock }) {
   )
 }
 
-const tones: Record<CalloutBlock['tone'], { icon: string; label: string }> = {
-  info: { icon: 'i', label: 'Informacija' },
-  note: { icon: '✦', label: 'Napomena' },
-  task: { icon: '✓', label: 'Zadatak' },
-  warning: { icon: '!', label: 'Upozorenje' },
-  success: { icon: '✓', label: 'Rezultat' },
+const tones: Record<CalloutBlock['tone'], { icon: string }> = {
+  info: { icon: 'i' },
+  note: { icon: '✦' },
+  task: { icon: '✓' },
+  warning: { icon: '!' },
+  success: { icon: '✓' },
 }
 
 function CalloutView({ block, update, select }: { block: CalloutBlock; update: (b: Block) => void; select: () => void }) {
@@ -102,7 +103,7 @@ function DiagramCard({ item, compact = false }: { item: DiagramBlock['items'][nu
 
 function DiagramView({ block }: { block: DiagramBlock }) {
   if (block.variant === 'stack') {
-    return <figure className="diagram"><>{block.title && <div className="diagram-heading">{block.title}</div>}</><div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
+    return <figure className="diagram">{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
   }
   if (block.variant === 'hub') {
     const [hub, ...children] = block.items
@@ -134,8 +135,22 @@ function DiagramView({ block }: { block: DiagramBlock }) {
 }
 
 function ImageView({ block }: { block: ImageBlock }) {
-  if (!block.src) return <div className="image-placeholder"><Icon name="image" size={28} /><span>Dodajte sliku u panelu sa desne strane</span></div>
+  if (!block.src) return <div className="image-placeholder"><Icon name="image" size={28} /><span>Izaberite sliku u panelu sa desne strane</span></div>
   return <figure className="image-figure" style={{ width: `${block.widthPercent || 100}%` }}><img src={block.src} alt={block.alt || ''} />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>
+}
+
+function InstitutionView({ block, update, select }: { block: InstitutionBlock; update: (b: Block) => void; select: () => void }) {
+  return (
+    <div className="institution-block">
+      <div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="Logo univerziteta" />}</div>
+      <div className="institution-copy">
+        <EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} />
+        <EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />
+        {block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}
+      </div>
+      <div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Logo fakulteta" />}</div>
+    </div>
+  )
 }
 
 export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDragStart, onDrop }: {
@@ -156,6 +171,7 @@ export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDra
       case 'table': return <TableView block={block} />
       case 'diagram': return <DiagramView block={block} />
       case 'image': return <ImageView block={block} />
+      case 'institution': return <InstitutionView block={block} update={onUpdate} select={onSelect} />
       case 'divider': return <hr className="doc-divider" />
     }
   })()
@@ -172,10 +188,11 @@ export function MiniInsertBar({ onInsert }: { onInsert: (type: Block['type']) =>
     { type: 'text', icon: 'text', label: 'Tekst' },
     { type: 'list', icon: 'list', label: 'Lista' },
     { type: 'code', icon: 'code', label: 'Kod' },
-    { type: 'callout', icon: 'note', label: 'Callout' },
+    { type: 'callout', icon: 'note', label: 'Istaknuto' },
     { type: 'table', icon: 'table', label: 'Tabela' },
     { type: 'diagram', icon: 'diagram', label: 'Dijagram' },
     { type: 'image', icon: 'image', label: 'Slika' },
+    { type: 'institution', icon: 'file', label: 'Institucija' },
     { type: 'divider', icon: 'divider', label: 'Linija' },
   ]
   return <div className="insert-bar no-print">{buttons.map((b) => <button key={b.type} onClick={() => onInsert(b.type)} title={`Dodaj: ${b.label}`}><Icon name={b.icon} size={15} /><span>{b.label}</span></button>)}</div>
