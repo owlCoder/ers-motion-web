@@ -21,13 +21,13 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
     const check = () => {
       const el = pageRef.current
       if (!el) return
-      setOverflow(el.scrollHeight > 1123 + 12)
+      setOverflow(el.scrollHeight > el.clientHeight + 8)
     }
     check()
     const ro = new ResizeObserver(check)
     if (pageRef.current) ro.observe(pageRef.current)
     return () => ro.disconnect()
-  }, [page.blocks])
+  }, [page.blocks, page.layout])
 
   const updateBlock = (next: Block) => onUpdatePage({ ...page, blocks: page.blocks.map((b) => b.id === next.id ? next : b) })
   const action = (id: string, a: BlockAction) => {
@@ -61,16 +61,17 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
 
   const fontClass = doc.theme.font === 'Serif' ? 'font-serif' : doc.theme.font === 'Humanist' ? 'font-humanist' : 'font-system'
   const densityClass = doc.theme.density === 'compact' ? 'density-compact' : 'density-comfortable'
+  const isCover = page.layout === 'cover'
 
   return (
     <div className="page-wrap">
       <section
         ref={pageRef}
-        className={`a4-page theme-${doc.theme.name.replaceAll(' ', '-').toLowerCase()} ${fontClass} ${densityClass}`}
+        className={`a4-page ${isCover ? 'cover-page' : ''} theme-${doc.theme.name.replaceAll(' ', '-').toLowerCase()} ${fontClass} ${densityClass}`}
         data-accent={doc.theme.accent}
         onClick={() => { onSelectBlock(undefined); onOpenDocumentSettings() }}
       >
-        <header className="page-header"><span>{doc.headerText || doc.subject}</span><span>{doc.kind === 'praktikum' ? 'Praktikum' : doc.kind === 'specifikacija' ? 'Projektna specifikacija' : doc.title}</span></header>
+        {!isCover && <header className="page-header"><span>{doc.headerText || doc.subject}</span><span>{doc.kind === 'praktikum' ? 'Praktikum' : doc.kind === 'specifikacija' ? 'Projektna specifikacija' : doc.title}</span></header>}
         <main className="page-content">
           {page.blocks.map((block) => (
             readonly ? <div key={block.id} className="readonly-block"><BlockView block={block} selected={false} onSelect={() => {}} onUpdate={() => {}} onAction={() => {}} onDragStart={() => {}} onDrop={() => {}} /></div> :
@@ -87,8 +88,8 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
           ))}
           {!readonly && <MiniInsertBar onInsert={insert} />}
         </main>
-        <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>
-        {overflow && !readonly && <div className="overflow-warning no-print">Sadržaj prelazi A4 visinu · dodajte novu stranicu</div>}
+        {!isCover && <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>}
+        {overflow && !readonly && <div className="overflow-warning no-print">Sadržaj prelazi granicu stranice</div>}
       </section>
     </div>
   )
