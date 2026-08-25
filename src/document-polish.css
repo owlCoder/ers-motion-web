@@ -1,5 +1,35 @@
 /* Fine-grained A4 polish layered on top of document.css. */
 
+.text-paragraph {
+  font-size: 12.8px;
+  line-height: 1.56;
+  text-align: left;
+  hyphens: auto;
+}
+
+.list-block {
+  font-size: 12.55px;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-size: 10.6px;
+  line-height: 1.4;
+}
+
+.inline-code {
+  display: inline;
+  padding: .08em .30em;
+  border: 1px solid #e1e6ec;
+  border-radius: 4px;
+  background: #f5f7f9;
+  color: #1f466e;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: .91em;
+  font-style: normal;
+  white-space: break-spaces;
+}
+
 .code-block,
 .code-block.with-lines {
   display: block;
@@ -8,20 +38,22 @@
   white-space: normal;
   word-break: normal;
   box-shadow: inset 3px 0 0 #e9eff6;
+  font-size: 11.7px;
+  line-height: 1.52;
 }
 
 .code-line {
   min-width: 0;
-  min-height: 1.53em;
+  min-height: 1.52em;
   display: block;
   padding: 0 16px;
   font: inherit;
-  line-height: 1.53;
+  line-height: 1.52;
 }
 
 .code-block.with-lines .code-line {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
+  grid-template-columns: 46px minmax(0, 1fr);
   padding: 0;
   align-items: stretch;
 }
@@ -41,31 +73,32 @@
 
 .line-number {
   display: block;
-  min-width: 42px;
-  padding: 0 10px 0 6px;
+  min-width: 46px;
+  padding: 0 11px 0 6px;
   border-right: 1px solid #edf0f3;
   color: #9da8b7;
   text-align: right;
   user-select: none;
   font-variant-numeric: tabular-nums;
   line-height: inherit;
+  box-sizing: border-box;
 }
 
 .code-figure figcaption,
 .table-figure figcaption,
 .image-figure figcaption,
 .diagram figcaption {
-  margin-top: 7px;
-  color: #758294;
-  font-size: 9.7px;
+  margin-top: 8px;
+  color: #667487;
+  font-size: 10.5px;
   font-style: normal;
-  line-height: 1.45;
+  line-height: 1.42;
   text-align: center;
 }
 
 .artifact-number {
-  color: #516176;
-  font-weight: 700;
+  color: #40556f;
+  font-weight: 750;
 }
 
 .callout {
@@ -74,7 +107,8 @@
   overflow: hidden;
   border-left-width: 1px;
   border-radius: 11px;
-  padding-left: 13px;
+  padding: 12px 14px 12px 14px;
+  grid-template-columns: 31px minmax(0, 1fr);
 }
 
 .callout::before {
@@ -92,17 +126,18 @@
 .callout-warning { --callout-accent: #e11d48; }
 .callout-success { --callout-accent: #059669; }
 
+.callout-title { font-size: 12.4px; line-height: 1.32; }
+.callout-text { font-size: 12.25px; line-height: 1.48; }
+
 .callout-body,
 .callout-title,
 .callout-text,
-.table-figure th,
-.table-figure td,
 .diagram-title,
 .diagram-subtitle,
 .list-item-editor,
 .text-block {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: normal;
 }
 
@@ -112,27 +147,32 @@
 }
 
 .diagram-flow {
-  gap: 18px;
+  gap: 15px;
   align-items: stretch;
 }
 
 .flow-item-wrap {
   min-width: 0;
   position: relative;
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 14px;
+  column-gap: 7px;
+  align-items: center;
 }
 
-.flow-item-wrap .diagram-card { width: 100%; }
+.flow-item-wrap:last-child {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.flow-item-wrap .diagram-card { width: auto; }
 
 .flow-arrow {
-  right: -16px;
-  top: 50%;
+  position: static;
   width: 14px;
   height: 20px;
   display: grid;
   place-items: center;
-  transform: translateY(-50%);
+  transform: none;
   color: #8796a8;
   font-size: 17px;
   line-height: 1;
@@ -146,25 +186,56 @@
 }
 
 .diagram-card.compact { padding: 10px 9px; }
-.diagram-title { font-size: 10.5px; line-height: 1.3; }
-.diagram-subtitle { font-size: 8.9px; line-height: 1.42; }
+.diagram-title { font-size: 11px; line-height: 1.3; }
+.diagram-subtitle { font-size: 9.4px; line-height: 1.42; }
 
 .diagram-hub .hub-center { width: min(48%, 330px); }
 .hub-connector::after { left: -230px; right: -230px; }
 
 .image-figure img {
-  max-height: 520px;
+  max-height: 470px;
   object-fit: contain;
 }
 
-.table-scroll { border-radius: 10px; }
-.table-figure td,
-.table-figure th { overflow-wrap: anywhere; }
+.table-scroll {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-figure table {
+  table-layout: auto;
+  font-size: 11.8px;
+  line-height: 1.42;
+}
+
+.table-figure th,
+.table-figure td {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  padding: 7px 9px;
+}
+
+.table-figure th:first-child,
+.table-figure td:first-child {
+  min-width: 104px;
+  width: 24%;
+}
+
+.table-figure th {
+  white-space: normal;
+}
 
 @media print {
+  .inline-code {
+    background: #f5f7f9 !important;
+    border-color: #e1e6ec !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   .code-block,
   .code-block.with-lines { background: #fff !important; }
-  .code-block.with-lines .code-line { grid-template-columns: 11mm minmax(0, 1fr); }
-  .line-number { min-width: 11mm; padding-right: 2.5mm; }
+  .code-block.with-lines .code-line { grid-template-columns: 12mm minmax(0, 1fr); }
+  .line-number { min-width: 12mm; padding-right: 2.7mm; }
   .code-line code { padding-right: 3mm; }
 }
