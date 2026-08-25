@@ -25,6 +25,7 @@ type SavedStyle = {
 
 let savedStyles: SavedStyle[] = []
 let activePrintRoot: HTMLElement | null = null
+let savedDocumentTitle = document.title
 
 function remember(element: HTMLElement) {
   savedStyles.push({
@@ -54,6 +55,11 @@ const preparePrintLayout = () => {
 
   savedStyles = []
   activePrintRoot = printContainer
+  savedDocumentTitle = document.title
+  const academicTitle = printContainer.querySelector('.cover-page .text-title')?.textContent?.trim()
+    || printContainer.querySelector('.text-h1')?.textContent?.trim()
+  if (academicTitle) document.title = academicTitle
+
   document.body.classList.add('ers-printing')
   appRoot.classList.add('ers-app-root')
   printContainer.classList.add('ers-print-root')
@@ -100,6 +106,7 @@ const restoreEditorLayout = () => {
   activePrintRoot = null
   document.querySelector('.ers-app-root')?.classList.remove('ers-app-root')
   document.body.classList.remove('ers-printing')
+  document.title = savedDocumentTitle
 
   document.documentElement.style.height = '100%'
   document.body.style.height = '100%'
