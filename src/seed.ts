@@ -40,6 +40,7 @@ export function duplicateAsNew(doc: CourseDocument): CourseDocument {
   const copy = clone(doc)
   const now = new Date().toISOString()
   copy.id = uid('doc')
+  copy.kind = 'dokument'
   copy.title = `${copy.title} — copy`
   copy.createdAt = now
   copy.updatedAt = now
