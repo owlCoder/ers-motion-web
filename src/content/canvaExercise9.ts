@@ -59,7 +59,8 @@ export const exercise9 = (): DocumentPage[] => [
       'Jasno razdvojiti stdout, status uspeha i strukturirane metrike.',
       'Ograničiti dužinu poruka i failure logova da MCP ne preplavi kontekst.',
       'Ne dozvoliti modelu da sam proglasi test prolaznim bez statusa procesa.',
-      'Za rizične tool-ove definisati validaciju ulaza i dozvoljene putanje/komande.'),
+      'Za rizične tool-ove definisati validaciju ulaza i dozvoljene putanje/komande.'
+    ]),
   ]),
   page('9.4. Projektni checkpoint P7', [
     text('h2', '9.4. Projektni checkpoint P7 — MCP integracija'),
@@ -69,7 +70,8 @@ export const exercise9 = (): DocumentPage[] => [
       'Izložen je najmanje jedan resource i najmanje dva tool-a, ili najmanje tri smisleno odabrane MCP funkcionalnosti.',
       'Najmanje jedan tool vraća razvojni signal: test rezultat, git diff, strukturu projekta ili sličan proverljiv podatak.',
       'AI workflow demonstrira korišćenje MCP-a umesto ručnog copy/paste-a istog konteksta.',
-      'Dokumentovana su ograničenja i podaci koje server namerno ne izlaže.'),
+      'Dokumentovana su ograničenja i podaci koje server namerno ne izlaže.'
+    ]),
     callout('task', 'Mini domaći — bonus 2 boda', 'Dodati jedan read-only resource za projektna pravila i jedan tool koji izvršava test ili vraća diff. 1 bod za ispravnu integraciju; 1 bod za obrazloženje zašto je jedan element resource, a drugi tool.'),
   ]),
 ]
