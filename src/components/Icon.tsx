@@ -2,7 +2,9 @@ import type { ComponentProps, ComponentType } from 'react'
 import {
   Add24Regular,
   ArrowDown24Regular,
+  ArrowLeft24Regular,
   ArrowRedo24Regular,
+  ArrowRight24Regular,
   ArrowUndo24Regular,
   ArrowUp24Regular,
   BranchFork24Regular,
@@ -52,7 +54,7 @@ import {
 
 type Name =
   | 'menu' | 'file' | 'folder' | 'plus' | 'save' | 'open' | 'print' | 'play' | 'settings'
-  | 'trash' | 'copy' | 'up' | 'down' | 'code' | 'image' | 'table' | 'diagram' | 'text'
+  | 'trash' | 'copy' | 'up' | 'down' | 'left' | 'right' | 'code' | 'image' | 'table' | 'diagram' | 'text'
   | 'list' | 'note' | 'divider' | 'chevron' | 'close' | 'bold' | 'italic' | 'underline' | 'undo' | 'redo'
   | 'paste' | 'cut' | 'formatPainter' | 'fontIncrease' | 'fontDecrease' | 'strike' | 'subscript' | 'superscript'
   | 'highlight' | 'fontColor' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'numberList' | 'search'
@@ -74,6 +76,8 @@ const icons: Record<Name, FluentIconComponent> = {
   copy: Copy24Regular,
   up: ArrowUp24Regular,
   down: ArrowDown24Regular,
+  left: ArrowLeft24Regular,
+  right: ArrowRight24Regular,
   code: Code24Regular,
   image: Image24Regular,
   table: Table24Regular,
