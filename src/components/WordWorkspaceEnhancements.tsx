@@ -8,7 +8,6 @@ const RIGHT_MIN = 300
 const RIGHT_MAX = 500
 const LEFT_DEFAULT = 286
 const RIGHT_DEFAULT = 346
-const DEFAULT_ZOOM_REVISION = 'word-zoom-100-v1'
 const PRACTICUM_CONTENT_REVISION = 'practicum-academic-pass-2026-08-25-a'
 const LEGACY_PRACTICUM_UPDATED_AT = '2026-08-24T21:39:00+02:00'
 
@@ -150,12 +149,10 @@ export function WordWorkspaceEnhancements() {
   }, [])
 
   useEffect(() => {
-    if (window.localStorage.getItem('ers-default-document-zoom') === DEFAULT_ZOOM_REVISION) return
     const timer = window.setTimeout(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
-      window.localStorage.setItem('ers-default-document-zoom', DEFAULT_ZOOM_REVISION)
-    }, 900)
+    }, 650)
     return () => window.clearTimeout(timer)
   }, [])
 
