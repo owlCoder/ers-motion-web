@@ -14,6 +14,15 @@ function wrappedLines(text: string, charsPerLine: number) {
   return Math.max(1, Math.ceil(plain(text).length / charsPerLine))
 }
 
+function pagePrefix(prefix: string) {
+  return prefix
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'section'
+}
+
 /** Approximate rendered height in the fixed 794x1123 A4 renderer. */
 export function blockHeight(block: Block): number {
   switch (block.type) {
@@ -72,7 +81,7 @@ function isSmallClosingBlock(block: Block) {
 function makePage(blocks: Block[], prefix: string, index: number, continuation: number): DocumentPage {
   const heading = headingText(blocks)
   return {
-    id: `reflow-${prefix}-${String(index + 1).padStart(2, '0')}`,
+    id: `reflow-${pagePrefix(prefix)}-${String(index + 1).padStart(2, '0')}`,
     label: heading || `${prefix} — nastavak ${continuation}`,
     layout: 'standard',
     blocks,
@@ -140,9 +149,10 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     }
   }
 
+  const slug = pagePrefix(prefix)
   return result.map((page, index) => ({
     ...page,
-    id: `reflow-${prefix}-${String(index + 1).padStart(2, '0')}`,
+    id: `reflow-${slug}-${String(index + 1).padStart(2, '0')}`,
     label: headingText(page.blocks) || `${prefix} — nastavak ${index + 1}`,
   }))
 }
