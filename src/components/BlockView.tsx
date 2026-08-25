@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Button, makeStyles, mergeClasses, tokens, Toolbar, ToolbarButton, Tooltip } from '@fluentui/react-components'
 import type { Block, CalloutBlock, CodeBlock, DiagramBlock, ImageBlock, InstitutionBlock, ListBlock, TableBlock, TextBlock } from '../types'
-import { ACCENTS, highlightCode } from '../utils'
+import { ACCENTS, highlightCode, type ArtifactMeta } from '../utils'
 import { EditableText } from './EditableText'
 import { Icon } from './Icon'
 
@@ -72,6 +72,11 @@ function BlockChrome({ selected, onSelect, onAction, onDragStart, children }: { 
   )
 }
 
+function ArtifactCaption({ meta, caption }: { meta?: ArtifactMeta; caption?: string }) {
+  if (!meta && !caption) return null
+  return <figcaption>{meta && <span className="artifact-number">{meta.label}</span>}{caption && <span>{meta ? ` — ${caption}` : caption}</span>}</figcaption>
+}
+
 function TextView({ block, update, select }: { block: TextBlock; update: (b: Block) => void; select: () => void }) {
   const cls = `text-block text-${block.variant} align-${block.align || 'left'}`
   return <EditableText html={block.html} className={cls} onFocus={select} onChange={(html) => update({ ...block, html })} />
@@ -94,18 +99,19 @@ function ListView({ block, update, select }: { block: ListBlock; update: (b: Blo
   )
 }
 
-function CodeView({ block }: { block: CodeBlock }) {
-  const html = useMemo(() => highlightCode(block.code, block.language), [block.code, block.language])
-  const lines = block.code.split('\n')
+function CodeView({ block, meta }: { block: CodeBlock; meta?: ArtifactMeta }) {
+  const highlightedLines = useMemo(() => highlightCode(block.code, block.language).split('\n'), [block.code, block.language])
   const languageLabel = ({ csharp: 'C#', bash: 'Shell', json: 'JSON', markdown: 'Markdown', typescript: 'TypeScript', text: 'Text' } as const)[block.language]
   return (
     <figure className="code-figure">
       <div className="code-header"><span>{languageLabel}</span></div>
-      <pre className={`code-block ${block.lineNumbers ? 'with-lines' : ''}`}>
-        {block.lineNumbers && <span className="line-numbers">{lines.map((_, i) => <span key={i}>{i + 1}</span>)}</span>}
-        <code dangerouslySetInnerHTML={{ __html: html }} />
-      </pre>
-      {block.caption && <figcaption>{block.caption}</figcaption>}
+      <div className={`code-block ${block.lineNumbers ? 'with-lines' : ''}`}>
+        {highlightedLines.map((line, index) => <div className="code-line" key={index}>
+          {block.lineNumbers && <span className="line-number" aria-hidden="true">{index + 1}</span>}
+          <code dangerouslySetInnerHTML={{ __html: line || '&nbsp;' }} />
+        </div>)}
+      </div>
+      <ArtifactCaption meta={meta} caption={block.caption} />
     </figure>
   )
 }
@@ -126,11 +132,11 @@ function CalloutView({ block, update, select }: { block: CalloutBlock; update: (
   )
 }
 
-function TableView({ block }: { block: TableBlock }) {
+function TableView({ block, meta }: { block: TableBlock; meta?: ArtifactMeta }) {
   return (
     <figure className="table-figure">
       <div className="table-scroll"><table>{block.headers.length > 0 && <thead><tr>{block.headers.map((h, i) => <th key={i} dangerouslySetInnerHTML={{ __html: h }} />)}</tr></thead>}<tbody>{block.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} dangerouslySetInnerHTML={{ __html: c }} />)}</tr>)}</tbody></table></div>
-      {block.caption && <figcaption>{block.caption}</figcaption>}
+      <ArtifactCaption meta={meta} caption={block.caption} />
     </figure>
   )
 }
@@ -140,37 +146,37 @@ function DiagramCard({ item, compact = false }: { item: DiagramBlock['items'][nu
   return <div className={`diagram-card ${compact ? 'compact' : ''}`} style={{ '--accent': accent.solid, '--accent-soft': accent.soft } as React.CSSProperties}><div className="diagram-title">{item.title}</div>{item.subtitle && <div className="diagram-subtitle">{item.subtitle}</div>}</div>
 }
 
-function DiagramView({ block }: { block: DiagramBlock }) {
-  if (block.variant === 'stack') return <figure className="diagram">{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
+function DiagramView({ block, meta }: { block: DiagramBlock; meta?: ArtifactMeta }) {
+  if (block.variant === 'stack') return <figure className="diagram">{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
   if (block.variant === 'hub') {
     const [hub, ...children] = block.items
-    return <figure className="diagram diagram-hub">{block.title && <div className="diagram-heading">{block.title}</div>}{hub && <div className="hub-center"><DiagramCard item={hub} /></div>}<div className="hub-connector" /><div className="hub-children" style={{ gridTemplateColumns: `repeat(${Math.min(block.columns || 4, Math.max(children.length, 1))}, minmax(0,1fr))` }}>{children.map((item) => <DiagramCard key={item.id} item={item} compact />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
+    return <figure className="diagram diagram-hub">{block.title && <div className="diagram-heading">{block.title}</div>}{hub && <div className="hub-center"><DiagramCard item={hub} /></div>}<div className="hub-connector" /><div className="hub-children" style={{ gridTemplateColumns: `repeat(${Math.min(block.columns || 4, Math.max(children.length, 1))}, minmax(0,1fr))` }}>{children.map((item) => <DiagramCard key={item.id} item={item} compact />)}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
   }
   const columns = block.columns || Math.min(5, Math.max(2, block.items.length)) as 2 | 3 | 4 | 5
-  return <figure className={`diagram diagram-${block.variant}`}>{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>{block.items.map((item, i) => <div key={item.id} className="flow-item-wrap"><DiagramCard item={item} compact={block.items.length > 5} />{i < block.items.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}</div>)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
+  return <figure className={`diagram diagram-${block.variant}`}>{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>{block.items.map((item, i) => <div key={item.id} className="flow-item-wrap"><DiagramCard item={item} compact={block.items.length > 5} />{i < block.items.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}</div>)}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
 }
 
-function ImageView({ block }: { block: ImageBlock }) {
+function ImageView({ block, meta }: { block: ImageBlock; meta?: ArtifactMeta }) {
   if (!block.src) return <div className="image-placeholder"><Icon name="image" size={28} /><span>Choose an image in the Inspector</span></div>
-  return <figure className="image-figure" style={{ width: `${block.widthPercent || 100}%` }}><img src={block.src} alt={block.alt || ''} />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>
+  return <figure className="image-figure" style={{ width: `${block.widthPercent || 100}%` }}><img src={block.src} alt={block.alt || ''} /><ArtifactCaption meta={meta} caption={block.caption} /></figure>
 }
 
 function InstitutionView({ block, update, select }: { block: InstitutionBlock; update: (b: Block) => void; select: () => void }) {
   return <div className="institution-block"><div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="University logo" />}</div><div className="institution-copy"><EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} /><EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />{block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}</div><div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Faculty logo" />}</div></div>
 }
 
-export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDragStart, onDrop }: {
-  block: Block; selected: boolean; onSelect: () => void; onUpdate: (block: Block) => void; onAction: (action: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; onDrop: (e: React.DragEvent) => void
+export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDragStart, onDrop, artifactMeta }: {
+  block: Block; selected: boolean; onSelect: () => void; onUpdate: (block: Block) => void; onAction: (action: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; onDrop: (e: React.DragEvent) => void; artifactMeta?: ArtifactMeta
 }) {
   const body = (() => {
     switch (block.type) {
       case 'text': return <TextView block={block} update={onUpdate} select={onSelect} />
       case 'list': return <ListView block={block} update={onUpdate} select={onSelect} />
-      case 'code': return <CodeView block={block} />
+      case 'code': return <CodeView block={block} meta={artifactMeta} />
       case 'callout': return <CalloutView block={block} update={onUpdate} select={onSelect} />
-      case 'table': return <TableView block={block} />
-      case 'diagram': return <DiagramView block={block} />
-      case 'image': return <ImageView block={block} />
+      case 'table': return <TableView block={block} meta={artifactMeta} />
+      case 'diagram': return <DiagramView block={block} meta={artifactMeta} />
+      case 'image': return <ImageView block={block} meta={artifactMeta} />
       case 'institution': return <InstitutionView block={block} update={onUpdate} select={onSelect} />
       case 'divider': return <hr className="doc-divider" />
     }
