@@ -5,7 +5,7 @@ export const exercise6 = (): DocumentPage[] => [
   page('Vežba 6 — Testabilni dizajn, NUnit, Moq i Coverage', [
     text('h1', 'Vežba 6 — Testabilni dizajn, NUnit, Moq i Coverage'),
     text('paragraph', 'Testabilni dizajn znači da se komponente mogu proveriti izolovano i deterministički. Postojeći Canva materijal naglašava razdvajanje odgovornosti, interfejse, dependency injection i saradnju između modula. Unit testiranje zato nije završna aktivnost koja se „doda“ na gotov kod, već povratna informacija o kvalitetu granica sistema.'),
-    image('/course-assets/testing-coverage.svg', 'Veza između testabilnog dizajna, test slučajeva, mock objekata i coverage signala.', 'Testiranje i coverage'),
+    image('/course-assets/testing.svg', 'Veza između testabilnog dizajna, test slučajeva, mock objekata i coverage signala.', 'Testiranje i coverage'),
     table(['Element', 'Uloga'], [
       ['NUnit', 'Framework za organizaciju i izvršavanje testova.'],
       ['Microsoft.NET.Test.Sdk', 'Infrastruktura koja omogućava .NET test runner-u da pronađe i izvrši testove.'],
@@ -57,7 +57,8 @@ export const exercise6 = (): DocumentPage[] => [
       'Prvo definisati poslovno važne scenarije, pa tek onda posmatrati coverage.',
       'Ne pokrivati trivijalne getter-e samo da bi procenat porastao ako važna grana ostaje neproverena.',
       'Posebno pregledati uslovne grane, error-handling i kod koji menja novac, dozvole, rezervacije ili drugo kritično stanje.',
-      'Nizak coverage može ukazati na propust; visok coverage ne dokazuje odsustvo propusta.'),
+      'Nizak coverage može ukazati na propust; visok coverage ne dokazuje odsustvo propusta.'
+    ]),
     callout('info', 'Pitanje za review', 'Koji deo nepokrivenog koda nosi najveći rizik i koji test bi dao najviše nove informacije? Ovo pitanje je korisnije od „kako da dođemo do 90%?“.'),
   ]),
   page('6.5. Projektni checkpoint P4 — manual-core-baseline', [
@@ -68,7 +69,8 @@ export const exercise6 = (): DocumentPage[] => [
       'Moq se koristi samo za promenljive spoljne zavisnosti koje test treba da izoluje.',
       'Coverage izveštaj je pregledan i najmanje jedna nepokrivena rizična grana je komentarisana ili pokrivena dodatnim testom.',
       'Najmanje jedan bug je prvo reprodukovan testom, pa zatim ispravljen.',
-      'Stabilna verzija jezgra označena je Git tag-om `manual-core-baseline`.'),
+      'Stabilna verzija jezgra označena je Git tag-om `manual-core-baseline`.'
+    ]),
     callout('task', 'Mini domaći — bonus 2 boda', 'AI alatu dati opis use-case-a i postojeće testove, ali tražiti samo predlog nedostajućih scenarija. 1 bod za novi smisleni edge-case test; 1 bod za obrazloženje zašto je AI predlog prihvaćen ili odbačen.'),
   ]),
 ]
