@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
 import {
   Add24Regular,
   ArrowDown24Regular,
@@ -58,7 +58,7 @@ type Name =
   | 'highlight' | 'fontColor' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'numberList' | 'search'
   | 'comment' | 'share' | 'more' | 'zoomIn' | 'zoomOut'
 
-type FluentIconComponent = React.ComponentType<ComponentProps<typeof Add24Regular>>
+type FluentIconComponent = ComponentType<ComponentProps<typeof Add24Regular>>
 
 const icons: Record<Name, FluentIconComponent> = {
   menu: Navigation24Regular,
