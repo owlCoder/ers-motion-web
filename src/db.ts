@@ -4,6 +4,7 @@ const DB_NAME = 'ers-studio'
 const STORE = 'documents'
 const META = 'meta'
 const VERSION = 2
+const CURRENT_BUNDLED_IDS = new Set(['ers-praktikum-2026-27-current', 'ers-project-spec-2026-27-current'])
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -49,9 +50,25 @@ export async function listDocumentsLocal(): Promise<LibraryEntry[]> {
     req.onsuccess = () => resolve(req.result as CourseDocument[])
     req.onerror = () => reject(req.error)
   })
+
+  const legacyIds = docs
+    .filter((doc) => (doc.kind === 'praktikum' || doc.kind === 'specifikacija') && !CURRENT_BUNDLED_IDS.has(doc.id))
+    .map((doc) => doc.id)
+
+  if (legacyIds.length > 0) {
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readwrite')
+      const store = tx.objectStore(STORE)
+      legacyIds.forEach((id) => store.delete(id))
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+    })
+  }
+
   db.close()
   return docs
-    .map((d) => ({ id: d.id, title: d.title, kind: d.kind, updatedAt: d.updatedAt }))
+    .filter((doc) => !legacyIds.includes(doc.id))
+    .map((doc) => ({ id: doc.id, title: doc.title, kind: doc.kind, updatedAt: doc.updatedAt }))
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
 
@@ -66,12 +83,6 @@ export async function deleteDocumentLocal(id: string) {
   db.close()
 }
 
-/**
- * One-time seed migration helper.
- * The course ships exactly one current Practicum and one current Project Specification.
- * Old bundled versions are removed during a seed-version upgrade so the library does
- * not accumulate stale copies. User-created generic documents are left untouched.
- */
 export async function purgeLegacyBundledDocuments(currentIds: ReadonlySet<string>) {
   const db = await openDb()
   const docs = await new Promise<CourseDocument[]>((resolve, reject) => {
