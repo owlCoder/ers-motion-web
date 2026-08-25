@@ -53,23 +53,27 @@ export async function listDocumentsLocal(): Promise<LibraryEntry[]> {
   })
 
   const byId = new Map(docs.map((doc) => [doc.id, doc]))
-  const missingBundled = bundledDocuments.filter((document) => !byId.has(document.id))
+  const bundledToWrite = bundledDocuments.filter((bundled) => {
+    const local = byId.get(bundled.id)
+    if (!local) return true
+    return new Date(bundled.updatedAt).getTime() > new Date(local.updatedAt).getTime()
+  })
   const legacyIds = docs
     .filter((doc) => (doc.kind === 'praktikum' || doc.kind === 'specifikacija') && !CURRENT_BUNDLED_IDS.has(doc.id))
     .map((doc) => doc.id)
 
-  if (missingBundled.length > 0 || legacyIds.length > 0) {
+  if (bundledToWrite.length > 0 || legacyIds.length > 0) {
     await new Promise<void>((resolve, reject) => {
       const tx = db.transaction(STORE, 'readwrite')
       const store = tx.objectStore(STORE)
       legacyIds.forEach((id) => store.delete(id))
-      missingBundled.forEach((document) => store.put(structuredClone(document)))
+      bundledToWrite.forEach((document) => store.put(structuredClone(document)))
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error)
     })
   }
 
-  missingBundled.forEach((document) => byId.set(document.id, structuredClone(document)))
+  bundledToWrite.forEach((document) => byId.set(document.id, structuredClone(document)))
   legacyIds.forEach((id) => byId.delete(id))
 
   db.close()
