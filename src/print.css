@@ -1,0 +1,73 @@
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body,
+  #root,
+  .fui-FluentProvider {
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  body.ers-printing {
+    display: block !important;
+  }
+
+  body.ers-printing .ers-app-root {
+    display: block !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body.ers-printing .ers-print-root {
+    display: block !important;
+    position: static !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  body.ers-printing .ers-print-root .page-wrap {
+    display: block !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  body.ers-printing .ers-print-root .page-wrap:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  body.ers-printing .ers-print-root .a4-page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+}
