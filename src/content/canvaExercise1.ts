@@ -16,14 +16,14 @@ export const exercise1 = (): DocumentPage[] => [
   ]),
   page('1.1. Interfejs, apstrakcija i polimorfizam', [
     text('h2', '1.1. Interfejs, apstrakcija i polimorfizam'),
-    text('paragraph', 'Polazni zadatak iz postojećih vežbi koristi putovanja. Interfejs `IPutovanje` opisuje ponašanje, apstraktna klasa `Putovanje` čuva zajedničke podatke, a konkretna putovanja daju sopstvenu implementaciju. Klijentski kod treba da radi preko `IPutovanje`, bez potrebe da zna da li je u pitanju putovanje na Havaje ili Aljasku.'),
+    text('paragraph', 'Prvi primer koristi domen putovanja kako bi jasno razdvojio ugovor od zajedničke implementacione osnove. Interfejs `IPutovanje` opisuje ponašanje, apstraktna klasa `Putovanje` čuva zajedničke podatke, a konkretne vrste putovanja implementiraju specifično ponašanje. Klijentski kod radi preko `IPutovanje` i ne mora da proverava konkretan tip objekta.'),
     code('csharp', `public interface IPutovanje\n{\n    void Putuj();\n}\n\npublic abstract class Putovanje : IPutovanje\n{\n    public decimal Cena { get; }\n    public int BrojDana { get; }\n\n    protected Putovanje(decimal cena, int brojDana)\n    {\n        Cena = cena;\n        BrojDana = brojDana;\n    }\n\n    public abstract void Putuj();\n}`, 'Ugovor i zajednička osnova'),
     callout('task', 'Rad na vežbi', 'Implementirati `PutovanjeHavaji` i `PutovanjeAljaska`, zatim napraviti kolekciju `IPutovanje` objekata i pozvati `Putuj()` bez provere konkretnog tipa.'),
     callout('note', 'Pitanje za razmišljanje', 'Da li nam je apstraktna klasa zaista potrebna ako konkretne vrste putovanja više ne dele stanje i ponašanje? U tom slučaju interfejs može biti dovoljna apstrakcija.'),
   ]),
   page('1.2. Zamenjive implementacije', [
     text('h2', '1.2. Zamenjive implementacije: primer pretraživača'),
-    text('paragraph', 'Drugi postojeći zadatak uvodi `IPretrazivac`. Dve implementacije mogu da obilaze listu različitim redosledom, ali moraju poštovati isti ugovor. Primer je mali, ali direktno priprema teren za Liskov Substitution Principle: klijentski kod ne sme da dobije neočekivano ponašanje samo zato što je zamenjena implementacija ugovora.'),
+    text('paragraph', 'Drugi primer demonstrira zamenjive strategije pretrage preko ugovora `IPretrazivac`. Dve implementacije mogu da obilaze listu različitim redosledom, ali moraju poštovati isto značenje ulaza i rezultata. Primer direktno priprema teren za Liskov Substitution Principle: zamena implementacije ne sme da promeni očekivanja klijentskog koda.'),
     code('csharp', `public interface IPretrazivac\n{\n    int Pretraga(string pojam, string[] lista);\n}\n\npublic static int Prebroj(IPretrazivac pretrazivac, string pojam, string[] lista)\n    => pretrazivac.Pretraga(pojam, lista);`, 'Klijent zavisi od ugovora'),
     list([
       'Definisati precizno šta znači rezultat metode: broj tačnih pogodaka, case-sensitive ili case-insensitive poređenje i ponašanje za praznu listu.',
