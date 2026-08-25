@@ -64,14 +64,13 @@ export const exercise3 = (): DocumentPage[] => [
   page('3.5. Projektni checkpoint P1', [
     text('h2', '3.5. Projektni checkpoint P1 — problem, backlog i AI trag'),
     text('paragraph', 'Na prvom projektnom checkpoint-u tim ne predaje gotovu arhitekturu. Cilj je da se potvrdi da je problem dovoljno jasan, da postoji početni backlog i da se AI koristi transparentno kao podrška razmišljanju.'),
-    list([
-      'README opisuje realan problem, korisničke uloge i granice sistema.',
-      'Backlog sadrži najmanje osam smislenih User Story-ja, ne samo listu CRUD operacija.',
-      'Najmanje tri važna Story-ja imaju pozitivne i negativne kriterijume prihvatanja.',
-      'Postoje početni `AI_INSTRUCTIONS.md` i `AI_USAGE.md`.',
-      '`AI_USAGE.md` sadrži makar jednu sesiju analize zahteva: zadatak, alat/model, sažetak predloga, odluka tima i način provere.',
-    ]),
-    image('/course-assets/semester-map.svg', 'Checkpoint P1 je početak kontinuiteta: svaki naredni princip menja isti projektni repozitorijum.', 'Tok praktikuma i projekta'),
+    table(['Artefakt', 'Minimalni sadržaj za P1'], [
+      ['README', 'Opis problema, korisničke uloge, granice sistema i članovi tima.'],
+      ['Product Backlog', 'Najmanje osam smislenih User Story-ja; prioritet i dovoljno konteksta za refinement.'],
+      ['Acceptance criteria', 'Pozitivni i negativni kriterijumi za najmanje tri važna Story-ja.'],
+      ['AI_INSTRUCTIONS.md', 'Početna projektna pravila i ograničenja rada sa AI alatom.'],
+      ['AI_USAGE.md', 'Najmanje jedna zabeležena analiza zahteva, odluka tima i način provere.'],
+    ], 'Checkpoint P1 povezuje zahtev, razvojni trag i transparentnu upotrebu AI podrške.'),
     callout('task', 'Mini domaći — bonus 1 bod', 'Izabrati jedan User Story i tražiti od AI alata samo review kriterijuma. Predati početnu verziju, finalnu verziju i do 120 reči obrazloženja šta je iz sugestija prihvaćeno ili odbačeno.'),
   ]),
 ]
