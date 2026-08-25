@@ -7,8 +7,9 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ ! -d node_modules ]; then
-  npm install
+if [ ! -d node_modules/@fluentui/react-components ]; then
+  echo "Instaliram ili osvežavam zavisnosti..."
+  npm install --no-audit --no-fund
 fi
 
 npm run build
