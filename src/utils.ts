@@ -34,43 +34,19 @@ export function emptyPage(): DocumentPage {
 
 export function createBlock(type: Block['type']): Block {
   switch (type) {
-    case 'text':
-      return { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Novi paragraf.' }
-    case 'list':
-      return { id: uid('block'), type: 'list', ordered: false, items: ['Nova stavka'] }
-    case 'code':
-      return { id: uid('block'), type: 'code', language: 'csharp', code: 'public sealed class Example\n{\n    // code\n}', caption: 'Primer koda', lineNumbers: false }
-    case 'callout':
-      return { id: uid('block'), type: 'callout', tone: 'info', title: 'Napomena', text: 'Dodajte kratko objašnjenje, zadatak ili važnu napomenu.' }
-    case 'table':
-      return { id: uid('block'), type: 'table', headers: ['Kolona 1', 'Kolona 2'], rows: [['Vrednost', 'Vrednost']] }
-    case 'diagram':
-      return {
-        id: uid('block'),
-        type: 'diagram',
-        variant: 'flow',
-        title: 'Tok',
-        items: [
-          { id: uid('item'), title: 'Korak 1', subtitle: 'opis', accent: 'blue' },
-          { id: uid('item'), title: 'Korak 2', subtitle: 'opis', accent: 'cyan' },
-          { id: uid('item'), title: 'Korak 3', subtitle: 'opis', accent: 'emerald' },
-        ],
-        columns: 3,
-      }
-    case 'image':
-      return { id: uid('block'), type: 'image', src: '', caption: 'Opis slike', widthPercent: 100 }
-    case 'institution':
-      return {
-        id: uid('block'),
-        type: 'institution',
-        university: 'Univerzitet u Novom Sadu',
-        faculty: 'Fakultet tehničkih nauka',
-        department: '',
-        leftLogoSrc: '/brand/university.svg',
-        rightLogoSrc: '/brand/ftn.svg',
-      }
-    case 'divider':
-      return { id: uid('block'), type: 'divider' }
+    case 'text': return { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Novi paragraf.' }
+    case 'list': return { id: uid('block'), type: 'list', ordered: false, items: ['Nova stavka'] }
+    case 'code': return { id: uid('block'), type: 'code', language: 'csharp', code: 'public sealed class Example\n{\n    // code\n}', caption: 'Primer koda', lineNumbers: false }
+    case 'callout': return { id: uid('block'), type: 'callout', tone: 'info', title: 'Napomena', text: 'Dodajte kratko objašnjenje, zadatak ili važnu napomenu.' }
+    case 'table': return { id: uid('block'), type: 'table', headers: ['Kolona 1', 'Kolona 2'], rows: [['Vrednost', 'Vrednost']] }
+    case 'diagram': return { id: uid('block'), type: 'diagram', variant: 'flow', title: 'Tok', items: [
+      { id: uid('item'), title: 'Korak 1', subtitle: 'opis', accent: 'blue' },
+      { id: uid('item'), title: 'Korak 2', subtitle: 'opis', accent: 'cyan' },
+      { id: uid('item'), title: 'Korak 3', subtitle: 'opis', accent: 'emerald' },
+    ], columns: 3 }
+    case 'image': return { id: uid('block'), type: 'image', src: '', caption: 'Opis slike', widthPercent: 100 }
+    case 'institution': return { id: uid('block'), type: 'institution', university: 'Univerzitet u Novom Sadu', faculty: 'Fakultet tehničkih nauka', department: '', leftLogoSrc: '/brand/university.svg', rightLogoSrc: '/brand/ftn.svg' }
+    case 'divider': return { id: uid('block'), type: 'divider' }
   }
 }
 
@@ -86,20 +62,22 @@ function tokeniseCSharp(code: string) {
   x = x.replace(/\b(public|private|protected|internal|sealed|static|readonly|class|record|interface|namespace|using|new|return|if|else|for|foreach|while|switch|case|break|continue|throw|try|catch|finally|async|await|var|void|bool|int|long|decimal|double|string|object|null|true|false|this|base|override|virtual|abstract|in|out|ref|where|get|set|init)\b/g, '<span class="tok-keyword">$1</span>')
   x = x.replace(/\b([A-Z][A-Za-z0-9_]*)\b/g, '<span class="tok-type">$1</span>')
   x = x.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-number">$1</span>')
-  x = x.replace(/___ERS_TOKEN_(\d+)___/g, (_, i) => stash[Number(i)])
-  return x
+  return x.replace(/___ERS_TOKEN_(\d+)___/g, (_, i) => stash[Number(i)])
 }
 
 function tokeniseBash(code: string) {
   let x = esc(code)
   const stash: string[] = []
   const keep = (html: string) => `___ERS_TOKEN_${stash.push(html) - 1}___`
+
+  // Protect tokens before adding any span markup. This prevents later regular
+  // expressions from matching CSS class names such as "tok-keyword".
   x = x.replace(/#.*$/gm, (m) => keep(`<span class="tok-comment">${m}</span>`))
   x = x.replace(/(&quot;|\")[\s\S]*?(&quot;|\")/g, (m) => keep(`<span class="tok-string">${m}</span>`))
-  x = x.replace(/\b(git|dotnet|npm|npx|cd|mkdir|rm|cp|mv|echo|cat|grep|find|curl|export|set|docker|node)\b/g, '<span class="tok-keyword">$1</span>')
-  x = x.replace(/(--?[a-zA-Z0-9-]+)/g, '<span class="tok-attr">$1</span>')
-  x = x.replace(/___ERS_TOKEN_(\d+)___/g, (_, i) => stash[Number(i)])
-  return x
+  x = x.replace(/(^|\s)(--?[a-zA-Z0-9][a-zA-Z0-9-]*)/gm, (_, prefix: string, flag: string) => `${prefix}${keep(`<span class="tok-attr">${flag}</span>`)}`)
+  x = x.replace(/\b(git|dotnet|npm|npx|cd|mkdir|rm|cp|mv|echo|cat|grep|find|curl|export|set|docker|node)\b/g, (m) => keep(`<span class="tok-keyword">${m}</span>`))
+
+  return x.replace(/___ERS_TOKEN_(\d+)___/g, (_, i) => stash[Number(i)])
 }
 
 function tokeniseJson(code: string) {
@@ -173,10 +151,7 @@ export function computeArtifactMeta(doc: CourseDocument): Record<string, Artifac
 
   for (const page of doc.pages) {
     for (const block of page.blocks) {
-      if (block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)) {
-        section = sectionNumber(block) || section
-      }
-
+      if (block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)) section = sectionNumber(block) || section
       if (block.type === 'image' || block.type === 'diagram') {
         const number = next('figure')
         result[block.id] = { kind: 'figure', number, label: `Slika ${number}` }
