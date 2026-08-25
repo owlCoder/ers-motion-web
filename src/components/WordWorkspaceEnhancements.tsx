@@ -8,8 +8,8 @@ const RIGHT_MIN = 300
 const RIGHT_MAX = 500
 const LEFT_DEFAULT = 286
 const RIGHT_DEFAULT = 346
-const PRACTICUM_CONTENT_REVISION = 'practicum-academic-pass-2026-08-25-a'
-const LEGACY_PRACTICUM_UPDATED_AT = '2026-08-24T21:39:00+02:00'
+const BUNDLED_CONTENT_REVISION = 'academic-content-pass-2026-08-25-b'
+const LEGACY_BUNDLED_UPDATED_AT = '2026-08-24T21:39:00+02:00'
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value))
@@ -57,19 +57,23 @@ export function WordWorkspaceEnhancements() {
   })
 
   useEffect(() => {
-    if (window.localStorage.getItem('ers-practicum-content-revision') === PRACTICUM_CONTENT_REVISION) return
+    if (window.localStorage.getItem('ers-bundled-content-revision') === BUNDLED_CONTENT_REVISION) return
     const timer = window.setTimeout(() => {
       ;(async () => {
         try {
-          const practicum = bundledDocuments.find((document) => document.kind === 'praktikum')
-          if (!practicum) return
-          const existing = await loadDocumentLocal(practicum.id)
-          const shouldReplace = !existing || existing.updatedAt === LEGACY_PRACTICUM_UPDATED_AT
-          if (shouldReplace) await saveDocumentLocal(practicum)
-          window.localStorage.setItem('ers-practicum-content-revision', PRACTICUM_CONTENT_REVISION)
-          if (shouldReplace) window.location.reload()
+          let replacedAny = false
+          for (const bundled of bundledDocuments) {
+            const existing = await loadDocumentLocal(bundled.id)
+            const shouldReplace = !existing || existing.updatedAt === LEGACY_BUNDLED_UPDATED_AT
+            if (shouldReplace) {
+              await saveDocumentLocal(bundled)
+              replacedAny = true
+            }
+          }
+          window.localStorage.setItem('ers-bundled-content-revision', BUNDLED_CONTENT_REVISION)
+          if (replacedAny) window.location.reload()
         } catch (error) {
-          console.error('Unable to migrate bundled practicum content.', error)
+          console.error('Unable to migrate bundled course content.', error)
         }
       })()
     }, 1350)
