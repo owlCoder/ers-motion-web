@@ -11,6 +11,7 @@ import practicumChunk10 from './seeds/praktikum.chunk10.txt?raw'
 import projectSpecJson from './seeds/project-spec.json'
 import type { CourseDocument } from './types'
 import { enhancePracticum } from './content/enhancePracticum'
+import { enhanceProjectSpec } from './content/enhanceProjectSpec'
 import { clone, uid } from './utils'
 
 const practicumJson = JSON.parse(
@@ -27,10 +28,11 @@ const practicumJson = JSON.parse(
 ) as CourseDocument
 
 const enrichedPracticum = enhancePracticum(practicumJson)
+const enrichedProjectSpec = enhanceProjectSpec(projectSpecJson as CourseDocument)
 
 export const bundledDocuments: CourseDocument[] = [
   enrichedPracticum,
-  projectSpecJson as CourseDocument,
+  enrichedProjectSpec,
 ]
 
 export function freshDocument(): CourseDocument {
