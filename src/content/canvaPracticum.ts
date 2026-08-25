@@ -63,7 +63,8 @@ const introPages = (): DocumentPage[] => [
       'P5 — stabilne instrukcije, structured output i AI_USAGE disciplina.',
       'P6 — custom skills i najmanji smisleni agentni workflow.',
       'P7 — MCP resource/tool integracija sa stvarnim projektnim signalima.',
-      'P8 — hooks/guardrails, evals, peer QA i završna odbrana.'),
+      'P8 — hooks/guardrails, evals, peer QA i završna odbrana.'
+    ]),
   ]),
 ]
 
@@ -93,7 +94,8 @@ const closingPages = (): DocumentPage[] => [
       'NUnit i Moq zvanična dokumentacija: testovi, fixtures, setup i test doubles.',
       'Microsoft .NET dokumentacija: dependency injection, testing i arhitektura aplikacija.',
       'Model Context Protocol dokumentacija: resources, tools, prompts i client/server arhitektura.',
-      'Dokumentacija AI klijenta koji se koristi na vežbama: projektne instrukcije, skills, agenti/subagenti i hooks.'),
+      'Dokumentacija AI klijenta koji se koristi na vežbama: projektne instrukcije, skills, agenti/subagenti i hooks.'
+    ]),
     callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv fajla, pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model i način verifikacije.'),
   ]),
 ]
