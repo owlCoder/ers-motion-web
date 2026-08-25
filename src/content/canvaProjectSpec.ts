@@ -36,7 +36,8 @@ const pages = (): DocumentPage[] => [
       'Tema treba da predstavlja realan poslovni, organizacioni ili institucionalni problem sa više smislenih pravila.',
       'Sistem se razvija kontinuirano kroz Git; završna verzija bez istorije rada nije dovoljna.',
       'AI se uvodi po fazama: rano za analizu i review, kasnije za kontrolisane izmene uz testove, tools i guardrails.',
-      'Svaki član tima mora razumeti ključne delove projekta bez obzira na internu podelu rada.'),
+      'Svaki član tima mora razumeti ključne delove projekta bez obzira na internu podelu rada.'
+    ]),
   ]),
   page('2. Očekivani ishodi učenja', [
     text('h1', '2. Očekivani ishodi učenja'),
@@ -51,7 +52,8 @@ const pages = (): DocumentPage[] => [
       'Uredan Git/GitHub tok sa issue-ima, granama, commit-ima i review tragom.',
       'Projektovanje instrukcija, skills, agentnih uloga i MCP integracije.',
       'Uvođenje hooks/guardrail provera i eval scenarija za AI workflow.',
-      'Kritička procena AI predloga i nezavisna verifikacija kroz kod, diff i testove.'),
+      'Kritička procena AI predloga i nezavisna verifikacija kroz kod, diff i testove.'
+    ]),
   ]),
   page('3. Projektna tema i funkcionalni obim', [
     text('h1', '3. Projektna tema i funkcionalni obim'),
@@ -62,7 +64,8 @@ const pages = (): DocumentPage[] => [
       'Najmanje 5 netrivijalnih poslovnih pravila koja mogu dati pozitivan ili negativan ishod.',
       'Autentifikacija i osnovna autorizacija po ulogama kada domen to zahteva.',
       'Najmanje jedan kompleksniji use-case po članu tima, uz zajedničko razumevanje svih ključnih tokova.',
-      'Validacija ulaza i eksplicitno modelovanje očekivanih poslovnih neuspeha.'),
+      'Validacija ulaza i eksplicitno modelovanje očekivanih poslovnih neuspeha.'
+    ]),
     callout('info', 'Primer netrivijalnog pravila', '„Premium korisnik može dobiti kupon, ali kupon ne može da se kombinuje sa sezonskim popustom“ jeste poslovno pravilo. „Entitet ima Create/Read/Update/Delete“ samo po sebi nije dovoljno poslovno ponašanje.'),
   ]),
   page('4. Arhitektonski i tehnički zahtevi', [
@@ -86,7 +89,8 @@ const pages = (): DocumentPage[] => [
       'Implementacije istog ugovora poštuju očekivano ponašanje klijenta.',
       'Interfejsi nisu veštački veliki; klijenti ne zavise od operacija koje ne koriste.',
       'Poslovni kod zavisi od apstrakcija prema promenljivim spoljnim detaljima.',
-      'Imenovanje, formatiranje i struktura koda treba da olakšaju review i budu dosledni kroz repozitorijum.'),
+      'Imenovanje, formatiranje i struktura koda treba da olakšaju review i budu dosledni kroz repozitorijum.'
+    ]),
     callout('info', 'Dokaz na odbrani', 'Dovoljno je pokazati nekoliko kvalitetnih primera i objasniti njihov razlog. Nije potrebno svaku klasu proglasiti primerom svih SOLID principa.'),
   ]),
   page('6. Testiranje i Code Coverage', [
@@ -97,7 +101,8 @@ const pages = (): DocumentPage[] => [
       'Pozitivni, negativni i najmanje nekoliko graničnih scenarija izvedenih iz acceptance criteria.',
       'Moq ili drugi test doubles samo za zavisnosti koje test želi da izoluje.',
       'Najmanje jedan bug ili regresija demonstrirana testom pre korekcije, kada se takav slučaj pojavi tokom rada.',
-      'Coverage izveštaj pregledan uz kratak komentar najmanje jedne važne nepokrivene ili slabo pokrivene grane.'),
+      'Coverage izveštaj pregledan uz kratak komentar najmanje jedne važne nepokrivene ili slabo pokrivene grane.'
+    ]),
     callout('warning', 'Coverage procenat nije dovoljan', 'Visok procenat pokrivenosti ne garantuje dobre assert-e ni relevantne scenarije. Na odbrani student treba da objasni koje pravilo test štiti i zašto je scenario važan.'),
   ]),
   page('7. Git i dokumentacija procesa', [
@@ -109,7 +114,8 @@ const pages = (): DocumentPage[] => [
       'Feature grane i pull request/review trag za veće promene ili ekvivalentan uredan timski workflow.',
       'Git tag `manual-core-baseline` nakon stabilizacije jezgra i osnovnih testova.',
       'README sa opisom teme, pokretanjem i glavnim demo scenarijem.',
-      '`docs/architecture.md`, `AI_INSTRUCTIONS.md` i `AI_USAGE.md` kao obavezni projektni artefakti.'),
+      '`docs/architecture.md`, `AI_INSTRUCTIONS.md` i `AI_USAGE.md` kao obavezni projektni artefakti.'
+    ]),
     callout('note', 'Jedan završni commit nije razvojni proces', 'Masovno kopiranje završnog projekta u repozitorijum poslednjeg dana ne pruža dokaz kontinuiranog rada i značajno otežava procenu odluka i doprinosa.'),
   ]),
   page('8. Pravila korišćenja AI alata', [
@@ -124,7 +130,8 @@ const pages = (): DocumentPage[] => [
       'Kompletna funkcionalnost i kompletna struktura projekta ne predaju se kao neprovereni generisani rezultat.',
       'Svaka važna AI-promena mora imati razvojni dokaz: test, build, diff review ili drugi odgovarajući mehanizam.',
       'Ne unositi credential-e, tajne ili osetljive podatke u spoljne modele.',
-      'Student na odbrani mora umeti da objasni i kod i AI artefakte koje je tim koristio.'),
+      'Student na odbrani mora umeti da objasni i kod i AI artefakte koje je tim koristio.'
+    ]),
   ]),
   page('9. Obavezni AI artefakti', [
     text('h1', '9. Obavezni AI artefakti'),
@@ -136,7 +143,8 @@ const pages = (): DocumentPage[] => [
       'Najmanje dve jasno razdvojene agentne uloge ili ekvivalentan agent-as-tool/handoff workflow.',
       'Mali project-specific MCP server sa resursima/tool-ovima koji rešavaju realnu potrebu projekta.',
       'Najmanje dva deterministička hook/guardrail pravila.',
-      'Najmanje tri eval scenarija, uključujući negativni ili failure slučaj.'),
+      'Najmanje tri eval scenarija, uključujući negativni ili failure slučaj.'
+    ]),
     callout('info', 'Kvalitet iznad broja', 'Ako tim napravi mnogo agenata i skillova bez opravdanja, dodatna složenost ne nosi automatski više bodova. Bolji je manji workflow sa jasnim granicama i dokazima.'),
   ]),
   page('10. Projektni checkpoint-i', [
@@ -167,7 +175,8 @@ const pages = (): DocumentPage[] => [
       'Analizirati uticaj promene na postojeće use-case-ove i poslovna pravila.',
       'Pre implementacije navesti koje testove treba dodati ili izmeniti.',
       'AI workflow se može koristiti, ali rezultat mora biti proverljiv kroz projekat.',
-      'Dokumentovati najmanje jednu odluku ili kompromis koji je change request izazvao.'),
+      'Dokumentovati najmanje jednu odluku ili kompromis koji je change request izazvao.'
+    ]),
   ]),
   page('12. Peer QA i obavezna dokumentacija', [
     text('h1', '12. Peer QA i obavezna dokumentacija'),
@@ -178,7 +187,8 @@ const pages = (): DocumentPage[] => [
       '`AI_INSTRUCTIONS.md`: stabilna pravila AI workflow-a.',
       '`AI_USAGE.md`: reprezentativne AI sesije i način verifikacije.',
       'Po potrebi README za MCP server, hooks i eval fixtures.',
-      'Peer QA zapis kao Markdown beleška, issue ili PR komentar sa konkretnim rezultatom pregleda.'),
+      'Peer QA zapis kao Markdown beleška, issue ili PR komentar sa konkretnim rezultatom pregleda.'
+    ]),
     callout('info', 'Minimalni peer QA', 'Pregledati jedan use-case i test, pokretanje iz README-a, jednu arhitektonsku granicu i jedan AI workflow. Zabeležiti šta je provereno i najmanje jednu konkretnu sugestiju ili argumentovanu potvrdu da problem nije pronađen.'),
   ]),
   page('13. Odbrana projekta', [
@@ -190,7 +200,8 @@ const pages = (): DocumentPage[] => [
       'Objasniti smer zavisnosti i jednu odluku zbog koje je određena granica uvedena.',
       'Pokazati jedan relevantan Git/PR trag.',
       'Pokazati jedan AI workflow, stvarni tool/test signal i način na koji je student procenio rezultat.',
-      'Odgovoriti na praktičnu izmenu ili pitanje koje proverava razumevanje koda, a ne memorisanje prezentacije.'),
+      'Odgovoriti na praktičnu izmenu ili pitanje koje proverava razumevanje koda, a ne memorisanje prezentacije.'
+    ]),
     callout('warning', 'Nepoznavanje sopstvenog projekta', 'Ako student ne može da objasni ključni deo predatog rešenja ili AI artefakta, postojanje tog koda u repozitorijumu ne smatra se dovoljnim dokazom usvojenog ishoda.'),
   ]),
   page('14. Predlog kriterijuma ocenjivanja', [
