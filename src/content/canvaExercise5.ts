@@ -21,7 +21,8 @@ export const exercise5 = (): DocumentPage[] => [
     list([
       'Konstruktor ili factory treba da spreče nastanak očigledno nevalidnog stanja.',
       'Metode entiteta treba da imaju poslovno značenje, a ne da budu samo generički seteri.',
-      'Pravilo koje zavisi od više agregata ili spoljnog izvora može pripadati domenskom/application servisu umesto jednom entitetu.'),
+      'Pravilo koje zavisi od više agregata ili spoljnog izvora može pripadati domenskom/application servisu umesto jednom entitetu.'
+    ]),
   ]),
   page('5.2. Eksplicitni poslovni ishodi', [
     text('h2', '5.2. `Result` i očekivani neuspeh'),
@@ -48,7 +49,8 @@ export const exercise5 = (): DocumentPage[] => [
       'Poslovna pravila ne smeju biti raspoređena po controller-u, konzolnom meniju i repozitorijumu bez jasne granice.',
       'Za očekivane neuspehe definisati stabilne kodove ili tipove rezultata.',
       'Spoljne zavisnosti uvoditi kroz ugovore i composition root.',
-      'U PR-u opisati najmanje jednu arhitektonsku odluku koja je promenjena nakon implementacije i zašto.'),
+      'U PR-u opisati najmanje jednu arhitektonsku odluku koja je promenjena nakon implementacije i zašto.'
+    ]),
     callout('task', 'Mini domaći — bonus 1 bod', 'Izabrati metodu koja vraća `bool`, `null` ili generički `Exception` za očekivani poslovni neuspeh. Preoblikovati je u eksplicitan rezultat i dodati dva mala testa ili demonstraciona scenarija.'),
   ]),
 ]
