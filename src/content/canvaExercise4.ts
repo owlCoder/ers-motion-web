@@ -28,7 +28,8 @@ export const exercise4 = (): DocumentPage[] => [
     list([
       'Nova vrsta kanala treba da se doda novom implementacijom, bez menjanja poslovne logike slanja.',
       'Ako se stalno pojavljuje `switch` po tipu koji određuje strategiju ponašanja, proveriti da li je polimorfizam prikladniji.',
-      'Ne uvoditi apstrakciju unapred za promene koje nemaju realnu verovatnoću; cilj je kontrola poznate varijabilnosti, ne maksimalan broj interfejsa.'),
+      'Ne uvoditi apstrakciju unapred za promene koje nemaju realnu verovatnoću; cilj je kontrola poznate varijabilnosti, ne maksimalan broj interfejsa.'
+    ]),
   ]),
   page('4.3. Liskov, Interface Segregation i Dependency Inversion', [
     text('h2', '4.3. LSP, ISP i DIP'),
@@ -53,7 +54,8 @@ export const exercise4 = (): DocumentPage[] => [
       'Controller treba da bude tanak: mapira zahtev, poziva use-case i mapira rezultat.',
       'Domain ne referencira Entity Framework, HTTP, konzolu niti UI framework.',
       'Composition root je jedino mesto na kome se bira konkretan graf zavisnosti.',
-      'Interfejs pripada sloju koji definiše potrebu/ugovor, a ne automatski sloju koji ga implementira.'),
+      'Interfejs pripada sloju koji definiše potrebu/ugovor, a ne automatski sloju koji ga implementira.'
+    ]),
     callout('warning', 'Broj projekata nije metrika arhitekture', 'Moguće je imati mnogo projekata i loše granice, kao i jednostavniju fizičku strukturu sa jasnim smerom zavisnosti. Ocenjuje se objašnjiv dizajn i lokalizacija promena.'),
   ]),
   page('4.5. Logger–Blogger iz postojećeg materijala', [
@@ -77,7 +79,8 @@ export const exercise4 = (): DocumentPage[] => [
       'Dokumentovati odgovornost svakog sloja i dozvoljeni smer zavisnosti.',
       'Implementirati najmanje jedan mali vertikalni prolaz kroz sistem.',
       'U `docs/architecture.md` zapisati najmanje dve odluke i razlog njihovog izbora.',
-      'Proveriti da Domain/Application mogu da se testiraju bez pokretanja realne baze ili UI-ja.'),
+      'Proveriti da Domain/Application mogu da se testiraju bez pokretanja realne baze ili UI-ja.'
+    ]),
     callout('task', 'Mini domaći — bonus 2 boda', 'Dodati alternativnu implementaciju jedne spoljne zavisnosti, npr. InMemory umesto JSON repozitorijuma. 1 bod: use-case kod ostaje neizmenjen. 1 bod: student objašnjava kako DIP/OCP omogućavaju zamenu.'),
   ]),
 ]
