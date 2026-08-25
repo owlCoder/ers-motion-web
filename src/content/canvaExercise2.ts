@@ -55,6 +55,8 @@ export const exercise2 = (): DocumentPage[] => [
   page('2.4. GitHub Desktop, Visual Studio i .gitignore', [
     text('h2', '2.4. Git kroz razvojno okruženje'),
     text('paragraph', 'Git operacije se mogu izvršavati iz komandne linije ili kroz grafičke klijente kao što su GitHub Desktop i integracija u Visual Studio. Grafički interfejs menja način pozivanja operacije, ali ne menja Git model: radne izmene, staging, commit, fetch, pull i push imaju isto značenje bez obzira na alat.'),
+    image('/course-assets/git-desktop-workflow.svg', 'GitHub Desktop prikazuje iste osnovne elemente Git modela: promene u radnom stablu, commit istoriju i sinhronizaciju sa udaljenim repozitorijumom.', 'GitHub Desktop workflow'),
+    image('/course-assets/visual-studio-git-changes.svg', 'Visual Studio Git Changes omogućava pregled diff-a, izbor promena za commit i sinhronizaciju bez napuštanja razvojnog okruženja.', 'Visual Studio Git Changes'),
     table(['Grafička akcija', 'Git koncept / komanda'], [
       ['Changes', 'Izmene u working tree-u koje još nisu pripremljene za commit.'],
       ['Stage / +', '`git add` — izbor sadržaja za naredni commit.'],
