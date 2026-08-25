@@ -30,6 +30,17 @@
   white-space: break-spaces;
 }
 
+.toc-link {
+  color: #173f6e;
+  font-weight: 680;
+  text-decoration: none;
+}
+
+.toc-link:hover {
+  color: #0f6cbd;
+  text-decoration: underline;
+}
+
 .code-block,
 .code-block.with-lines {
   display: block;
@@ -232,6 +243,10 @@
     border-color: #e1e6ec !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+  .toc-link {
+    color: #173f6e !important;
+    text-decoration: none !important;
   }
   .code-block,
   .code-block.with-lines { background: #fff !important; }
