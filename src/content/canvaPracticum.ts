@@ -41,19 +41,19 @@ const cover = (): DocumentPage => ({
 const introPages = (): DocumentPage[] => [
   page('Kako koristiti praktikum', [
     text('h1', 'Kako koristiti praktikum'),
-    text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Za razliku od prezentacije, svaka tema je proširena objašnjenjima, primerima, kontrolnim pitanjima i malim zadacima kako bi student posle časa mogao samostalno da obnovi postupak i razume razlog iza demonstrirane odluke.'),
+    text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Svaka oblast sadrži teorijsko objašnjenje, praktičan primer, pitanja za proveru razumevanja i zadatke koji povezuju gradivo sa projektnim repozitorijumom. Cilj je da student nakon časa može samostalno da obnovi postupak, razume razlog iza donete odluke i primeni isti princip u drugom kontekstu.'),
     table(['Faza', 'Preporučeni način rada'], [
       ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji nisu jasni.'],
       ['Tokom vežbe', 'Pratiti demonstraciju i razloge za odluke, ne samo konačan kod ili komande.'],
       ['Posle vežbe', 'Ponoviti isti princip na projektnom repozitorijumu i sačuvati proverljiv trag kroz commit, test, dokument ili AI_USAGE zapis.'],
       ['Pred checkpoint', 'Proći checklist-u, build/test i pregled diff-a; svaki član tima treba da ume da objasni urađeno.'],
     ]),
-    callout('info', 'Nastavni projekat', 'Primeri koriste mali domen rezervacije fakultetske opreme i postojeće Logger–Blogger/ECommerce studije iz ranijih materijala. Studentski tim ne dobija gotov template: iste principe primenjuje na sopstvenu temu i sam bira strukturu koja može da se obrazloži.'),
-    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Sintaksa konkretnog AI klijenta može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, tool granice, verifikacija i evals.'),
+    callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija gotov projektni template: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
+    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može da se menja između verzija, zato se naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i eval scenariji.'),
   ]),
   page('Tok semestra i projekta', [
     text('h1', 'Tok semestra i projekta'),
-    text('paragraph', 'Prve dve vežbe služe kao osvežavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI se uvodi rano kroz analizu zahteva, ali pravo da samostalnije menja kod dolazi tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
+    text('paragraph', 'Prve dve vežbe služe kao osvežavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
     image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → AI workflow → MCP → QA.', 'Mapa semestra'),
     list([
       'P1 — problem, backlog, acceptance criteria i početni AI trag.',
@@ -63,7 +63,7 @@ const introPages = (): DocumentPage[] => [
       'P5 — stabilne instrukcije, structured output i AI_USAGE disciplina.',
       'P6 — custom skills i najmanji smisleni agentni workflow.',
       'P7 — MCP resource/tool integracija sa stvarnim projektnim signalima.',
-      'P8 — hooks/guardrails, evals, peer QA i završna odbrana.'
+      'P8 — hooks/guardrails, evals, peer QA i završna odbrana.',
     ]),
   ]),
 ]
@@ -94,7 +94,7 @@ const closingPages = (): DocumentPage[] => [
       'NUnit i Moq zvanična dokumentacija: testovi, fixtures, setup i test doubles.',
       'Microsoft .NET dokumentacija: dependency injection, testing i arhitektura aplikacija.',
       'Model Context Protocol dokumentacija: resources, tools, prompts i client/server arhitektura.',
-      'Dokumentacija AI klijenta koji se koristi na vežbama: projektne instrukcije, skills, agenti/subagenti i hooks.'
+      'Zvanična dokumentacija AI klijenta koji se koristi na vežbama: projektne instrukcije, skills, agenti/subagenti i hooks.',
     ]),
     callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv fajla, pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model i način verifikacije.'),
   ]),
@@ -112,7 +112,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-25T16:00:00.000Z',
+  updatedAt: '2026-08-25T17:20:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [
     cover(),
