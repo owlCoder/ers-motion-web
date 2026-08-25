@@ -59,7 +59,8 @@ export const exercise2 = (): DocumentPage[] => [
       'U Visual Studio Git Changes prozoru prvo pregledati promenjene datoteke, zatim staged promene i tek onda kreirati commit.',
       'U `.gitignore` treba isključiti generisane i lokalne artefakte poput `bin/`, `obj/`, `.vs/` i lokalnih tajni ili korisničkih podešavanja.',
       'IDE nije izgovor da se ne razume razlika između commit-a i push-a ili fetch-a i pull-a.',
-      'Na GitHub-u za projekat koristiti privatan repozitorijum i uredno dodati članove tima i predmetno osoblje kada se to traži.'),
+      'Na GitHub-u za projekat koristiti privatan repozitorijum i uredno dodati članove tima i predmetno osoblje kada se to traži.'
+    ]),
     code('text', `# .gitignore — tipičan .NET minimum\nbin/\nobj/\n.vs/\n*.user\n*.suo\n.env\nappsettings.Development.local.json`),
     callout('task', 'Mini domaći — bonus 1 bod', 'Kreirati mali repozitorijum sa najmanje četiri smisleno odvojena commit-a, jednom feature granom i jednim pull request-om. U PR-u navesti koje su provere izvršene pre merge-a.'),
   ]),
@@ -71,7 +72,8 @@ export const exercise2 = (): DocumentPage[] => [
       'Dodati početni README sa nazivom teme, članovima tima i kratkim opisom problema.',
       'Definisati osnovni `.gitignore` pre prve ozbiljne implementacije.',
       'Dogovoriti pravilo imenovanja grana i commit poruka.',
-      'Sačuvati najmanje jedan PR koji pokazuje review, build/test proveru ili argumentovanu diskusiju.'),
+      'Sačuvati najmanje jedan PR koji pokazuje review, build/test proveru ili argumentovanu diskusiju.'
+    ]),
     callout('success', 'Ishod vežbe', 'Student ume da objasni gde se promena nalazi u Git modelu, kako se bezbedno razmenjuje sa timom i zašto istorija razvoja predstavlja važan deo softverskog artefakta.'),
   ]),
 ]
