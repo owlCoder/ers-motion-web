@@ -8,7 +8,7 @@ Radi autonomno u terminalu i editoru. Cilj je da lokalno podigneš postojeći ER
 
 ## Cilj
 
-Na kraju želim da samo otvorim `http://localhost:5173` i koristim aplikaciju. Nemoj menjati funkcionalni koncept ili vizuelni dizajn bez potrebe; fokus je pouzdan lokalni setup, build ispravnost i osnovni smoke test postojeće aplikacije.
+Na kraju želim da samo otvorim `http://localhost:5600` i koristim aplikaciju. Nemoj menjati funkcionalni koncept ili vizuelni dizajn bez potrebe; fokus je pouzdan lokalni setup, build ispravnost i osnovni smoke test postojeće aplikacije.
 
 ERS Studio je React + Vite + TypeScript client-only aplikacija za uređivanje nastavnih materijala. Primarni prikaz je A4 portrait, dokumenti se lokalno čuvaju u IndexedDB-u i mogu da se uvoze/izvoze kao `.ersdoc.json`. Code blokovi MORAJU ostati light/white zbog štampe i čitljivosti.
 
@@ -80,18 +80,18 @@ Nemoj rešavati probleme pomoću:
 7. Nakon uspešnog build-a pokreni aplikaciju striktno na:
 
 ```text
-http://localhost:5173
+http://localhost:5600
 ```
 
 odnosno:
 
 ```bash
-npm run dev -- --host 127.0.0.1 --port 5173
+npm run dev -- --host 127.0.0.1 --port 5600
 ```
 
 Na Windows-u možeš koristiti i postojeći `start.cmd` ako je praktičnije.
 
-8. Nakon pokretanja automatski otvori `http://localhost:5173` u podrazumevanom browseru.
+8. Nakon pokretanja automatski otvori `http://localhost:5600` u podrazumevanom browseru.
 
 ## Smoke test
 
@@ -231,7 +231,7 @@ Zadatak je završen tek kada:
 - build prolazi;
 - nema relevantnih runtime grešaka;
 - osnovni smoke test je izvršen;
-- aplikacija radi na `http://localhost:5173`;
+- aplikacija radi na `http://localhost:5600`;
 - browser sa ERS Studio aplikacijom je otvoren;
 - dev server ostaje pokrenut.
 

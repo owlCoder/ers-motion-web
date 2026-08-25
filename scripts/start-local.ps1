@@ -25,7 +25,7 @@ if (-not (Test-Path "node_modules")) {
 Write-Host "Proveravam TypeScript/Vite build..." -ForegroundColor Yellow
 npm run build
 
-$Url = "http://localhost:5173"
+$Url = "http://localhost:5600"
 Write-Host "Pokrećem ERS Studio na $Url" -ForegroundColor Green
 
 $browserJob = Start-Job -ScriptBlock {
@@ -35,7 +35,7 @@ $browserJob = Start-Job -ScriptBlock {
 } -ArgumentList $Url
 
 try {
-    npm run dev -- --host 127.0.0.1 --port 5173
+    npm run dev -- --host 127.0.0.1 --port 5600
 }
 finally {
     Remove-Job $browserJob -Force -ErrorAction SilentlyContinue

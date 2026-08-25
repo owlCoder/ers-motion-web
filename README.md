@@ -22,17 +22,17 @@ Repo: `https://github.com/owlCoder/ers-motion-web`
 
 ### Windows — preporučeno
 
-Dvoklik na `start.cmd`. Skripta proverava okruženje, instalira zavisnosti ako nedostaju, pokreće build, zatim Vite na `http://localhost:5173` i otvara browser.
+Dvoklik na `start.cmd`. Skripta proverava okruženje, instalira zavisnosti ako nedostaju, pokreće build, zatim Vite na `http://localhost:5600` i otvara browser.
 
 ### Ručno
 
 ```bash
 npm install
 npm run build
-npm run dev -- --host 127.0.0.1 --port 5173
+npm run dev -- --host 127.0.0.1 --port 5600
 ```
 
-Aplikacija je dostupna na `http://localhost:5173`.
+Aplikacija je dostupna na `http://localhost:5600`.
 
 Za production build:
 
@@ -74,4 +74,4 @@ Aplikacija je namerno client-only. Ako kasnije bude potreban zajednički rad vi�
 
 ## AI-assisted lokalni setup
 
-`LUNA_LOCAL_SETUP_PROMPT.md` sadrži gotov prompt za lokalnog coding agenta. Prompt već koristi ovaj privatni repozitorijum i vodi agenta kroz clone, dependency install, build, smoke test i pokretanje na `http://localhost:5173`.
+`LUNA_LOCAL_SETUP_PROMPT.md` sadrži gotov prompt za lokalnog coding agenta. Prompt već koristi ovaj privatni repozitorijum i vodi agenta kroz clone, dependency install, build, smoke test i pokretanje na `http://localhost:5600`.
