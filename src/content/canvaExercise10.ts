@@ -27,7 +27,8 @@ export const exercise10 = (): DocumentPage[] => [
       'Ograničiti shell komande na dozvoljen skup ili proveravati poznate rizične obrasce.',
       'Za write operacije po mogućnosti zahtevati eksplicitnu fazu odobrenja ili usko definisan scope.',
       'Ne vraćati tajne i credential-e u model kontekst čak i ako proces lokalno ima pristup njima.',
-      'Logovati dovoljno podataka da student može da rekonstruiše zašto je guardrail blokirao akciju.'),
+      'Logovati dovoljno podataka da student može da rekonstruiše zašto je guardrail blokirao akciju.'
+    ]),
     callout('warning', 'Guardrail ne rešava sve', 'Previše široka zabrana može blokirati legitiman rad, a previše uska provera može propustiti varijantu iste rizične akcije. Zato se guardrails testiraju kao i svaki drugi deo sistema.'),
   ]),
   page('10.3. Evals kao testovi agentnog ponašanja', [
@@ -65,7 +66,8 @@ export const exercise10 = (): DocumentPage[] => [
       'Izabrati jedan User Story i pratiti ga od acceptance criteria do koda i testova.',
       'Pregledati jedan PR/diff i proveriti da li je scope koherentan.',
       'Pokrenuti jedan AI skill/agent workflow i proveriti stvarne logove/test rezultate.',
-      'Zabeležiti najmanje jednu konkretnu sugestiju ili potvrdu da ozbiljan problem nije pronađen, uz obrazloženje.'),
+      'Zabeležiti najmanje jednu konkretnu sugestiju ili potvrdu da ozbiljan problem nije pronađen, uz obrazloženje.'
+    ]),
     callout('task', 'Mini domaći — bonus 1 bod', 'Napraviti negativni eval u kome agent treba da odbije rizičnu akciju ili da prijavi nedovoljan kontekst. Prikazati očekivani i stvarni ishod i objasniti eventualnu razliku.'),
   ]),
   page('10.5. Završni checkpoint P8', [
@@ -84,7 +86,8 @@ export const exercise10 = (): DocumentPage[] => [
       'Postoje najmanje tri eval scenarija, uključujući negativni slučaj.',
       'Peer QA je zabeležen i relevantne sugestije su obrađene.',
       'AI_USAGE pokazuje reprezentativne sesije, odluke i proveru rezultata.',
-      'Na odbrani svaki član tima može da objasni odabrani use-case i AI workflow bez oslanjanja na automatski generisan odgovor.'),
+      'Na odbrani svaki član tima može da objasni odabrani use-case i AI workflow bez oslanjanja na automatski generisan odgovor.'
+    ]),
     callout('success', 'Završni cilj', 'Student razume klasične principe softverskog inženjerstva i ume da ih primeni na AI-native razvojno okruženje: granice, ugovore, testove, observability i odgovornost za konačan rezultat.'),
   ]),
 ]
