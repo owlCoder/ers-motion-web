@@ -4,6 +4,7 @@ import { FluentProvider, webLightTheme } from '@fluentui/react-components'
 import App from './App'
 import { WordWorkspaceEnhancements } from './components/WordWorkspaceEnhancements'
 import './print.css'
+import './word-shell.css'
 
 document.documentElement.style.height = '100%'
 document.body.style.margin = '0'
