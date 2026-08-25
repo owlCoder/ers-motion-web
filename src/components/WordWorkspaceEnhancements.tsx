@@ -8,8 +8,7 @@ const RIGHT_MIN = 300
 const RIGHT_MAX = 500
 const LEFT_DEFAULT = 286
 const RIGHT_DEFAULT = 346
-const BUNDLED_CONTENT_REVISION = 'academic-content-pass-2026-08-25-b'
-const LEGACY_BUNDLED_UPDATED_AT = '2026-08-24T21:39:00+02:00'
+const BUNDLED_CONTENT_REVISION = 'academic-content-pass-2026-08-25-c'
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value))
@@ -35,6 +34,22 @@ function findGridParts(): GridParts | null {
   const inspector = Array.from(grid.children).find((element) => element !== workspace && element !== navigation) as HTMLElement | undefined
   if (!navigation || !inspector) return null
   return { grid, navigation, workspace, inspector }
+}
+
+function markWordShell(parts: GridParts) {
+  const provider = document.querySelector('.fui-FluentProvider') as HTMLElement | null
+  const appRoot = provider?.firstElementChild as HTMLElement | null
+  if (!appRoot) return
+  appRoot.dataset.ersAppRoot = 'true'
+  const rows = Array.from(appRoot.children) as HTMLElement[]
+  rows[0]?.setAttribute('data-ers-titlebar', 'true')
+  rows[1]?.setAttribute('data-ers-tabsbar', 'true')
+  rows[2]?.setAttribute('data-ers-ribbon', 'true')
+  rows[3]?.setAttribute('data-ers-editor-grid', 'true')
+  rows[4]?.setAttribute('data-ers-statusbar', 'true')
+  parts.navigation.dataset.ersNavigation = 'true'
+  parts.workspace.dataset.ersWorkspace = 'true'
+  parts.inspector.dataset.ersInspector = 'true'
 }
 
 function isPaneVisible(element: HTMLElement) {
@@ -64,7 +79,7 @@ export function WordWorkspaceEnhancements() {
           let replacedAny = false
           for (const bundled of bundledDocuments) {
             const existing = await loadDocumentLocal(bundled.id)
-            const shouldReplace = !existing || existing.updatedAt === LEGACY_BUNDLED_UPDATED_AT
+            const shouldReplace = !existing || new Date(bundled.updatedAt).getTime() > new Date(existing.updatedAt).getTime()
             if (shouldReplace) {
               await saveDocumentLocal(bundled)
               replacedAny = true
@@ -76,7 +91,7 @@ export function WordWorkspaceEnhancements() {
           console.error('Unable to migrate bundled course content.', error)
         }
       })()
-    }, 1350)
+    }, 900)
     return () => window.clearTimeout(timer)
   }, [])
 
@@ -84,14 +99,100 @@ export function WordWorkspaceEnhancements() {
     const style = document.createElement('style')
     style.dataset.ersWordPaneStyle = 'true'
     style.textContent = `
+      [data-ers-app-root="true"] {
+        --ers-office-blue: #185abd;
+        --ers-office-blue-hover: #0f6cbd;
+        --ers-office-border: #e2e2e2;
+        --ers-office-surface: #ffffff;
+        --ers-office-pane: #fbfbfb;
+      }
+      [data-ers-titlebar="true"] {
+        background: linear-gradient(180deg, #fff 0%, #fdfdfd 100%) !important;
+        border-bottom: 1px solid #ececec !important;
+      }
+      [data-ers-tabsbar="true"] {
+        background: #fff !important;
+        border-bottom: 0 !important;
+        box-shadow: inset 0 -1px 0 #e8e8e8;
+      }
+      [data-ers-ribbon="true"] {
+        position: relative;
+        z-index: 20;
+        margin: 0 6px 6px;
+        border: 1px solid #dfdfdf !important;
+        border-top: 0 !important;
+        border-radius: 0 0 8px 8px;
+        background: linear-gradient(180deg, #fff 0%, #fdfdfd 100%) !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,.055);
+        overflow: hidden;
+      }
+      [data-ers-editor-grid="true"] {
+        border-top: 1px solid #e6e6e6;
+      }
+      [data-ers-navigation="true"],
+      [data-ers-inspector="true"] {
+        background: var(--ers-office-pane) !important;
+      }
+      [data-ers-navigation="true"] {
+        border-right-color: #dedede !important;
+      }
+      [data-ers-inspector="true"] {
+        border-left-color: #dedede !important;
+      }
+      [data-ers-workspace="true"] {
+        background: #e8e8e8 !important;
+      }
+      [data-ers-statusbar="true"] {
+        background: #fff !important;
+        border-top: 1px solid #dedede !important;
+        box-shadow: 0 -1px 2px rgba(0,0,0,.025);
+      }
+      [data-ers-app-root="true"] .fui-Button,
+      [data-ers-app-root="true"] .fui-ToolbarButton,
+      [data-ers-app-root="true"] .fui-Tab {
+        transition: background-color 110ms ease, border-color 110ms ease, color 110ms ease, transform 90ms ease;
+      }
+      [data-ers-app-root="true"] .fui-Button:active,
+      [data-ers-app-root="true"] .fui-ToolbarButton:active {
+        transform: translateY(.5px);
+      }
+      [data-ers-ribbon="true"] .fui-Button,
+      [data-ers-ribbon="true"] .fui-ToolbarButton {
+        border-radius: 4px;
+      }
+      [data-ers-navigation="true"] button,
+      [data-ers-inspector="true"] button {
+        transition: background-color 110ms ease, color 110ms ease;
+      }
+      [data-ers-navigation="true"]::-webkit-scrollbar,
+      [data-ers-inspector="true"]::-webkit-scrollbar,
+      [data-ers-workspace="true"]::-webkit-scrollbar {
+        width: 11px;
+        height: 11px;
+      }
+      [data-ers-navigation="true"]::-webkit-scrollbar-thumb,
+      [data-ers-inspector="true"]::-webkit-scrollbar-thumb,
+      [data-ers-workspace="true"]::-webkit-scrollbar-thumb {
+        background: #c7c7c7;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        border-radius: 999px;
+      }
+      [data-ers-navigation="true"]::-webkit-scrollbar-thumb:hover,
+      [data-ers-inspector="true"]::-webkit-scrollbar-thumb:hover,
+      [data-ers-workspace="true"]::-webkit-scrollbar-thumb:hover {
+        background: #aeb0b3;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+      }
       [data-ers-resizable-grid="true"] {
         grid-template-columns: var(--ers-left-pane, 286px) minmax(0, 1fr) var(--ers-right-pane, 346px) !important;
         position: relative !important;
       }
       [data-ers-pane-resizer="true"] {
         position: fixed;
-        width: 8px;
-        transform: translateX(-4px);
+        width: 9px;
+        transform: translateX(-4.5px);
         cursor: col-resize;
         z-index: 9998;
         background: transparent;
@@ -100,20 +201,22 @@ export function WordWorkspaceEnhancements() {
       [data-ers-pane-resizer="true"]::after {
         content: "";
         position: absolute;
-        left: 3px;
+        left: 4px;
         top: 0;
         bottom: 0;
-        width: 2px;
-        border-radius: 2px;
+        width: 1px;
         background: transparent;
-        transition: background 120ms ease, box-shadow 120ms ease;
+        transition: background 110ms ease, box-shadow 110ms ease;
       }
       [data-ers-pane-resizer="true"]:hover::after,
       [data-ers-pane-resizer="true"][data-dragging="true"]::after {
         background: #0f6cbd;
         box-shadow: 0 0 0 1px rgba(15,108,189,.08);
       }
-      @media print { [data-ers-pane-resizer="true"] { display: none !important; } }
+      @media print {
+        [data-ers-pane-resizer="true"] { display: none !important; }
+        [data-ers-ribbon="true"] { box-shadow: none !important; }
+      }
     `
     document.head.appendChild(style)
     return () => style.remove()
@@ -125,6 +228,7 @@ export function WordWorkspaceEnhancements() {
       if (!parts) return
       partsRef.current = parts
       parts.grid.dataset.ersResizableGrid = 'true'
+      markWordShell(parts)
 
       const navVisible = isPaneVisible(parts.navigation)
       const inspectorVisible = isPaneVisible(parts.inspector)
@@ -154,6 +258,7 @@ export function WordWorkspaceEnhancements() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
+      // App starts at 90%; two document-only increments produce a comfortable 100% Word-like opening view.
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
     }, 650)
