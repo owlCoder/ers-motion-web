@@ -1,7 +1,9 @@
 import type { Block, DocumentPage, TextBlock } from '../types'
 
-const TARGET_HEIGHT = 835
-const HARD_LIMIT = 930
+const TARGET_HEIGHT = 900
+const HARD_LIMIT = 982
+const MERGE_LIMIT = 1008
+const SPARSE_PAGE = 285
 
 function plain(value: string) {
   return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -30,20 +32,24 @@ export function blockHeight(block: Block): number {
     case 'list':
       return 18 + block.items.reduce((height, item) => height + wrappedLines(item, 78) * 18 + 7, 0)
     case 'code':
-      return 50 + block.code.split('\n').length * 17 + (block.caption ? 24 : 0)
+      return 54 + block.code.split('\n').length * 17 + 24
     case 'callout':
       return 55 + wrappedLines(`${block.title} ${block.text}`, 82) * 17
     case 'table':
-      return 52 + Math.max(1, block.rows.length) * 36 + (block.caption ? 24 : 0)
+      return 52 + Math.max(1, block.rows.length) * 36 + 24
     case 'diagram':
-      return block.variant === 'stack' ? 125 + block.items.length * 63 : 195 + (block.footer ? 20 : 0)
+      return (block.variant === 'stack' ? 125 + block.items.length * 63 : 195) + 24
     case 'image':
-      return 315 + (block.caption ? 24 : 0)
+      return 315 + 24
     case 'institution':
       return 125
     case 'divider':
       return 28
   }
+}
+
+function pageHeight(blocks: Block[]) {
+  return blocks.reduce((sum, block) => sum + blockHeight(block), 0)
 }
 
 function headingText(blocks: Block[]) {
@@ -55,10 +61,20 @@ function canKeepWithNext(block: Block) {
   return block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)
 }
 
+function makePage(blocks: Block[], prefix: string, index: number, continuation: number): DocumentPage {
+  const heading = headingText(blocks)
+  return {
+    id: `reflow-${prefix}-${String(index + 1).padStart(2, '0')}`,
+    label: heading || `${prefix} — nastavak ${continuation}`,
+    layout: 'standard',
+    blocks,
+  }
+}
+
 /**
- * Reflows logical source pages into physically fuller A4 pages.
- * Source page boundaries are treated as editorial hints rather than forced page breaks.
- * A chapter can still be reflowed independently to start it on a fresh page.
+ * Reflows logical source sections into dense but readable A4 pages.
+ * Source page boundaries are editorial hints; physical page breaks are generated
+ * from rendered-height estimates and a final sparse-page balancing pass.
  */
 export function reflowPages(sourcePages: DocumentPage[], prefix: string): DocumentPage[] {
   const blocks = sourcePages.flatMap((page) => page.blocks)
@@ -69,13 +85,7 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
 
   const flush = () => {
     if (current.length === 0) return
-    const heading = headingText(current)
-    result.push({
-      id: `reflow-${prefix}-${String(result.length + 1).padStart(2, '0')}`,
-      label: heading || `${prefix} — nastavak ${++continuation}`,
-      layout: 'standard',
-      blocks: current,
-    })
+    result.push(makePage(current, prefix, result.length, ++continuation))
     current = []
     height = 0
   }
@@ -84,21 +94,37 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     const block = blocks[index]
     const ownHeight = blockHeight(block)
     const next = blocks[index + 1]
-    const keepHeight = canKeepWithNext(block) && next ? ownHeight + Math.min(blockHeight(next), 180) : ownHeight
+    const keepHeight = canKeepWithNext(block) && next ? ownHeight + Math.min(blockHeight(next), 210) : ownHeight
 
-    if (current.length > 0 && (height + ownHeight > HARD_LIMIT || (height >= TARGET_HEIGHT && height + keepHeight > HARD_LIMIT))) {
-      flush()
-    }
+    if (current.length > 0 && height + ownHeight > HARD_LIMIT) flush()
 
-    // Avoid leaving a heading alone at the bottom of a page.
-    if (current.length > 0 && canKeepWithNext(block) && next && height + keepHeight > HARD_LIMIT) {
-      flush()
-    }
+    if (current.length > 0 && height >= TARGET_HEIGHT && height + keepHeight > HARD_LIMIT) flush()
+
+    if (current.length > 0 && canKeepWithNext(block) && next && height + keepHeight > HARD_LIMIT) flush()
 
     current.push(block)
     height += ownHeight
   }
 
   flush()
-  return result
+
+  // If a callout, short list or closing paragraph was pushed to a nearly empty
+  // continuation page, pull it back when the previous page still has real space.
+  for (let index = 1; index < result.length; index += 1) {
+    const previous = result[index - 1]
+    const currentPage = result[index]
+    const previousHeight = pageHeight(previous.blocks)
+    const currentHeight = pageHeight(currentPage.blocks)
+    if (currentHeight <= SPARSE_PAGE && previousHeight + currentHeight <= MERGE_LIMIT) {
+      previous.blocks.push(...currentPage.blocks)
+      result.splice(index, 1)
+      index -= 1
+    }
+  }
+
+  return result.map((page, index) => ({
+    ...page,
+    id: `reflow-${prefix}-${String(index + 1).padStart(2, '0')}`,
+    label: headingText(page.blocks) || `${prefix} — nastavak ${index + 1}`,
+  }))
 }
