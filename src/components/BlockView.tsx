@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Button, makeStyles, tokens, Toolbar, ToolbarButton, Tooltip } from '@fluentui/react-components'
+import { Button, makeStyles, mergeClasses, tokens, Toolbar, ToolbarButton, Tooltip } from '@fluentui/react-components'
 import type { Block, CalloutBlock, CodeBlock, DiagramBlock, ImageBlock, InstitutionBlock, ListBlock, TableBlock, TextBlock } from '../types'
 import { ACCENTS, highlightCode } from '../utils'
 import { EditableText } from './EditableText'
@@ -8,40 +8,64 @@ import { Icon } from './Icon'
 export type BlockAction = 'delete' | 'duplicate' | 'up' | 'down'
 
 const useEditorStyles = makeStyles({
-  blockRoot: { position: 'relative' },
-  selected: { outline: `2px solid ${tokens.colorBrandStroke1}`, outlineOffset: '4px', borderRadius: tokens.borderRadiusMedium },
+  blockRoot: {
+    position: 'relative',
+    borderRadius: tokens.borderRadiusMedium,
+    transitionProperty: 'outline-color, background-color, box-shadow',
+    transitionDuration: '120ms',
+  },
+  selected: {
+    outline: `2px solid ${tokens.colorBrandStroke1}`,
+    outlineOffset: '4px',
+    backgroundColor: 'rgba(15,108,189,.025)',
+  },
   rail: {
-    position: 'absolute', left: '-44px', top: 0, display: 'flex', flexDirection: 'column', gap: '2px',
-    padding: '3px', backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorNeutralStroke2}`,
-    borderRadius: tokens.borderRadiusMedium, boxShadow: tokens.shadow4, zIndex: 4,
+    position: 'absolute',
+    left: '-45px',
+    top: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+    padding: '3px',
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderRadius: tokens.borderRadiusMedium,
+    boxShadow: tokens.shadow8,
+    zIndex: 4,
+    transitionProperty: 'opacity, transform',
+    transitionDuration: '120ms',
     '@media print': { display: 'none' },
   },
-  railHidden: { opacity: 0, pointerEvents: 'none' },
+  railHidden: { opacity: 0, transform: 'translateX(4px)', pointerEvents: 'none' },
   drag: { cursor: 'grab', minWidth: '28px', width: '28px', height: '28px' },
   destructive: { color: tokens.colorPaletteRedForeground1 },
   insertWrap: { marginTop: tokens.spacingVerticalM, '@media print': { display: 'none' } },
   insertToolbar: {
-    display: 'flex', flexWrap: 'wrap', gap: '2px', justifyContent: 'center',
-    padding: tokens.spacingHorizontalXS, backgroundColor: tokens.colorNeutralBackground2,
-    border: `1px dashed ${tokens.colorNeutralStroke2}`, borderRadius: tokens.borderRadiusMedium,
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '2px',
+    justifyContent: 'center',
+    padding: tokens.spacingHorizontalXS,
+    backgroundColor: 'rgba(255,255,255,.72)',
+    border: `1px dashed ${tokens.colorNeutralStroke2}`,
+    borderRadius: tokens.borderRadiusMedium,
+    opacity: .58,
+    transitionProperty: 'opacity, border-color, box-shadow',
+    transitionDuration: '140ms',
+    ':hover': { opacity: 1, borderColor: tokens.colorBrandStroke2, boxShadow: tokens.shadow2 },
   },
 })
-
-const fluentClassNames = (...classes: Array<string | false | null | undefined>) => classes
-  .flatMap((value) => typeof value === 'string' ? value.split(/\s+/) : [])
-  .filter((value) => value && !value.startsWith('___'))
-  .join(' ')
 
 function BlockChrome({ selected, onSelect, onAction, onDragStart, children }: { selected: boolean; onSelect: () => void; onAction: (a: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; children: React.ReactNode }) {
   const styles = useEditorStyles()
   return (
-    <div className={`${styles.blockRoot} ${selected ? styles.selected : ''}`} onClick={(e) => { e.stopPropagation(); onSelect() }}>
-      <div className={`${styles.rail} ${selected ? '' : styles.railHidden}`}>
-        <Tooltip content="Prevuci blok" relationship="label"><Button appearance="subtle" size="small" className={fluentClassNames(styles.drag)} draggable onDragStart={onDragStart}>⋮⋮</Button></Tooltip>
-        <Tooltip content="Pomeri gore" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="up" size={15} />} onClick={() => onAction('up')} /></Tooltip>
-        <Tooltip content="Pomeri dole" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="down" size={15} />} onClick={() => onAction('down')} /></Tooltip>
-        <Tooltip content="Kopiraj" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="copy" size={15} />} onClick={() => onAction('duplicate')} /></Tooltip>
-        <Tooltip content="Obriši" relationship="label"><Button appearance="subtle" size="small" className={fluentClassNames(styles.destructive)} icon={<Icon name="trash" size={15} />} onClick={() => onAction('delete')} /></Tooltip>
+    <div className={mergeClasses(styles.blockRoot, selected && styles.selected)} onClick={(event) => { event.stopPropagation(); onSelect() }}>
+      <div className={mergeClasses(styles.rail, !selected && styles.railHidden)}>
+        <Tooltip content="Drag block" relationship="label"><Button appearance="subtle" size="small" className={styles.drag} draggable onDragStart={onDragStart}>⋮⋮</Button></Tooltip>
+        <Tooltip content="Move up" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="up" size={15} />} onClick={() => onAction('up')} /></Tooltip>
+        <Tooltip content="Move down" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="down" size={15} />} onClick={() => onAction('down')} /></Tooltip>
+        <Tooltip content="Duplicate" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="copy" size={15} />} onClick={() => onAction('duplicate')} /></Tooltip>
+        <Tooltip content="Delete" relationship="label"><Button appearance="subtle" size="small" className={styles.destructive} icon={<Icon name="trash" size={15} />} onClick={() => onAction('delete')} /></Tooltip>
       </div>
       {children}
     </div>
@@ -60,7 +84,9 @@ function ListView({ block, update, select }: { block: ListBlock; update: (b: Blo
       {block.items.map((item, i) => (
         <li key={i}>
           <EditableText html={item} onFocus={select} className="list-item-editor" onChange={(html) => {
-            const items = [...block.items]; items[i] = html; update({ ...block, items })
+            const items = [...block.items]
+            items[i] = html
+            update({ ...block, items })
           }} />
         </li>
       ))}
@@ -125,12 +151,12 @@ function DiagramView({ block }: { block: DiagramBlock }) {
 }
 
 function ImageView({ block }: { block: ImageBlock }) {
-  if (!block.src) return <div className="image-placeholder"><Icon name="image" size={28} /><span>Izaberite sliku u panelu sa desne strane</span></div>
+  if (!block.src) return <div className="image-placeholder"><Icon name="image" size={28} /><span>Choose an image in the Inspector</span></div>
   return <figure className="image-figure" style={{ width: `${block.widthPercent || 100}%` }}><img src={block.src} alt={block.alt || ''} />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>
 }
 
 function InstitutionView({ block, update, select }: { block: InstitutionBlock; update: (b: Block) => void; select: () => void }) {
-  return <div className="institution-block"><div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="Logo univerziteta" />}</div><div className="institution-copy"><EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} /><EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />{block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}</div><div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Logo fakulteta" />}</div></div>
+  return <div className="institution-block"><div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="University logo" />}</div><div className="institution-copy"><EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} /><EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />{block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}</div><div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Faculty logo" />}</div></div>
 }
 
 export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDragStart, onDrop }: {
@@ -149,13 +175,13 @@ export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDra
       case 'divider': return <hr className="doc-divider" />
     }
   })()
-  return <div onDragOver={(e) => e.preventDefault()} onDrop={onDrop}><BlockChrome selected={selected} onSelect={onSelect} onAction={onAction} onDragStart={onDragStart}>{body}</BlockChrome></div>
+  return <div onDragOver={(event) => event.preventDefault()} onDrop={onDrop}><BlockChrome selected={selected} onSelect={onSelect} onAction={onAction} onDragStart={onDragStart}>{body}</BlockChrome></div>
 }
 
 export function MiniInsertBar({ onInsert }: { onInsert: (type: Block['type']) => void }) {
   const styles = useEditorStyles()
   const buttons: { type: Block['type']; icon: Parameters<typeof Icon>[0]['name']; label: string }[] = [
-    { type: 'text', icon: 'text', label: 'Tekst' }, { type: 'list', icon: 'list', label: 'Lista' }, { type: 'code', icon: 'code', label: 'Kod' }, { type: 'callout', icon: 'note', label: 'Istaknuto' }, { type: 'table', icon: 'table', label: 'Tabela' }, { type: 'diagram', icon: 'diagram', label: 'Dijagram' }, { type: 'image', icon: 'image', label: 'Slika' }, { type: 'institution', icon: 'file', label: 'Institucija' }, { type: 'divider', icon: 'divider', label: 'Linija' },
+    { type: 'text', icon: 'text', label: 'Text' }, { type: 'list', icon: 'list', label: 'List' }, { type: 'code', icon: 'code', label: 'Code' }, { type: 'callout', icon: 'note', label: 'Callout' }, { type: 'table', icon: 'table', label: 'Table' }, { type: 'diagram', icon: 'diagram', label: 'Diagram' }, { type: 'image', icon: 'image', label: 'Image' }, { type: 'institution', icon: 'file', label: 'Institution' }, { type: 'divider', icon: 'divider', label: 'Divider' },
   ]
-  return <div className={styles.insertWrap}><Toolbar className={fluentClassNames(styles.insertToolbar)} aria-label="Dodaj blok">{buttons.map((button) => <Tooltip key={button.type} content={`Dodaj: ${button.label}`} relationship="label"><ToolbarButton icon={<Icon name={button.icon} size={15} />} onClick={() => onInsert(button.type)}>{button.label}</ToolbarButton></Tooltip>)}</Toolbar></div>
+  return <div className={styles.insertWrap}><Toolbar className={styles.insertToolbar} aria-label="Insert block">{buttons.map((button) => <Tooltip key={button.type} content={`Insert ${button.label}`} relationship="label"><ToolbarButton icon={<Icon name={button.icon} size={15} />} onClick={() => onInsert(button.type)}>{button.label}</ToolbarButton></Tooltip>)}</Toolbar></div>
 }
