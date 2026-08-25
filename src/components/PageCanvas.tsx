@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Block, CourseDocument, DocumentPage } from '../types'
 import { BlockView, type BlockAction } from './BlockView'
-import { clone } from '../utils'
+import { clone, computeArtifactMeta } from '../utils'
 import '../document.css'
 
 export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBlock, onUpdatePage, onOpenDocumentSettings, readonly = false }: {
@@ -17,6 +17,7 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
   const pageRef = useRef<HTMLDivElement>(null)
   const [overflow, setOverflow] = useState(false)
   const [draggedId, setDraggedId] = useState<string | null>(null)
+  const artifactMeta = useMemo(() => computeArtifactMeta(doc), [doc])
 
   useEffect(() => {
     const check = () => {
@@ -75,8 +76,8 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
         {!isCover && <header className="page-header"><span>{doc.headerText || doc.subject}</span><span>{doc.kind === 'praktikum' ? 'Praktikum' : doc.kind === 'specifikacija' ? 'Projektna specifikacija' : doc.title}</span></header>}
         <main className="page-content">
           {page.blocks.map((block) => readonly
-            ? <div key={block.id} className="readonly-block"><BlockView block={block} selected={false} onSelect={() => {}} onUpdate={() => {}} onAction={() => {}} onDragStart={() => {}} onDrop={() => {}} /></div>
-            : <BlockView key={block.id} block={block} selected={selectedBlockId === block.id} onSelect={() => onSelectBlock(block.id)} onUpdate={updateBlock} onAction={(blockAction) => action(block.id, blockAction)} onDragStart={(event) => { setDraggedId(block.id); event.dataTransfer.effectAllowed = 'move' }} onDrop={(event) => { event.preventDefault(); drop(block.id) }} />
+            ? <div key={block.id} className="readonly-block"><BlockView block={block} selected={false} onSelect={() => {}} onUpdate={() => {}} onAction={() => {}} onDragStart={() => {}} onDrop={() => {}} artifactMeta={artifactMeta[block.id]} /></div>
+            : <BlockView key={block.id} block={block} selected={selectedBlockId === block.id} onSelect={() => onSelectBlock(block.id)} onUpdate={updateBlock} onAction={(blockAction) => action(block.id, blockAction)} onDragStart={(event) => { setDraggedId(block.id); event.dataTransfer.effectAllowed = 'move' }} onDrop={(event) => { event.preventDefault(); drop(block.id) }} artifactMeta={artifactMeta[block.id]} />
           )}
         </main>
         {!isCover && <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>}
