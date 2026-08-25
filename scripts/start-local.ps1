@@ -17,9 +17,9 @@ $nodeVersion = node --version
 Write-Host "Node: $nodeVersion"
 Write-Host "npm:  $(npm --version)"
 
-if (-not (Test-Path "node_modules")) {
-    Write-Host "Instaliram zavisnosti..." -ForegroundColor Yellow
-    npm install
+if (-not (Test-Path "node_modules\@fluentui\react-components")) {
+    Write-Host "Instaliram ili osvežavam zavisnosti..." -ForegroundColor Yellow
+    npm install --no-audit --no-fund
 }
 
 Write-Host "Proveravam TypeScript/Vite build..." -ForegroundColor Yellow
