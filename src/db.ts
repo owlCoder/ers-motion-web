@@ -66,6 +66,39 @@ export async function deleteDocumentLocal(id: string) {
   db.close()
 }
 
+/**
+ * One-time seed migration helper.
+ * The course ships exactly one current Practicum and one current Project Specification.
+ * Old bundled versions are removed during a seed-version upgrade so the library does
+ * not accumulate stale copies. User-created generic documents are left untouched.
+ */
+export async function purgeLegacyBundledDocuments(currentIds: ReadonlySet<string>) {
+  const db = await openDb()
+  const docs = await new Promise<CourseDocument[]>((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly')
+    const req = tx.objectStore(STORE).getAll()
+    req.onsuccess = () => resolve(req.result as CourseDocument[])
+    req.onerror = () => reject(req.error)
+  })
+
+  const legacyIds = docs
+    .filter((doc) => (doc.kind === 'praktikum' || doc.kind === 'specifikacija') && !currentIds.has(doc.id))
+    .map((doc) => doc.id)
+
+  if (legacyIds.length > 0) {
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readwrite')
+      const store = tx.objectStore(STORE)
+      legacyIds.forEach((id) => store.delete(id))
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+    })
+  }
+
+  db.close()
+  return legacyIds
+}
+
 export async function getMeta<T>(key: string): Promise<T | undefined> {
   const db = await openDb()
   const result = await new Promise<T | undefined>((resolve, reject) => {
