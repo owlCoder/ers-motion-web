@@ -23,6 +23,7 @@ export const exercise6 = (): DocumentPage[] => [
       ['Assert', 'rezultat ili značajna interakcija', 'emerald'],
     ], 'Jasno razdvojene faze čine test lakšim za čitanje i dijagnostiku.'),
     code('csharp', `[Test]\npublic void Reserve_WhenPeriodOverlaps_ReturnsConflict()\n{\n    // Arrange\n    var repository = new Mock<IReservationRepository>();\n    repository\n        .Setup(r => r.HasOverlap(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))\n        .Returns(true);\n    var clock = new Mock<IClock>();\n    clock.SetupGet(c => c.UtcNow).Returns(new DateTime(2026, 10, 1));\n    var service = new ReservationService(repository.Object, clock.Object);\n\n    // Act\n    var result = service.Reserve(TestRequests.ValidFutureReservation());\n\n    // Assert\n    Assert.That(result.Success, Is.False);\n    Assert.That(result.Error, Is.EqualTo("OverlappingReservation"));\n    repository.Verify(r => r.Add(It.IsAny<Reservation>()), Times.Never);\n}`, 'Negativni scenario izveden iz kriterijuma prihvatanja'),
+    image('/course-assets/test-explorer.svg', 'Test Explorer omogućava pregled prolaznih i neuspešnih testova, trajanja izvršavanja i poruke koja vodi do uzroka neuspeha.', 'Test Explorer i rezultat izvršavanja'),
     callout('note', 'Test proverava ponašanje, ne privatne detalje', 'Ako test puca svaki put kada se privatna metoda preimenuje ili se kod refaktoriše bez promene ponašanja, verovatno je previše vezan za implementacione detalje.'),
   ]),
   page('6.2. Moq i test dvojnici', [
@@ -53,6 +54,7 @@ export const exercise6 = (): DocumentPage[] => [
     text('h2', '6.4. Code Coverage kao signal, ne cilj'),
     text('paragraph', 'Code Coverage pokazuje koji delovi koda jesu izvršeni tokom testova, ali ne govori da li su assert-i smisleni niti da li su testirani najvažniji rizici. Zbog toga se coverage koristi kao dijagnostički signal za pronalaženje slepih tačaka, a ne kao samostalna ocena kvaliteta.'),
     code('bash', `dotnet test\n# primer sa collector-om, ako je paket/podešavanje dostupno\ndotnet test --collect:"XPlat Code Coverage"`, 'Pokretanje testova i prikupljanje coverage podataka'),
+    image('/course-assets/coverage-report.svg', 'Coverage izveštaj treba čitati po linijama i granama koje nose poslovni rizik, a ne samo kroz ukupni procenat.', 'Primer interpretacije coverage izveštaja'),
     list([
       'Prvo definisati poslovno važne scenarije, pa tek onda posmatrati coverage.',
       'Ne pokrivati trivijalne getter-e samo da bi procenat porastao ako važna grana ostaje neproverena.',
