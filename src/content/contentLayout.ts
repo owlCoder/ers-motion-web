@@ -1,10 +1,10 @@
 import type { Block, DocumentPage, TextBlock } from '../types'
 
-const TARGET_HEIGHT = 885
-const HARD_LIMIT = 1015
-const MERGE_LIMIT = 1115
-const SPARSE_PAGE = 360
-const ORPHAN_PAGE = 245
+const TARGET_HEIGHT = 875
+const HARD_LIMIT = 1005
+const MERGE_LIMIT = 1110
+const SPARSE_PAGE = 365
+const ORPHAN_PAGE = 250
 
 function plain(value: string) {
   return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -19,33 +19,33 @@ export function blockHeight(block: Block): number {
   switch (block.type) {
     case 'text': {
       const heights: Record<TextBlock['variant'], number> = {
-        title: 70,
-        subtitle: 45,
-        h1: 58,
-        h2: 42,
-        h3: 34,
-        paragraph: 12 + wrappedLines(block.html, 91) * 18,
-        caption: 22,
-        quote: 50 + wrappedLines(block.html, 80) * 18,
+        title: 72,
+        subtitle: 46,
+        h1: 60,
+        h2: 44,
+        h3: 36,
+        paragraph: 13 + wrappedLines(block.html, 86) * 20,
+        caption: 24,
+        quote: 52 + wrappedLines(block.html, 76) * 20,
       }
       return heights[block.variant]
     }
     case 'list':
-      return 14 + block.items.reduce((height, item) => height + wrappedLines(item, 84) * 17 + 5, 0)
+      return 16 + block.items.reduce((height, item) => height + wrappedLines(item, 80) * 19 + 6, 0)
     case 'code':
-      return 44 + block.code.split('\n').length * 16.8 + (block.caption ? 21 : 0)
+      return 46 + block.code.split('\n').length * 18 + (block.caption ? 23 : 0)
     case 'callout':
-      return 47 + wrappedLines(`${block.title} ${block.text}`, 88) * 16.5
+      return 50 + wrappedLines(`${block.title} ${block.text}`, 82) * 18
     case 'table':
-      return 43 + Math.max(1, block.rows.length) * 31 + (block.caption ? 21 : 0)
+      return 46 + Math.max(1, block.rows.length) * 34 + (block.caption ? 23 : 0)
     case 'diagram':
-      return (block.variant === 'stack' ? 112 + block.items.length * 58 : 180) + (block.footer ? 21 : 0)
+      return (block.variant === 'stack' ? 116 + block.items.length * 60 : 188) + (block.footer ? 23 : 0)
     case 'image':
-      return 250 + (block.caption ? 21 : 0)
+      return 255 + (block.caption ? 23 : 0)
     case 'institution':
-      return 120
+      return 122
     case 'divider':
-      return 24
+      return 25
   }
 }
 
@@ -121,7 +121,7 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     const previousHeight = pageHeight(previous.blocks)
     const currentHeight = pageHeight(currentPage.blocks)
     const onlyClosingMaterial = currentPage.blocks.length <= 3 && currentPage.blocks.every(isSmallClosingBlock)
-    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 65 : MERGE_LIMIT
+    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 70 : MERGE_LIMIT
 
     if (currentHeight <= SPARSE_PAGE && previousHeight + currentHeight <= mergeThreshold) {
       previous.blocks.push(...currentPage.blocks)
@@ -130,13 +130,11 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     }
   }
 
-  // Final orphan pass: if the last page contains only a short assignment/outcome,
-  // prefer a slightly denser previous page instead of wasting an entire A4 sheet.
   if (result.length > 1) {
     const last = result[result.length - 1]
     const previous = result[result.length - 2]
     const lastHeight = pageHeight(last.blocks)
-    if (last.blocks.length <= 2 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 95) {
+    if (last.blocks.length <= 2 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 100) {
       previous.blocks.push(...last.blocks)
       result.pop()
     }
