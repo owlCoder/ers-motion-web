@@ -1,4 +1,4 @@
-import type { Accent, Block, CodeLanguage, CourseDocument, DocumentPage } from './types'
+import type { Accent, Block, CodeLanguage, CourseDocument, DocumentPage, TextBlock } from './types'
 
 export const ACCENTS: Record<Accent, { solid: string; soft: string; ink: string }> = {
   blue: { solid: '#2563eb', soft: '#eff6ff', ink: '#1d4ed8' },
@@ -146,4 +146,49 @@ export function textFromHtml(html: string) {
 export function pageLabel(page: DocumentPage, index: number) {
   const heading = page.blocks.find((b) => b.type === 'text' && ['title', 'h1', 'h2'].includes(b.variant))
   return page.label || (heading && heading.type === 'text' ? textFromHtml(heading.html) : `Strana ${index + 1}`)
+}
+
+export type ArtifactKind = 'figure' | 'listing' | 'table'
+export type ArtifactMeta = { kind: ArtifactKind; number: string; label: string }
+
+function sectionNumber(block: TextBlock) {
+  const value = textFromHtml(block.html).trim()
+  const numbered = value.match(/^(\d+(?:\.\d+)*)\.?\s+/)
+  if (numbered) return numbered[1]
+  const exercise = value.match(/^Vežba\s+(\d+)\b/i)
+  return exercise?.[1]
+}
+
+export function computeArtifactMeta(doc: CourseDocument): Record<string, ArtifactMeta> {
+  const result: Record<string, ArtifactMeta> = {}
+  const counters = new Map<string, Record<ArtifactKind, number>>()
+  let section = '0'
+
+  const next = (kind: ArtifactKind) => {
+    const current = counters.get(section) || { figure: 0, listing: 0, table: 0 }
+    current[kind] += 1
+    counters.set(section, current)
+    return `${section}.${current[kind]}`
+  }
+
+  for (const page of doc.pages) {
+    for (const block of page.blocks) {
+      if (block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)) {
+        section = sectionNumber(block) || section
+      }
+
+      if (block.type === 'image' || block.type === 'diagram') {
+        const number = next('figure')
+        result[block.id] = { kind: 'figure', number, label: `Slika ${number}` }
+      } else if (block.type === 'code') {
+        const number = next('listing')
+        result[block.id] = { kind: 'listing', number, label: `Listing ${number}` }
+      } else if (block.type === 'table') {
+        const number = next('table')
+        result[block.id] = { kind: 'table', number, label: `Tabela ${number}` }
+      }
+    }
+  }
+
+  return result
 }
