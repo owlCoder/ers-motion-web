@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { loadDocumentLocal, saveDocumentLocal } from '../db'
+import { bundledDocuments } from '../seed'
 
 const LEFT_MIN = 220
 const LEFT_MAX = 440
@@ -7,6 +9,8 @@ const RIGHT_MAX = 500
 const LEFT_DEFAULT = 286
 const RIGHT_DEFAULT = 346
 const DEFAULT_ZOOM_REVISION = 'word-zoom-100-v1'
+const PRACTICUM_CONTENT_REVISION = 'practicum-academic-pass-2026-08-25-a'
+const LEGACY_PRACTICUM_UPDATED_AT = '2026-08-24T21:39:00+02:00'
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value))
@@ -52,6 +56,23 @@ export function WordWorkspaceEnhancements() {
     left: typeof window === 'undefined' ? LEFT_DEFAULT : numberFromStorage('ers-left-pane-width', LEFT_DEFAULT),
     right: typeof window === 'undefined' ? RIGHT_DEFAULT : numberFromStorage('ers-right-pane-width', RIGHT_DEFAULT),
   })
+
+  useEffect(() => {
+    if (window.localStorage.getItem('ers-practicum-content-revision') === PRACTICUM_CONTENT_REVISION) return
+    ;(async () => {
+      try {
+        const practicum = bundledDocuments.find((document) => document.kind === 'praktikum')
+        if (!practicum) return
+        const existing = await loadDocumentLocal(practicum.id)
+        if (!existing || existing.updatedAt === LEGACY_PRACTICUM_UPDATED_AT) {
+          await saveDocumentLocal(practicum)
+        }
+        window.localStorage.setItem('ers-practicum-content-revision', PRACTICUM_CONTENT_REVISION)
+      } catch (error) {
+        console.error('Unable to migrate bundled practicum content.', error)
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     const style = document.createElement('style')
@@ -128,8 +149,6 @@ export function WordWorkspaceEnhancements() {
   useEffect(() => {
     if (window.localStorage.getItem('ers-default-document-zoom') === DEFAULT_ZOOM_REVISION) return
     const timer = window.setTimeout(() => {
-      // The editor currently starts at 90%. Two Word-style zoom-in commands bring
-      // a fresh workspace to 100% without changing browser zoom.
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '+', ctrlKey: true, bubbles: true, cancelable: true }))
       window.localStorage.setItem('ers-default-document-zoom', DEFAULT_ZOOM_REVISION)
@@ -156,7 +175,11 @@ export function WordWorkspaceEnhancements() {
         setRightX(rect.right - width)
       }
     }
-    const up = () => { dragSide.current = null; document.body.style.cursor = ''; document.body.style.userSelect = '' }
+    const up = () => {
+      dragSide.current = null
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
     window.addEventListener('pointercancel', up)
