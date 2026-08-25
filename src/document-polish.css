@@ -1,0 +1,170 @@
+/* Fine-grained A4 polish layered on top of document.css. */
+
+.code-block,
+.code-block.with-lines {
+  display: block;
+  padding: 10px 0;
+  overflow: hidden;
+  white-space: normal;
+  word-break: normal;
+  box-shadow: inset 3px 0 0 #e9eff6;
+}
+
+.code-line {
+  min-width: 0;
+  min-height: 1.53em;
+  display: block;
+  padding: 0 16px;
+  font: inherit;
+  line-height: 1.53;
+}
+
+.code-block.with-lines .code-line {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  padding: 0;
+  align-items: stretch;
+}
+
+.code-line code {
+  display: block;
+  min-width: 0;
+  padding: 0 16px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  font: inherit;
+  line-height: inherit;
+}
+
+.code-block:not(.with-lines) .code-line code { padding: 0; }
+
+.line-number {
+  display: block;
+  min-width: 42px;
+  padding: 0 10px 0 6px;
+  border-right: 1px solid #edf0f3;
+  color: #9da8b7;
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+  line-height: inherit;
+}
+
+.code-figure figcaption,
+.table-figure figcaption,
+.image-figure figcaption,
+.diagram figcaption {
+  margin-top: 7px;
+  color: #758294;
+  font-size: 9.7px;
+  font-style: normal;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.artifact-number {
+  color: #516176;
+  font-weight: 700;
+}
+
+.callout {
+  --callout-accent: #2563eb;
+  position: relative;
+  overflow: hidden;
+  border-left-width: 1px;
+  border-radius: 11px;
+  padding-left: 13px;
+}
+
+.callout::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  border-radius: 11px 0 0 11px;
+  background: var(--callout-accent);
+}
+
+.callout-info { --callout-accent: #2563eb; }
+.callout-note { --callout-accent: #7c3aed; }
+.callout-task { --callout-accent: #d97706; }
+.callout-warning { --callout-accent: #e11d48; }
+.callout-success { --callout-accent: #059669; }
+
+.callout-body,
+.callout-title,
+.callout-text,
+.table-figure th,
+.table-figure td,
+.diagram-title,
+.diagram-subtitle,
+.list-item-editor,
+.text-block {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.diagram {
+  border-radius: 12px;
+  padding: 17px 18px 15px;
+}
+
+.diagram-flow {
+  gap: 18px;
+  align-items: stretch;
+}
+
+.flow-item-wrap {
+  min-width: 0;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.flow-item-wrap .diagram-card { width: 100%; }
+
+.flow-arrow {
+  right: -16px;
+  top: 50%;
+  width: 14px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  color: #8796a8;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.diagram-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  padding: 12px 11px;
+}
+
+.diagram-card.compact { padding: 10px 9px; }
+.diagram-title { font-size: 10.5px; line-height: 1.3; }
+.diagram-subtitle { font-size: 8.9px; line-height: 1.42; }
+
+.diagram-hub .hub-center { width: min(48%, 330px); }
+.hub-connector::after { left: -230px; right: -230px; }
+
+.image-figure img {
+  max-height: 520px;
+  object-fit: contain;
+}
+
+.table-scroll { border-radius: 10px; }
+.table-figure td,
+.table-figure th { overflow-wrap: anywhere; }
+
+@media print {
+  .code-block,
+  .code-block.with-lines { background: #fff !important; }
+  .code-block.with-lines .code-line { grid-template-columns: 11mm minmax(0, 1fr); }
+  .line-number { min-width: 11mm; padding-right: 2.5mm; }
+  .code-line code { padding-right: 3mm; }
+}
