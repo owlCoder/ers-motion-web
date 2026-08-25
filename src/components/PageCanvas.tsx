@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Block, CourseDocument, DocumentPage } from '../types'
-import { BlockView, MiniInsertBar, type BlockAction } from './BlockView'
-import { createBlock, clone } from '../utils'
+import { BlockView, type BlockAction } from './BlockView'
+import { clone } from '../utils'
 import '../document.css'
 
 export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBlock, onUpdatePage, onOpenDocumentSettings, readonly = false }: {
@@ -53,7 +53,6 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
     ;[blocks[index], blocks[target]] = [blocks[target], blocks[index]]
     onUpdatePage({ ...page, blocks })
   }
-  const insert = (type: Block['type']) => onUpdatePage({ ...page, blocks: [...page.blocks, createBlock(type)] })
   const drop = (targetId: string) => {
     if (!draggedId || draggedId === targetId) return
     const from = page.blocks.findIndex((block) => block.id === draggedId)
@@ -79,7 +78,6 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
             ? <div key={block.id} className="readonly-block"><BlockView block={block} selected={false} onSelect={() => {}} onUpdate={() => {}} onAction={() => {}} onDragStart={() => {}} onDrop={() => {}} /></div>
             : <BlockView key={block.id} block={block} selected={selectedBlockId === block.id} onSelect={() => onSelectBlock(block.id)} onUpdate={updateBlock} onAction={(blockAction) => action(block.id, blockAction)} onDragStart={(event) => { setDraggedId(block.id); event.dataTransfer.effectAllowed = 'move' }} onDrop={(event) => { event.preventDefault(); drop(block.id) }} />
           )}
-          {!readonly && <MiniInsertBar onInsert={insert} />}
         </main>
         {!isCover && <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>}
         {overflow && !readonly && <div className="overflow-warning no-print">Content exceeds the page boundary</div>}
