@@ -1,46 +1,21 @@
-import practicumPart1 from './seeds/praktikum.part1.txt?raw'
-import practicumChunk02 from './seeds/praktikum.chunk02.txt?raw'
-import practicumChunk03 from './seeds/praktikum.chunk03.txt?raw'
-import practicumChunk04 from './seeds/praktikum.chunk04.txt?raw'
-import practicumChunk05 from './seeds/praktikum.chunk05.txt?raw'
-import practicumChunk06 from './seeds/praktikum.chunk06.txt?raw'
-import practicumChunk07 from './seeds/praktikum.chunk07.txt?raw'
-import practicumChunk08 from './seeds/praktikum.chunk08.txt?raw'
-import practicumChunk09 from './seeds/praktikum.chunk09.txt?raw'
-import practicumChunk10 from './seeds/praktikum.chunk10.txt?raw'
-import projectSpecJson from './seeds/project-spec.json'
 import type { CourseDocument } from './types'
-import { enhancePracticum } from './content/enhancePracticum'
-import { enhanceProjectSpec } from './content/enhanceProjectSpec'
+import { practicum2026 } from './content/canvaPracticum'
+import { projectSpec2026 } from './content/canvaProjectSpec'
 import { clone, uid } from './utils'
 
-const practicumJson = JSON.parse(
-  practicumPart1 +
-  practicumChunk02 +
-  practicumChunk03 +
-  practicumChunk04 +
-  practicumChunk05 +
-  practicumChunk06 +
-  practicumChunk07 +
-  practicumChunk08 +
-  practicumChunk09 +
-  practicumChunk10,
-) as CourseDocument
-
-const enrichedPracticum = enhancePracticum(practicumJson)
-const enrichedProjectSpec = enhanceProjectSpec(projectSpecJson as CourseDocument)
-
 export const bundledDocuments: CourseDocument[] = [
-  enrichedPracticum,
-  enrichedProjectSpec,
+  practicum2026,
+  projectSpec2026,
 ]
+
+export const CURRENT_BUNDLED_IDS = new Set(bundledDocuments.map((document) => document.id))
 
 export function freshDocument(): CourseDocument {
   const now = new Date().toISOString()
   return {
     version: 2,
     id: uid('doc'),
-    title: 'Novi dokument',
+    title: 'New document',
     subtitle: 'Elementi razvoja softvera',
     subject: 'Elementi razvoja softvera',
     kind: 'dokument',
@@ -51,11 +26,11 @@ export function freshDocument(): CourseDocument {
     theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
     pages: [{
       id: uid('page'),
-      label: 'Naslovna',
+      label: 'Cover',
       blocks: [
-        { id: uid('block'), type: 'text', variant: 'title', html: 'Novi dokument', align: 'center' },
+        { id: uid('block'), type: 'text', variant: 'title', html: 'New document', align: 'center' },
         { id: uid('block'), type: 'text', variant: 'subtitle', html: 'Elementi razvoja softvera', align: 'center' },
-        { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Dodajte sadržaj izborom odgovarajućeg bloka na kartici Insert.' },
+        { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Add content from the Insert tab.' },
       ],
     }],
   }
@@ -65,7 +40,7 @@ export function duplicateAsNew(doc: CourseDocument): CourseDocument {
   const copy = clone(doc)
   const now = new Date().toISOString()
   copy.id = uid('doc')
-  copy.title = `${copy.title} — kopija`
+  copy.title = `${copy.title} — copy`
   copy.createdAt = now
   copy.updatedAt = now
   copy.pages = copy.pages.map((p) => ({ ...p, id: uid('page'), blocks: p.blocks.map((b) => ({ ...b, id: uid('block') })) }))
