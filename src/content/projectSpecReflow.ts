@@ -4,7 +4,7 @@ import { reflowPages } from './contentLayout'
 
 export const projectSpec2026Reflowed: CourseDocument = {
   ...projectSpec2026,
-  updatedAt: '2026-08-25T16:00:00.000Z',
+  updatedAt: '2026-08-25T17:20:00.000Z',
   pages: [
     projectSpec2026.pages[0],
     ...reflowPages(projectSpec2026.pages.slice(1), 'Projektna specifikacija'),
