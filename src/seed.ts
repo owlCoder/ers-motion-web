@@ -10,6 +10,7 @@ import practicumChunk09 from './seeds/praktikum.chunk09.txt?raw'
 import practicumChunk10 from './seeds/praktikum.chunk10.txt?raw'
 import projectSpecJson from './seeds/project-spec.json'
 import type { CourseDocument } from './types'
+import { enhancePracticum } from './content/enhancePracticum'
 import { clone, uid } from './utils'
 
 const practicumJson = JSON.parse(
@@ -25,8 +26,10 @@ const practicumJson = JSON.parse(
   practicumChunk10,
 ) as CourseDocument
 
+const enrichedPracticum = enhancePracticum(practicumJson)
+
 export const bundledDocuments: CourseDocument[] = [
-  practicumJson,
+  enrichedPracticum,
   projectSpecJson as CourseDocument,
 ]
 
@@ -50,7 +53,7 @@ export function freshDocument(): CourseDocument {
       blocks: [
         { id: uid('block'), type: 'text', variant: 'title', html: 'Novi dokument', align: 'center' },
         { id: uid('block'), type: 'text', variant: 'subtitle', html: 'Elementi razvoja softvera', align: 'center' },
-        { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Dodajte sadržaj koristeći blokove iz donje alatne trake.' },
+        { id: uid('block'), type: 'text', variant: 'paragraph', html: 'Dodajte sadržaj izborom odgovarajućeg bloka na kartici Insert.' },
       ],
     }],
   }
