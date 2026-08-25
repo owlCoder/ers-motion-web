@@ -1,11 +1,11 @@
 import type { CourseDocument } from './types'
 import { practicum2026 } from './content/canvaPracticum'
-import { projectSpec2026 } from './content/canvaProjectSpec'
+import { projectSpec2026Reflowed } from './content/projectSpecReflow'
 import { clone, uid } from './utils'
 
 export const bundledDocuments: CourseDocument[] = [
   practicum2026,
-  projectSpec2026,
+  projectSpec2026Reflowed,
 ]
 
 export const CURRENT_BUNDLED_IDS = new Set(bundledDocuments.map((document) => document.id))
