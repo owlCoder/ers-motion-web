@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { Block, CourseDocument, DocumentPage } from '../types'
 import { BlockView, MiniInsertBar, type BlockAction } from './BlockView'
 import { createBlock, clone } from '../utils'
-import '../styles.css'
-import '../professional.css'
+import '../document.css'
 
 export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBlock, onUpdatePage, onOpenDocumentSettings, readonly = false }: {
   doc: CourseDocument
