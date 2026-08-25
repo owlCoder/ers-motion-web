@@ -5,7 +5,7 @@ export const exercise7 = (): DocumentPage[] => [
   page('Vežba 7 — Prompt, kontekst i projektne instrukcije', [
     text('h1', 'Vežba 7 — Prompt, kontekst i projektne instrukcije'),
     text('paragraph', 'Od ove vežbe AI alat postaje deo razvojnog okruženja, ali se i dalje posmatra kao komponenta procesa koju treba projektovati i proveravati. Najvažnija promena u odnosu na ad-hoc chat pristup jeste razdvajanje trenutnog zadatka od stabilnog konteksta projekta i očekivanog formata izlaza.'),
-    image('/course-assets/context-engineering.svg', 'Slojevi konteksta: zadatak, projektna pravila, relevantni artefakti, format izlaza i verifikacija.', 'Context engineering'),
+    image('/course-assets/context-stack.svg', 'Slojevi konteksta: zadatak, projektna pravila, relevantni artefakti, format izlaza i verifikacija.', 'Context engineering'),
     table(['Element', 'Svrha'], [
       ['Prompt / task', 'Konkretan cilj jedne interakcije.'],
       ['Instructions', 'Stabilna pravila koja treba da važe kroz više zadataka.'],
@@ -27,7 +27,8 @@ export const exercise7 = (): DocumentPage[] => [
     list([
       'Pravilo treba da bude dovoljno konkretno da utiče na odluku, ali dovoljno opšte da važi i za sledeći issue.',
       'Instrukcija koja se stalno krši možda je nejasna ili pripada determinističkoj proveri/hook-u umesto tekstualnom pravilu.',
-      'Dokument treba verzionisati zajedno sa projektom jer predstavlja deo razvojnog okruženja.'),
+      'Dokument treba verzionisati zajedno sa projektom jer predstavlja deo razvojnog okruženja.'
+    ]),
   ]),
   page('7.3. Structured output i proverljiv rezultat', [
     text('h2', '7.3. Structured output i proverljiv rezultat'),
@@ -56,7 +57,8 @@ export const exercise7 = (): DocumentPage[] => [
     list([
       'Očistiti `AI_INSTRUCTIONS.md` od privremenih pravila i zadržati stabilne projektne smernice.',
       'Napraviti najmanje dva AI_USAGE zapisa koja pokazuju različite vrste pomoći: npr. analiza i review.',
-      'Za svaku veću AI-promenu navesti spoljašnji dokaz verifikacije.'),
+      'Za svaku veću AI-promenu navesti spoljašnji dokaz verifikacije.'
+    ]),
     callout('task', 'Mini domaći — bonus 1 bod', 'Uzeti isti mali issue i rešiti ga dva puta: jednom sa kratkim promptom bez projektnih instrukcija, drugi put sa jasnim kontekstom i formatom izlaza. Uporediti kvalitet plana, količinu nepotrebnih pretpostavki i potrebne korekcije.'),
   ]),
 ]
