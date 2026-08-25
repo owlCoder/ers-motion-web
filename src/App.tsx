@@ -79,8 +79,8 @@ const useStyles = makeStyles({
   ribbonSizeSelect: { width: '58px' },
   colorSwatch: { width: '15px', height: '3px', backgroundColor: '#d13438', borderRadius: '2px', display: 'block', marginTop: '-5px' },
   highlightSwatch: { width: '15px', height: '3px', backgroundColor: '#fff100', borderRadius: '2px', display: 'block', marginTop: '-5px' },
-  styleCard: { height: '61px', minWidth: '102px', border: '1px solid #d6d6d6', borderRadius: '2px', background: '#fff', padding: '7px 11px', textAlign: 'left', cursor: 'pointer', transitionProperty: 'background, border-color, box-shadow, transform', transitionDuration: '110ms', ':hover': { background: '#f5f9ff', borderColor: '#8ab6e5', boxShadow: '0 1px 3px rgba(0,0,0,.08)' }, ':active': { transform: 'translateY(1px)' } },
-  styleCardSelected: { borderColor: '#7aa7d8', boxShadow: 'inset 0 0 0 1px #7aa7d8', background: '#f6faff' },
+  styleCard: { height: '61px', minWidth: '102px', border: '1px solid #d6d6d6', borderRadius: '2px', background: '#fff', padding: '7px 11px', textAlign: 'left', cursor: 'pointer', transitionProperty: 'background, border-color, box-shadow, transform', transitionDuration: '110ms', ':hover': { background: '#f5f9ff', borderTopColor: '#8ab6e5', borderRightColor: '#8ab6e5', borderBottomColor: '#8ab6e5', borderLeftColor: '#8ab6e5', boxShadow: '0 1px 3px rgba(0,0,0,.08)' }, ':active': { transform: 'translateY(1px)' } },
+  styleCardSelected: { borderTopColor: '#7aa7d8', borderRightColor: '#7aa7d8', borderBottomColor: '#7aa7d8', borderLeftColor: '#7aa7d8', boxShadow: 'inset 0 0 0 1px #7aa7d8', background: '#f6faff' },
   styleCardTitle: { display: 'block', color: '#222', fontSize: '15px', lineHeight: 1.15 },
   styleCardHeading: { color: '#185abd' },
   styleCardMeta: { display: 'block', color: '#777', fontSize: '9px', marginTop: '4px' },
@@ -216,7 +216,7 @@ export default function App() {
     if (!doc) return
     const frame = window.requestAnimationFrame(() => canvasRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' }))
     return () => window.cancelAnimationFrame(frame)
-  }, [doc.id])
+  }, [doc?.id])
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {

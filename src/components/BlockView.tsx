@@ -52,7 +52,7 @@ const useEditorStyles = makeStyles({
     opacity: .58,
     transitionProperty: 'opacity, border-color, box-shadow',
     transitionDuration: '140ms',
-    ':hover': { opacity: 1, borderColor: tokens.colorBrandStroke2, boxShadow: tokens.shadow2 },
+    ':hover': { opacity: 1, borderTopColor: tokens.colorBrandStroke2, borderRightColor: tokens.colorBrandStroke2, borderBottomColor: tokens.colorBrandStroke2, borderLeftColor: tokens.colorBrandStroke2, boxShadow: tokens.shadow2 },
   },
 })
 
