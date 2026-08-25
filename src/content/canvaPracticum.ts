@@ -9,6 +9,7 @@ import { exercise7 } from './canvaExercise7'
 import { exercise8 } from './canvaExercise8'
 import { exercise9 } from './canvaExercise9'
 import { exercise10 } from './canvaExercise10'
+import { reflowPages } from './contentLayout'
 import { text, list, callout, table, image, page } from './canvaPracticumShared'
 
 let metaSequence = 0
@@ -97,6 +98,8 @@ const closingPages = (): DocumentPage[] => [
   ]),
 ]
 
+const chapter = (pages: DocumentPage[], name: string) => reflowPages(pages, name)
+
 export const practicum2026: CourseDocument = {
   version: 2,
   id: 'ers-praktikum-2026-27-current',
@@ -107,21 +110,21 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-25T14:00:00.000Z',
+  updatedAt: '2026-08-25T16:00:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [
     cover(),
-    ...introPages(),
-    ...exercise1(),
-    ...exercise2(),
-    ...exercise3(),
-    ...exercise4(),
-    ...exercise5(),
-    ...exercise6(),
-    ...exercise7(),
-    ...exercise8(),
-    ...exercise9(),
-    ...exercise10(),
-    ...closingPages(),
+    ...chapter(introPages(), 'Uvod'),
+    ...chapter(exercise1(), 'Vežba 1'),
+    ...chapter(exercise2(), 'Vežba 2'),
+    ...chapter(exercise3(), 'Vežba 3'),
+    ...chapter(exercise4(), 'Vežba 4'),
+    ...chapter(exercise5(), 'Vežba 5'),
+    ...chapter(exercise6(), 'Vežba 6'),
+    ...chapter(exercise7(), 'Vežba 7'),
+    ...chapter(exercise8(), 'Vežba 8'),
+    ...chapter(exercise9(), 'Vežba 9'),
+    ...chapter(exercise10(), 'Vežba 10'),
+    ...chapter(closingPages(), 'Zaključak'),
   ],
 }
