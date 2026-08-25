@@ -1,20 +1,42 @@
 import { useMemo } from 'react'
+import { Button, makeStyles, tokens, Toolbar, ToolbarButton, Tooltip } from '@fluentui/react-components'
 import type { Block, CalloutBlock, CodeBlock, DiagramBlock, ImageBlock, InstitutionBlock, ListBlock, TableBlock, TextBlock } from '../types'
-import { ACCENTS, highlightCode, uid } from '../utils'
+import { ACCENTS, highlightCode } from '../utils'
 import { EditableText } from './EditableText'
 import { Icon } from './Icon'
 
 export type BlockAction = 'delete' | 'duplicate' | 'up' | 'down'
 
+const useEditorStyles = makeStyles({
+  blockRoot: { position: 'relative' },
+  selected: { outline: `2px solid ${tokens.colorBrandStroke1}`, outlineOffset: '4px', borderRadius: tokens.borderRadiusMedium },
+  rail: {
+    position: 'absolute', left: '-44px', top: 0, display: 'flex', flexDirection: 'column', gap: '2px',
+    padding: '3px', backgroundColor: tokens.colorNeutralBackground1, border: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderRadius: tokens.borderRadiusMedium, boxShadow: tokens.shadow4, zIndex: 4,
+    '@media print': { display: 'none' },
+  },
+  railHidden: { opacity: 0, pointerEvents: 'none' },
+  drag: { cursor: 'grab', minWidth: '28px', width: '28px', height: '28px' },
+  destructive: { color: tokens.colorPaletteRedForeground1 },
+  insertWrap: { marginTop: tokens.spacingVerticalM, '@media print': { display: 'none' } },
+  insertToolbar: {
+    display: 'flex', flexWrap: 'wrap', gap: '2px', justifyContent: 'center',
+    padding: tokens.spacingHorizontalXS, backgroundColor: tokens.colorNeutralBackground2,
+    border: `1px dashed ${tokens.colorNeutralStroke2}`, borderRadius: tokens.borderRadiusMedium,
+  },
+})
+
 function BlockChrome({ selected, onSelect, onAction, onDragStart, children }: { selected: boolean; onSelect: () => void; onAction: (a: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; children: React.ReactNode }) {
+  const styles = useEditorStyles()
   return (
-    <div className={`doc-block ${selected ? 'selected' : ''}`} onClick={(e) => { e.stopPropagation(); onSelect() }}>
-      <div className="block-rail no-print">
-        <button className="drag-handle" draggable onDragStart={onDragStart} title="Prevuci blok" aria-label="Prevuci blok">⋮⋮</button>
-        <button onClick={() => onAction('up')} title="Pomeri gore"><Icon name="up" size={15} /></button>
-        <button onClick={() => onAction('down')} title="Pomeri dole"><Icon name="down" size={15} /></button>
-        <button onClick={() => onAction('duplicate')} title="Kopiraj"><Icon name="copy" size={15} /></button>
-        <button className="danger" onClick={() => onAction('delete')} title="Obriši"><Icon name="trash" size={15} /></button>
+    <div className={`${styles.blockRoot} ${selected ? styles.selected : ''}`} onClick={(e) => { e.stopPropagation(); onSelect() }}>
+      <div className={`${styles.rail} ${selected ? '' : styles.railHidden}`}>
+        <Tooltip content="Prevuci blok" relationship="label"><Button appearance="subtle" size="small" className={styles.drag} draggable onDragStart={onDragStart}>⋮⋮</Button></Tooltip>
+        <Tooltip content="Pomeri gore" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="up" size={15} />} onClick={() => onAction('up')} /></Tooltip>
+        <Tooltip content="Pomeri dole" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="down" size={15} />} onClick={() => onAction('down')} /></Tooltip>
+        <Tooltip content="Kopiraj" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="copy" size={15} />} onClick={() => onAction('duplicate')} /></Tooltip>
+        <Tooltip content="Obriši" relationship="label"><Button appearance="subtle" size="small" className={styles.destructive} icon={<Icon name="trash" size={15} />} onClick={() => onAction('delete')} /></Tooltip>
       </div>
       {children}
     </div>
@@ -58,11 +80,7 @@ function CodeView({ block }: { block: CodeBlock }) {
 }
 
 const tones: Record<CalloutBlock['tone'], { icon: string }> = {
-  info: { icon: 'i' },
-  note: { icon: '✦' },
-  task: { icon: '✓' },
-  warning: { icon: '!' },
-  success: { icon: '✓' },
+  info: { icon: 'i' }, note: { icon: '✦' }, task: { icon: '✓' }, warning: { icon: '!' }, success: { icon: '✓' },
 }
 
 function CalloutView({ block, update, select }: { block: CalloutBlock; update: (b: Block) => void; select: () => void }) {
@@ -80,58 +98,25 @@ function CalloutView({ block, update, select }: { block: CalloutBlock; update: (
 function TableView({ block }: { block: TableBlock }) {
   return (
     <figure className="table-figure">
-      <div className="table-scroll">
-        <table>
-          {block.headers.length > 0 && <thead><tr>{block.headers.map((h, i) => <th key={i} dangerouslySetInnerHTML={{ __html: h }} />)}</tr></thead>}
-          <tbody>{block.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} dangerouslySetInnerHTML={{ __html: c }} />)}</tr>)}</tbody>
-        </table>
-      </div>
+      <div className="table-scroll"><table>{block.headers.length > 0 && <thead><tr>{block.headers.map((h, i) => <th key={i} dangerouslySetInnerHTML={{ __html: h }} />)}</tr></thead>}<tbody>{block.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci} dangerouslySetInnerHTML={{ __html: c }} />)}</tr>)}</tbody></table></div>
       {block.caption && <figcaption>{block.caption}</figcaption>}
     </figure>
   )
 }
 
 function DiagramCard({ item, compact = false }: { item: DiagramBlock['items'][number]; compact?: boolean }) {
-  const a = ACCENTS[item.accent || 'blue']
-  return (
-    <div className={`diagram-card ${compact ? 'compact' : ''}`} style={{ '--accent': a.solid, '--accent-soft': a.soft } as React.CSSProperties}>
-      <div className="diagram-title">{item.title}</div>
-      {item.subtitle && <div className="diagram-subtitle">{item.subtitle}</div>}
-    </div>
-  )
+  const accent = ACCENTS[item.accent || 'blue']
+  return <div className={`diagram-card ${compact ? 'compact' : ''}`} style={{ '--accent': accent.solid, '--accent-soft': accent.soft } as React.CSSProperties}><div className="diagram-title">{item.title}</div>{item.subtitle && <div className="diagram-subtitle">{item.subtitle}</div>}</div>
 }
 
 function DiagramView({ block }: { block: DiagramBlock }) {
-  if (block.variant === 'stack') {
-    return <figure className="diagram">{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
-  }
+  if (block.variant === 'stack') return <figure className="diagram">{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-stack">{block.items.map((item) => <DiagramCard key={item.id} item={item} />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
   if (block.variant === 'hub') {
     const [hub, ...children] = block.items
-    return (
-      <figure className="diagram diagram-hub">
-        {block.title && <div className="diagram-heading">{block.title}</div>}
-        {hub && <div className="hub-center"><DiagramCard item={hub} /></div>}
-        <div className="hub-connector" />
-        <div className="hub-children" style={{ gridTemplateColumns: `repeat(${Math.min(block.columns || 4, Math.max(children.length, 1))}, minmax(0,1fr))` }}>{children.map((item) => <DiagramCard key={item.id} item={item} compact />)}</div>
-        {block.footer && <figcaption>{block.footer}</figcaption>}
-      </figure>
-    )
+    return <figure className="diagram diagram-hub">{block.title && <div className="diagram-heading">{block.title}</div>}{hub && <div className="hub-center"><DiagramCard item={hub} /></div>}<div className="hub-connector" /><div className="hub-children" style={{ gridTemplateColumns: `repeat(${Math.min(block.columns || 4, Math.max(children.length, 1))}, minmax(0,1fr))` }}>{children.map((item) => <DiagramCard key={item.id} item={item} compact />)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
   }
   const columns = block.columns || Math.min(5, Math.max(2, block.items.length)) as 2 | 3 | 4 | 5
-  return (
-    <figure className={`diagram diagram-${block.variant}`}>
-      {block.title && <div className="diagram-heading">{block.title}</div>}
-      <div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>
-        {block.items.map((item, i) => (
-          <div key={item.id} className="flow-item-wrap">
-            <DiagramCard item={item} compact={block.items.length > 5} />
-            {i < block.items.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}
-          </div>
-        ))}
-      </div>
-      {block.footer && <figcaption>{block.footer}</figcaption>}
-    </figure>
-  )
+  return <figure className={`diagram diagram-${block.variant}`}>{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>{block.items.map((item, i) => <div key={item.id} className="flow-item-wrap"><DiagramCard item={item} compact={block.items.length > 5} />{i < block.items.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}</div>)}</div>{block.footer && <figcaption>{block.footer}</figcaption>}</figure>
 }
 
 function ImageView({ block }: { block: ImageBlock }) {
@@ -140,27 +125,11 @@ function ImageView({ block }: { block: ImageBlock }) {
 }
 
 function InstitutionView({ block, update, select }: { block: InstitutionBlock; update: (b: Block) => void; select: () => void }) {
-  return (
-    <div className="institution-block">
-      <div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="Logo univerziteta" />}</div>
-      <div className="institution-copy">
-        <EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} />
-        <EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />
-        {block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}
-      </div>
-      <div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Logo fakulteta" />}</div>
-    </div>
-  )
+  return <div className="institution-block"><div className="institution-logo-wrap left">{block.leftLogoSrc && <img src={block.leftLogoSrc} alt="Logo univerziteta" />}</div><div className="institution-copy"><EditableText html={block.university} onFocus={select} className="institution-university" onChange={(university) => update({ ...block, university })} /><EditableText html={block.faculty} onFocus={select} className="institution-faculty" onChange={(faculty) => update({ ...block, faculty })} />{block.department !== undefined && <EditableText html={block.department || ''} onFocus={select} className="institution-department" onChange={(department) => update({ ...block, department })} />}</div><div className="institution-logo-wrap right">{block.rightLogoSrc && <img src={block.rightLogoSrc} alt="Logo fakulteta" />}</div></div>
 }
 
 export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDragStart, onDrop }: {
-  block: Block
-  selected: boolean
-  onSelect: () => void
-  onUpdate: (block: Block) => void
-  onAction: (action: BlockAction) => void
-  onDragStart: (e: React.DragEvent) => void
-  onDrop: (e: React.DragEvent) => void
+  block: Block; selected: boolean; onSelect: () => void; onUpdate: (block: Block) => void; onAction: (action: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; onDrop: (e: React.DragEvent) => void
 }) {
   const body = (() => {
     switch (block.type) {
@@ -175,25 +144,13 @@ export function BlockView({ block, selected, onSelect, onUpdate, onAction, onDra
       case 'divider': return <hr className="doc-divider" />
     }
   })()
-
-  return (
-    <div onDragOver={(e) => e.preventDefault()} onDrop={onDrop}>
-      <BlockChrome selected={selected} onSelect={onSelect} onAction={onAction} onDragStart={onDragStart}>{body}</BlockChrome>
-    </div>
-  )
+  return <div onDragOver={(e) => e.preventDefault()} onDrop={onDrop}><BlockChrome selected={selected} onSelect={onSelect} onAction={onAction} onDragStart={onDragStart}>{body}</BlockChrome></div>
 }
 
 export function MiniInsertBar({ onInsert }: { onInsert: (type: Block['type']) => void }) {
+  const styles = useEditorStyles()
   const buttons: { type: Block['type']; icon: Parameters<typeof Icon>[0]['name']; label: string }[] = [
-    { type: 'text', icon: 'text', label: 'Tekst' },
-    { type: 'list', icon: 'list', label: 'Lista' },
-    { type: 'code', icon: 'code', label: 'Kod' },
-    { type: 'callout', icon: 'note', label: 'Istaknuto' },
-    { type: 'table', icon: 'table', label: 'Tabela' },
-    { type: 'diagram', icon: 'diagram', label: 'Dijagram' },
-    { type: 'image', icon: 'image', label: 'Slika' },
-    { type: 'institution', icon: 'file', label: 'Institucija' },
-    { type: 'divider', icon: 'divider', label: 'Linija' },
+    { type: 'text', icon: 'text', label: 'Tekst' }, { type: 'list', icon: 'list', label: 'Lista' }, { type: 'code', icon: 'code', label: 'Kod' }, { type: 'callout', icon: 'note', label: 'Istaknuto' }, { type: 'table', icon: 'table', label: 'Tabela' }, { type: 'diagram', icon: 'diagram', label: 'Dijagram' }, { type: 'image', icon: 'image', label: 'Slika' }, { type: 'institution', icon: 'file', label: 'Institucija' }, { type: 'divider', icon: 'divider', label: 'Linija' },
   ]
-  return <div className="insert-bar no-print">{buttons.map((b) => <button key={b.type} onClick={() => onInsert(b.type)} title={`Dodaj: ${b.label}`}><Icon name={b.icon} size={15} /><span>{b.label}</span></button>)}</div>
+  return <div className={styles.insertWrap}><Toolbar className={styles.insertToolbar} aria-label="Dodaj blok">{buttons.map((button) => <Tooltip key={button.type} content={`Dodaj: ${button.label}`} relationship="label"><ToolbarButton icon={<Icon name={button.icon} size={15} />} onClick={() => onInsert(button.type)}>{button.label}</ToolbarButton></Tooltip>)}</Toolbar></div>
 }
