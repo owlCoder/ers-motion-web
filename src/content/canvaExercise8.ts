@@ -21,7 +21,8 @@ export const exercise8 = (): DocumentPage[] => [
     list([
       'Skill treba da rešava ponovljiv problem, ne jedan konkretan issue po imenu.',
       'Koraci treba da budu dovoljno jasni da dva korišćenja daju sličan format i tok rada.',
-      'Skill treba da navede šta ne radi; review skill, na primer, ne mora da dobije pravo da uređuje kod.'),
+      'Skill treba da navede šta ne radi; review skill, na primer, ne mora da dobije pravo da uređuje kod.'
+    ]),
     callout('task', 'Rad na vežbi', 'Napraviti skill za `write-test-plan`, `review-pull-request` ili sličnu stvarnu potrebu projekta. Primeni ga na dva različita slučaja i nakon prvog pokušaja doradi proceduru ako je izlaz bio nejasan ili nedosledan.'),
   ]),
   page('8.2. Agent kao ograničena odgovornost', [
@@ -78,7 +79,8 @@ export const exercise8 = (): DocumentPage[] => [
       'Najmanje dve agentne uloge sa različitim odgovornostima ili dozvolama.',
       'Dokumentovan handoff ili agents-as-tools tok za jedan realan issue.',
       'Najmanje jedan eksperiment koji poredi jednostavniji i složeniji workflow.',
-      'AI_USAGE beleži gde je workflow pomogao i gde je zahtevao ručnu korekciju.'),
+      'AI_USAGE beleži gde je workflow pomogao i gde je zahtevao ručnu korekciju.'
+    ]),
     callout('task', 'Mini domaći — bonus 1 bod', 'Napraviti read-only reviewer agenta ili skill i pokrenuti ga nad sopstvenim PR diff-om. Bonus se dobija samo ako student navede najmanje jedan nalaz koji je proverio u kodu, čak i kada ga na kraju odbaci.'),
   ]),
 ]
