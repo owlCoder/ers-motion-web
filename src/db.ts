@@ -1,10 +1,11 @@
 import type { CourseDocument, LibraryEntry } from './types'
+import { bundledDocuments } from './seed'
 
 const DB_NAME = 'ers-studio'
 const STORE = 'documents'
 const META = 'meta'
 const VERSION = 2
-const CURRENT_BUNDLED_IDS = new Set(['ers-praktikum-2026-27-current', 'ers-project-spec-2026-27-current'])
+const CURRENT_BUNDLED_IDS = new Set(bundledDocuments.map((document) => document.id))
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -51,23 +52,28 @@ export async function listDocumentsLocal(): Promise<LibraryEntry[]> {
     req.onerror = () => reject(req.error)
   })
 
+  const byId = new Map(docs.map((doc) => [doc.id, doc]))
+  const missingBundled = bundledDocuments.filter((document) => !byId.has(document.id))
   const legacyIds = docs
     .filter((doc) => (doc.kind === 'praktikum' || doc.kind === 'specifikacija') && !CURRENT_BUNDLED_IDS.has(doc.id))
     .map((doc) => doc.id)
 
-  if (legacyIds.length > 0) {
+  if (missingBundled.length > 0 || legacyIds.length > 0) {
     await new Promise<void>((resolve, reject) => {
       const tx = db.transaction(STORE, 'readwrite')
       const store = tx.objectStore(STORE)
       legacyIds.forEach((id) => store.delete(id))
+      missingBundled.forEach((document) => store.put(structuredClone(document)))
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error)
     })
   }
 
+  missingBundled.forEach((document) => byId.set(document.id, structuredClone(document)))
+  legacyIds.forEach((id) => byId.delete(id))
+
   db.close()
-  return docs
-    .filter((doc) => !legacyIds.includes(doc.id))
+  return Array.from(byId.values())
     .map((doc) => ({ id: doc.id, title: doc.title, kind: doc.kind, updatedAt: doc.updatedAt }))
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
