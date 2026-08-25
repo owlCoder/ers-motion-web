@@ -59,19 +59,22 @@ export function WordWorkspaceEnhancements() {
 
   useEffect(() => {
     if (window.localStorage.getItem('ers-practicum-content-revision') === PRACTICUM_CONTENT_REVISION) return
-    ;(async () => {
-      try {
-        const practicum = bundledDocuments.find((document) => document.kind === 'praktikum')
-        if (!practicum) return
-        const existing = await loadDocumentLocal(practicum.id)
-        if (!existing || existing.updatedAt === LEGACY_PRACTICUM_UPDATED_AT) {
-          await saveDocumentLocal(practicum)
+    const timer = window.setTimeout(() => {
+      ;(async () => {
+        try {
+          const practicum = bundledDocuments.find((document) => document.kind === 'praktikum')
+          if (!practicum) return
+          const existing = await loadDocumentLocal(practicum.id)
+          const shouldReplace = !existing || existing.updatedAt === LEGACY_PRACTICUM_UPDATED_AT
+          if (shouldReplace) await saveDocumentLocal(practicum)
+          window.localStorage.setItem('ers-practicum-content-revision', PRACTICUM_CONTENT_REVISION)
+          if (shouldReplace) window.location.reload()
+        } catch (error) {
+          console.error('Unable to migrate bundled practicum content.', error)
         }
-        window.localStorage.setItem('ers-practicum-content-revision', PRACTICUM_CONTENT_REVISION)
-      } catch (error) {
-        console.error('Unable to migrate bundled practicum content.', error)
-      }
-    })()
+      })()
+    }, 1350)
+    return () => window.clearTimeout(timer)
   }, [])
 
   useEffect(() => {
