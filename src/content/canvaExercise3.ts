@@ -41,7 +41,8 @@ export const exercise3 = (): DocumentPage[] => [
       'Ne koristiti Story Points da bi se „merila produktivnost“ pojedinačnih članova.',
       'Veliku stavku prvo razložiti; broj poena nije zamena za razumevanje zahteva.',
       'Definition of Done treba da uključuje kvalitet: build, testove, review i potrebnu dokumentaciju.',
-      'Na kraju sprinta rezultat treba da bude potencijalno upotrebljiv inkrement, ne samo kolekcija nedovršenih branch-eva.'),
+      'Na kraju sprinta rezultat treba da bude potencijalno upotrebljiv inkrement, ne samo kolekcija nedovršenih branch-eva.'
+    ]),
   ]),
   page('3.3. AI kao pomoć u razjašnjenju zahteva', [
     text('h2', '3.3. AI kao pomoć u razjašnjenju zahteva'),
@@ -68,7 +69,8 @@ export const exercise3 = (): DocumentPage[] => [
       'Backlog sadrži najmanje osam smislenih User Story-ja, ne samo listu CRUD operacija.',
       'Najmanje tri važna Story-ja imaju pozitivne i negativne kriterijume prihvatanja.',
       'Postoje početni `AI_INSTRUCTIONS.md` i `AI_USAGE.md`.',
-      '`AI_USAGE.md` sadrži makar jednu sesiju analize zahteva: zadatak, alat/model, sažetak predloga, odluka tima i način provere.'),
+      '`AI_USAGE.md` sadrži makar jednu sesiju analize zahteva: zadatak, alat/model, sažetak predloga, odluka tima i način provere.'
+    ]),
     image('/course-assets/semester-map.svg', 'Checkpoint P1 je početak kontinuiteta: svaki naredni princip menja isti projektni repozitorijum.', 'Tok praktikuma i projekta'),
     callout('task', 'Mini domaći — bonus 1 bod', 'Izabrati jedan User Story i tražiti od AI alata samo review kriterijuma. Predati početnu verziju, finalnu verziju i do 120 reči obrazloženja šta je iz sugestija prihvaćeno ili odbačeno.'),
   ]),
