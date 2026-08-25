@@ -11,7 +11,6 @@ import {
   DialogTitle,
   Divider,
   makeStyles,
-  mergeClasses,
   Text,
   Toaster,
   Toast,
@@ -87,15 +86,18 @@ const useStyles = makeStyles({
     width: '100%', justifyContent: 'flex-start', textAlign: 'left', height: 'auto', minHeight: '52px',
     padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalS}`,
   },
-  libraryItemActive: { backgroundColor: tokens.colorBrandBackground2 },
+  libraryItemActive: {
+    width: '100%', justifyContent: 'flex-start', textAlign: 'left', height: 'auto', minHeight: '52px',
+    padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalS}`, backgroundColor: tokens.colorBrandBackground2,
+  },
   libraryItemText: { display: 'flex', flexDirection: 'column', minWidth: 0, alignItems: 'flex-start' },
   truncated: { maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   sidebarActions: { display: 'flex', flexDirection: 'column', padding: tokens.spacingHorizontalS, gap: '2px' },
   sidebarAction: { justifyContent: 'flex-start' },
-  dangerAction: { color: tokens.colorPaletteRedForeground1 },
   outline: { display: 'flex', flexDirection: 'column', gap: '2px', padding: `0 ${tokens.spacingHorizontalS} ${tokens.spacingVerticalL}` },
   outlineItem: { width: '100%', justifyContent: 'flex-start', textAlign: 'left', height: 'auto', minHeight: '34px' },
-  outlineItemActive: { backgroundColor: tokens.colorBrandBackground2, color: tokens.colorBrandForeground1 },
+  sidebarDangerAction: { justifyContent: 'flex-start', color: tokens.colorPaletteRedForeground1 },
+  outlineItemActive: { width: '100%', justifyContent: 'flex-start', textAlign: 'left', height: 'auto', minHeight: '34px', backgroundColor: tokens.colorBrandBackground2, color: tokens.colorBrandForeground1 },
   outlineNumber: { width: '24px', flexShrink: 0, color: tokens.colorNeutralForeground3, fontVariantNumeric: 'tabular-nums' },
   workspace: { minWidth: 0, minHeight: 0, display: 'grid', gridTemplateRows: '48px minmax(0, 1fr) 28px', backgroundColor: tokens.colorNeutralBackground3 },
   workspaceToolbar: {
@@ -121,6 +123,12 @@ const useStyles = makeStyles({
   printDocument: { '@media print': { display: 'block' } },
   dialogText: { color: tokens.colorNeutralForeground2 },
 })
+
+const joinClasses = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
+const fluentClassNames = (...classes: Array<string | false | null | undefined>) => classes
+  .flatMap((value) => typeof value === 'string' ? value.split(/\s+/) : [])
+  .filter((value) => value && !value.startsWith('___'))
+  .join(' ')
 
 function kindLabel(kind: CourseDocument['kind']) {
   return ({ praktikum: 'Praktikum', specifikacija: 'Specifikacija', skripta: 'Skripta', dokument: 'Dokument' } as const)[kind]
@@ -357,7 +365,7 @@ export default function App() {
 
   return (
     <div className={styles.root}>
-      <header className={mergeClasses(styles.topbar, styles.noPrint)}>
+      <header className={joinClasses(styles.topbar, styles.noPrint)}>
         <div className={styles.topbarLeft}>
           <Tooltip content={sidebarOpen ? 'Sakrij navigaciju' : 'Prikaži navigaciju'} relationship="label">
             <Button appearance="subtle" icon={<Icon name="menu" />} onClick={() => setSidebarOpen((v) => !v)} />
@@ -368,7 +376,7 @@ export default function App() {
           </div>
           <div className={styles.docIdentity}>
             <Badge appearance="tint" color="brand">{kindLabel(doc.kind)}</Badge>
-            <Text className={styles.docTitle} weight="semibold">{doc.title}</Text>
+            <Text className={fluentClassNames(styles.docTitle)} weight="semibold">{doc.title}</Text>
           </div>
         </div>
         <div className={styles.topbarActions}>
@@ -385,28 +393,28 @@ export default function App() {
       </header>
 
       <div className={styles.editorGrid} style={{ gridTemplateColumns: columns }}>
-        {sidebarOpen && <aside className={mergeClasses(styles.sidebar, styles.noPrint)}>
+        {sidebarOpen && <aside className={joinClasses(styles.sidebar, styles.noPrint)}>
           <div className={styles.sidebarHeader}>
             <span className={styles.sidebarTitleBlock}><Text weight="semibold">Dokumenti</Text><Caption1>{library.length} sačuvano lokalno</Caption1></span>
             <Tooltip content="Novi dokument" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="plus" size={15} />} onClick={newDoc} /></Tooltip>
           </div>
           <div className={styles.libraryList}>
             {library.map((entry) => (
-              <Button key={entry.id} appearance="subtle" className={mergeClasses(styles.libraryItem, entry.id === doc.id && styles.libraryItemActive)} onClick={() => loadDoc(entry.id)} icon={<Icon name="file" size={17} />}>
-                <span className={styles.libraryItemText}><Text className={styles.truncated} weight="semibold">{entry.title}</Text><Caption1>{kindLabel(entry.kind)} · {new Date(entry.updatedAt).toLocaleDateString('sr-RS')}</Caption1></span>
+              <Button key={entry.id} appearance="subtle" className={fluentClassNames(entry.id === doc.id ? styles.libraryItemActive : styles.libraryItem)} onClick={() => loadDoc(entry.id)} icon={<Icon name="file" size={17} />}>
+                <span className={styles.libraryItemText}><Text className={fluentClassNames(styles.truncated)} weight="semibold">{entry.title}</Text><Caption1>{kindLabel(entry.kind)} · {new Date(entry.updatedAt).toLocaleDateString('sr-RS')}</Caption1></span>
               </Button>
             ))}
           </div>
           <div className={styles.sidebarActions}>
-            <Button appearance="subtle" className={styles.sidebarAction} icon={<Icon name="copy" size={14} />} onClick={duplicateDoc}>Napravi kopiju</Button>
-            <Button appearance="subtle" className={styles.sidebarAction} icon={<Icon name="undo" size={14} />} onClick={restoreSeeds}>Vrati početnu verziju</Button>
-            <Button appearance="subtle" className={mergeClasses(styles.sidebarAction, styles.dangerAction)} icon={<Icon name="trash" size={14} />} onClick={() => setDeleteTarget('document')}>Obriši dokument</Button>
+            <Button appearance="subtle" className={fluentClassNames(styles.sidebarAction)} icon={<Icon name="copy" size={14} />} onClick={duplicateDoc}>Napravi kopiju</Button>
+            <Button appearance="subtle" className={fluentClassNames(styles.sidebarAction)} icon={<Icon name="undo" size={14} />} onClick={restoreSeeds}>Vrati početnu verziju</Button>
+            <Button appearance="subtle" className={fluentClassNames(styles.sidebarDangerAction)} icon={<Icon name="trash" size={14} />} onClick={() => setDeleteTarget('document')}>Obriši dokument</Button>
           </div>
           <Divider />
           <div className={styles.sidebarHeader}><span className={styles.sidebarTitleBlock}><Text weight="semibold">Sadržaj</Text><Caption1>Navigacija kroz dokument</Caption1></span></div>
           <nav className={styles.outline}>
             {outline.map(({ page, index, title }) => (
-              <Button key={page.id} appearance="subtle" className={mergeClasses(styles.outlineItem, index === pageIndex && styles.outlineItemActive)} onClick={() => scrollToPage(index)}>
+              <Button key={page.id} appearance="subtle" className={fluentClassNames(index === pageIndex ? styles.outlineItemActive : styles.outlineItem)} onClick={() => scrollToPage(index)}>
                 <span className={styles.outlineNumber}>{index + 1}</span><span className={styles.truncated}>{title}</span>
               </Button>
             ))}
@@ -414,7 +422,7 @@ export default function App() {
         </aside>}
 
         <main className={styles.workspace}>
-          <div className={mergeClasses(styles.workspaceToolbar, styles.noPrint)}>
+          <div className={joinClasses(styles.workspaceToolbar, styles.noPrint)}>
             <div className={styles.breadcrumb}>
               <Text size={200}>{kindLabel(doc.kind)}</Text><Icon name="chevron" size={12} /><Text weight="semibold">Strana {pageIndex + 1} od {doc.pages.length}</Text><Caption1>{pageLabel(currentPage, pageIndex)}</Caption1>
             </div>
@@ -426,7 +434,7 @@ export default function App() {
               <Tooltip content="Obriši stranicu" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="trash" size={14} />} disabled={doc.pages.length <= 1} onClick={() => setDeleteTarget('page')} /></Tooltip>
               <Divider vertical />
               <Button appearance="subtle" size="small" onClick={() => setZoom((z) => Math.max(0.55, +(z - 0.08).toFixed(2)))}>−</Button>
-              <Caption1 className={styles.zoomLabel}>{Math.round(zoom * 100)}%</Caption1>
+              <Caption1 className={fluentClassNames(styles.zoomLabel)}>{Math.round(zoom * 100)}%</Caption1>
               <Button appearance="subtle" size="small" onClick={() => setZoom((z) => Math.min(1.1, +(z + 0.08).toFixed(2)))}>+</Button>
             </div>
           </div>
@@ -434,7 +442,7 @@ export default function App() {
           <div ref={canvasRef} className={styles.canvas} onClick={() => { setSelectedBlockId(undefined); setInspectorOpen(true) }}>
             <div className={styles.documentStack}>
               {doc.pages.map((page, index) => (
-                <div key={page.id} ref={(el) => { pageRefs.current[index] = el }} data-page-index={index} className={mergeClasses(styles.pageItem, index === pageIndex && styles.activePage)} onMouseDown={() => setPageIndex(index)}>
+                <div key={page.id} ref={(el) => { pageRefs.current[index] = el }} data-page-index={index} className={joinClasses(styles.pageItem, index === pageIndex && styles.activePage)} onMouseDown={() => setPageIndex(index)}>
                   <div style={{ zoom }}>
                     <PageCanvas doc={doc} page={page} pageIndex={index} selectedBlockId={index === pageIndex ? selectedBlockId : undefined} onSelectBlock={(id) => { setPageIndex(index); setSelectedBlockId(id); if (id) setInspectorOpen(true) }} onUpdatePage={(next) => updatePageAt(index, next)} onOpenDocumentSettings={() => { setPageIndex(index); setInspectorOpen(true) }} />
                   </div>
@@ -442,13 +450,13 @@ export default function App() {
               ))}
             </div>
           </div>
-          <div className={mergeClasses(styles.statusbar, styles.noPrint)}><span className={styles.statusLeft}><span className={styles.statusDot} /><Caption1>{status}</Caption1></span><Caption1>A4 · {Math.round(zoom * 100)}% · Strana {pageIndex + 1}/{doc.pages.length}</Caption1></div>
+          <div className={joinClasses(styles.statusbar, styles.noPrint)}><span className={styles.statusLeft}><span className={styles.statusDot} /><Caption1>{status}</Caption1></span><Caption1>A4 · {Math.round(zoom * 100)}% · Strana {pageIndex + 1}/{doc.pages.length}</Caption1></div>
         </main>
 
         {inspectorOpen && <Inspector doc={doc} block={selectedBlock} onDocumentChange={patchDoc} onBlockChange={updateBlock} onClose={() => setInspectorOpen(false)} />}
       </div>
 
-      <div className={mergeClasses(styles.printOnly, styles.printDocument)}>
+      <div className={joinClasses(styles.printOnly, styles.printDocument)}>
         {doc.pages.map((page, i) => <PageCanvas key={page.id} doc={doc} page={page} pageIndex={i} selectedBlockId={undefined} onSelectBlock={() => {}} onUpdatePage={() => {}} onOpenDocumentSettings={() => {}} readonly />)}
       </div>
 
@@ -460,7 +468,7 @@ export default function App() {
           <DialogBody>
             <DialogTitle>{deleteTarget === 'document' ? 'Obriši dokument' : 'Obriši stranicu'}</DialogTitle>
             <DialogContent>
-              <Text className={styles.dialogText}>{deleteTarget === 'document' ? `Dokument „${doc.title}“ biće uklonjen iz lokalne biblioteke. Ova radnja se ne može opozvati.` : `Strana ${pageIndex + 1} biće trajno uklonjena iz dokumenta.`}</Text>
+              <Text className={fluentClassNames(styles.dialogText)}>{deleteTarget === 'document' ? `Dokument „${doc.title}“ biće uklonjen iz lokalne biblioteke. Ova radnja se ne može opozvati.` : `Strana ${pageIndex + 1} biće trajno uklonjena iz dokumenta.`}</Text>
             </DialogContent>
             <DialogActions>
               <Button appearance="secondary" onClick={() => setDeleteTarget(null)}>Otkaži</Button>

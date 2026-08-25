@@ -27,16 +27,21 @@ const useEditorStyles = makeStyles({
   },
 })
 
+const fluentClassNames = (...classes: Array<string | false | null | undefined>) => classes
+  .flatMap((value) => typeof value === 'string' ? value.split(/\s+/) : [])
+  .filter((value) => value && !value.startsWith('___'))
+  .join(' ')
+
 function BlockChrome({ selected, onSelect, onAction, onDragStart, children }: { selected: boolean; onSelect: () => void; onAction: (a: BlockAction) => void; onDragStart: (e: React.DragEvent) => void; children: React.ReactNode }) {
   const styles = useEditorStyles()
   return (
     <div className={`${styles.blockRoot} ${selected ? styles.selected : ''}`} onClick={(e) => { e.stopPropagation(); onSelect() }}>
       <div className={`${styles.rail} ${selected ? '' : styles.railHidden}`}>
-        <Tooltip content="Prevuci blok" relationship="label"><Button appearance="subtle" size="small" className={styles.drag} draggable onDragStart={onDragStart}>⋮⋮</Button></Tooltip>
+        <Tooltip content="Prevuci blok" relationship="label"><Button appearance="subtle" size="small" className={fluentClassNames(styles.drag)} draggable onDragStart={onDragStart}>⋮⋮</Button></Tooltip>
         <Tooltip content="Pomeri gore" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="up" size={15} />} onClick={() => onAction('up')} /></Tooltip>
         <Tooltip content="Pomeri dole" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="down" size={15} />} onClick={() => onAction('down')} /></Tooltip>
         <Tooltip content="Kopiraj" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="copy" size={15} />} onClick={() => onAction('duplicate')} /></Tooltip>
-        <Tooltip content="Obriši" relationship="label"><Button appearance="subtle" size="small" className={styles.destructive} icon={<Icon name="trash" size={15} />} onClick={() => onAction('delete')} /></Tooltip>
+        <Tooltip content="Obriši" relationship="label"><Button appearance="subtle" size="small" className={fluentClassNames(styles.destructive)} icon={<Icon name="trash" size={15} />} onClick={() => onAction('delete')} /></Tooltip>
       </div>
       {children}
     </div>
@@ -152,5 +157,5 @@ export function MiniInsertBar({ onInsert }: { onInsert: (type: Block['type']) =>
   const buttons: { type: Block['type']; icon: Parameters<typeof Icon>[0]['name']; label: string }[] = [
     { type: 'text', icon: 'text', label: 'Tekst' }, { type: 'list', icon: 'list', label: 'Lista' }, { type: 'code', icon: 'code', label: 'Kod' }, { type: 'callout', icon: 'note', label: 'Istaknuto' }, { type: 'table', icon: 'table', label: 'Tabela' }, { type: 'diagram', icon: 'diagram', label: 'Dijagram' }, { type: 'image', icon: 'image', label: 'Slika' }, { type: 'institution', icon: 'file', label: 'Institucija' }, { type: 'divider', icon: 'divider', label: 'Linija' },
   ]
-  return <div className={styles.insertWrap}><Toolbar className={styles.insertToolbar} aria-label="Dodaj blok">{buttons.map((button) => <Tooltip key={button.type} content={`Dodaj: ${button.label}`} relationship="label"><ToolbarButton icon={<Icon name={button.icon} size={15} />} onClick={() => onInsert(button.type)}>{button.label}</ToolbarButton></Tooltip>)}</Toolbar></div>
+  return <div className={styles.insertWrap}><Toolbar className={fluentClassNames(styles.insertToolbar)} aria-label="Dodaj blok">{buttons.map((button) => <Tooltip key={button.type} content={`Dodaj: ${button.label}`} relationship="label"><ToolbarButton icon={<Icon name={button.icon} size={15} />} onClick={() => onInsert(button.type)}>{button.label}</ToolbarButton></Tooltip>)}</Toolbar></div>
 }

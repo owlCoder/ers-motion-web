@@ -19,6 +19,11 @@ const useStyles = makeStyles({
   pageCounter: { minWidth: '72px', textAlign: 'center', color: '#fff' },
 })
 
+const fluentClassNames = (...classes: Array<string | false | null | undefined>) => classes
+  .flatMap((value) => typeof value === 'string' ? value.split(/\s+/) : [])
+  .filter((value) => value && !value.startsWith('___'))
+  .join(' ')
+
 export function Presentation({ doc, startPage, onClose }: { doc: CourseDocument; startPage: number; onClose: () => void }) {
   const styles = useStyles()
   const [index, setIndex] = useState(startPage)
@@ -44,9 +49,9 @@ export function Presentation({ doc, startPage, onClose }: { doc: CourseDocument;
   return <div className={styles.overlay} role="dialog" aria-label="Režim prikaza">
     <div className={styles.toolbar}>
       <Tooltip content="Prethodna strana" relationship="label"><Button appearance="primary" size="small" disabled={index === 0} onClick={() => setIndex((value) => Math.max(0, value - 1))}>←</Button></Tooltip>
-      <Caption1 className={styles.pageCounter}>{index + 1} / {doc.pages.length}</Caption1>
+      <Caption1 className={fluentClassNames(styles.pageCounter)}>{index + 1} / {doc.pages.length}</Caption1>
       <Tooltip content="Sledeća strana" relationship="label"><Button appearance="primary" size="small" disabled={index === doc.pages.length - 1} onClick={() => setIndex((value) => Math.min(doc.pages.length - 1, value + 1))}>→</Button></Tooltip>
-      <Tooltip content="Zatvori prikaz" relationship="label"><Button appearance="primary" size="small" className={styles.close} icon={<Icon name="close" size={18} />} onClick={onClose} /></Tooltip>
+      <Tooltip content="Zatvori prikaz" relationship="label"><Button appearance="primary" size="small" className={fluentClassNames(styles.close)} icon={<Icon name="close" size={18} />} onClick={onClose} /></Tooltip>
     </div>
     <div className={styles.stageWrap}>
       <div className={styles.stage} style={{ width: 794 * scale, height: 1123 * scale }}>

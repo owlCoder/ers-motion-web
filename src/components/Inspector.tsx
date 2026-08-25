@@ -58,6 +58,11 @@ const useStyles = makeStyles({
   destructive: { color: tokens.colorPaletteRedForeground1 },
 })
 
+const fluentClassNames = (...classes: Array<string | false | null | undefined>) => classes
+  .flatMap((value) => typeof value === 'string' ? value.split(/\s+/) : [])
+  .filter((value) => value && !value.startsWith('___'))
+  .join(' ')
+
 const stripHtml = (value: string) => {
   const div = document.createElement('div')
   div.innerHTML = value
@@ -100,7 +105,7 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
         </div>
         <Divider />
         <div className={styles.section}>
-          <Caption1 className={styles.sectionTitle}>Tipografija i stil</Caption1>
+          <Caption1 className={fluentClassNames(styles.sectionTitle)}>Tipografija i stil</Caption1>
           <Field label="Tema"><Select value={doc.theme.name} onChange={(e) => patchTheme({ name: e.target.value as DocumentTheme['name'] })}><option>Academic Light</option><option>Editorial Light</option><option>Minimal Light</option></Select></Field>
           <Field label="Tipografija"><Select value={doc.theme.font} onChange={(e) => patchTheme({ font: e.target.value as DocumentTheme['font'] })}><option value="System">Sans serif</option><option value="Serif">Serif</option><option value="Humanist">Humanist sans</option></Select></Field>
           <Field label="Gustina"><Select value={doc.theme.density} onChange={(e) => patchTheme({ density: e.target.value as DocumentTheme['density'] })}><option value="comfortable">Komforna</option><option value="compact">Kompaktna</option></Select></Field>
@@ -109,7 +114,7 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
               <Tooltip key={accent} content={accent} relationship="label">
                 <Button
                   appearance="outline"
-                  className={`${styles.accentButton} ${doc.theme.accent === accent ? styles.accentSelected : ''}`}
+                  className={fluentClassNames(styles.accentButton, doc.theme.accent === accent ? styles.accentSelected : '')}
                   style={{ backgroundColor: ACCENTS[accent].solid }}
                   onClick={() => patchTheme({ accent })}
                   aria-label={accent}
@@ -120,7 +125,7 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
         </div>
         <Divider />
         <div className={styles.section}>
-          <Caption1 className={styles.sectionTitle}>Zaglavlje i podnožje</Caption1>
+          <Caption1 className={fluentClassNames(styles.sectionTitle)}>Zaglavlje i podnožje</Caption1>
           <Field label="Zaglavlje"><Input value={doc.headerText || ''} onChange={(_, data) => patchDoc({ headerText: data.value })} /></Field>
           <Field label="Podnožje"><Input value={doc.footerText || ''} onChange={(_, data) => patchDoc({ footerText: data.value })} /></Field>
         </div>
@@ -141,7 +146,7 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
         </div>
         <Divider />
         <div className={styles.section}>
-          <Caption1 className={styles.sectionTitle}>Formatiranje označenog teksta</Caption1>
+          <Caption1 className={fluentClassNames(styles.sectionTitle)}>Formatiranje označenog teksta</Caption1>
           <div className={styles.formatRow}>
             <Tooltip content="Podebljano" relationship="label"><Button appearance="subtle" icon={<Icon name="bold" size={16} />} onMouseDown={(e) => { e.preventDefault(); document.execCommand('bold') }} /></Tooltip>
             <Tooltip content="Kurziv" relationship="label"><Button appearance="subtle" icon={<Icon name="italic" size={16} />} onMouseDown={(e) => { e.preventDefault(); document.execCommand('italic') }} /></Tooltip>
@@ -153,15 +158,15 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
 
       {block.type === 'list' && <div className={styles.section}>
         <Field label="Vrsta liste"><Select value={block.ordered ? 'ordered' : 'unordered'} onChange={(e) => patch({ ...block, ordered: e.target.value === 'ordered' })}><option value="unordered">Lista sa oznakama</option><option value="ordered">Numerisana lista</option></Select></Field>
-        <Caption1 className={styles.sectionTitle}>Stavke</Caption1>
+        <Caption1 className={fluentClassNames(styles.sectionTitle)}>Stavke</Caption1>
         <div className={styles.repeatStack}>{block.items.map((item, i) => <div className={styles.repeatRow} key={i}><Input value={stripHtml(item)} onChange={(_, data) => { const items = [...block.items]; items[i] = data.value; patch({ ...block, items }) }} /><Button appearance="subtle" icon={<Icon name="trash" size={14} />} onClick={() => patch({ ...block, items: block.items.filter((_, j) => j !== i) })} /></div>)}</div>
-        <Button appearance="secondary" className={styles.full} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, items: [...block.items, 'Nova stavka'] })}>Dodaj stavku</Button>
+        <Button appearance="secondary" className={fluentClassNames(styles.full)} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, items: [...block.items, 'Nova stavka'] })}>Dodaj stavku</Button>
       </div>}
 
       {block.type === 'code' && <div className={styles.section}>
         <Field label="Jezik"><Select value={block.language} onChange={(e) => patch({ ...block, language: e.target.value as CodeLanguage })}><option value="csharp">C#</option><option value="bash">Shell / CLI</option><option value="json">JSON</option><option value="markdown">Markdown</option><option value="typescript">TypeScript</option><option value="text">Tekst</option></Select></Field>
         <Field label="Opis"><Input value={block.caption || ''} onChange={(_, data) => patch({ ...block, caption: data.value })} /></Field>
-        <Field label="Kod"><Textarea className={styles.codeInput} value={block.code} rows={16} resize="vertical" onChange={(_, data) => patch({ ...block, code: data.value })} /></Field>
+        <Field label="Kod"><Textarea className={fluentClassNames(styles.codeInput)} value={block.code} rows={16} resize="vertical" onChange={(_, data) => patch({ ...block, code: data.value })} /></Field>
         <Checkbox checked={!!block.lineNumbers} label="Brojevi linija" onChange={(_, data) => patch({ ...block, lineNumbers: data.checked === true })} />
       </div>}
 
@@ -173,24 +178,24 @@ export function Inspector({ doc, block, onDocumentChange, onBlockChange, onClose
         <Field label="Raspored"><Select value={block.variant} onChange={(e) => patch({ ...block, variant: e.target.value as DiagramVariant })}><option value="flow">Tok</option><option value="timeline">Vremenska linija</option><option value="pipeline">Proces</option><option value="stack">Slojevi</option><option value="hub">Centralni element i grane</option></Select></Field>
         <Field label="Naslov"><Input value={block.title || ''} onChange={(_, data) => patch({ ...block, title: data.value })} /></Field>
         {block.variant !== 'stack' && <Field label="Kolone"><Select value={block.columns || 4} onChange={(e) => patch({ ...block, columns: Number(e.target.value) as 2 | 3 | 4 | 5 })}><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></Select></Field>}
-        <Caption1 className={styles.sectionTitle}>Elementi</Caption1>
+        <Caption1 className={fluentClassNames(styles.sectionTitle)}>Elementi</Caption1>
         <div className={styles.repeatStack}>{block.items.map((item, i) => <div className={styles.diagramEditor} key={item.id}>
-          <div className={styles.repeatRow}><Input value={item.title} onChange={(_, data) => { const items = [...block.items]; items[i] = { ...item, title: data.value }; patch({ ...block, items }) }} /><Button appearance="subtle" className={styles.destructive} icon={<Icon name="trash" size={14} />} onClick={() => patch({ ...block, items: block.items.filter((x) => x.id !== item.id) })} /></div>
+          <div className={styles.repeatRow}><Input value={item.title} onChange={(_, data) => { const items = [...block.items]; items[i] = { ...item, title: data.value }; patch({ ...block, items }) }} /><Button appearance="subtle" className={fluentClassNames(styles.destructive)} icon={<Icon name="trash" size={14} />} onClick={() => patch({ ...block, items: block.items.filter((x) => x.id !== item.id) })} /></div>
           <Input value={item.subtitle || ''} placeholder="Kratak opis" onChange={(_, data) => { const items = [...block.items]; items[i] = { ...item, subtitle: data.value }; patch({ ...block, items }) }} />
           <Select value={item.accent || 'blue'} onChange={(e) => { const items = [...block.items]; items[i] = { ...item, accent: e.target.value as Accent }; patch({ ...block, items }) }}>{Object.keys(ACCENTS).map((accent) => <option key={accent} value={accent}>{accent}</option>)}</Select>
         </div>)}</div>
-        <Button appearance="secondary" className={styles.full} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, items: [...block.items, { id: uid('item'), title: 'Novi element', subtitle: 'opis', accent: 'blue' }] })}>Dodaj element</Button>
+        <Button appearance="secondary" className={fluentClassNames(styles.full)} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, items: [...block.items, { id: uid('item'), title: 'Novi element', subtitle: 'opis', accent: 'blue' }] })}>Dodaj element</Button>
         <Field label="Opis ispod dijagrama"><Input value={block.footer || ''} onChange={(_, data) => patch({ ...block, footer: data.value })} /></Field>
       </div>}
 
       {block.type === 'table' && <div className={styles.section}>
         <Field label="Opis"><Input value={block.caption || ''} onChange={(_, data) => patch({ ...block, caption: data.value })} /></Field>
-        <Caption1 className={styles.sectionTitle}>Kolone</Caption1>
+        <Caption1 className={fluentClassNames(styles.sectionTitle)}>Kolone</Caption1>
         <div className={styles.repeatStack}>{block.headers.map((header, i) => <div className={styles.repeatRow} key={i}><Input value={stripHtml(header)} onChange={(_, data) => { const headers = [...block.headers]; headers[i] = data.value; const rows = block.rows.map((row) => { const copy = [...row]; while (copy.length < headers.length) copy.push(''); return copy.slice(0, headers.length) }); patch({ ...block, headers, rows }) }} /><Button appearance="subtle" disabled={block.headers.length <= 1} icon={<Icon name="trash" size={14} />} onClick={() => { const headers = block.headers.filter((_, j) => j !== i); const rows = block.rows.map((row) => row.filter((_, j) => j !== i)); patch({ ...block, headers, rows }) }} /></div>)}</div>
-        <Button appearance="secondary" className={styles.full} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, headers: [...block.headers, `Kolona ${block.headers.length + 1}`], rows: block.rows.map((row) => [...row, '']) })}>Dodaj kolonu</Button>
-        <Caption1 className={styles.sectionTitle}>Redovi</Caption1>
+        <Button appearance="secondary" className={fluentClassNames(styles.full)} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, headers: [...block.headers, `Kolona ${block.headers.length + 1}`], rows: block.rows.map((row) => [...row, '']) })}>Dodaj kolonu</Button>
+        <Caption1 className={fluentClassNames(styles.sectionTitle)}>Redovi</Caption1>
         <div className={styles.repeatStack}>{block.rows.map((row, ri) => <div className={styles.tableRow} key={ri}>{row.map((cell, ci) => <Input key={ci} value={stripHtml(cell)} onChange={(_, data) => { const rows = block.rows.map((r) => [...r]); rows[ri][ci] = data.value; patch({ ...block, rows }) }} />)}<Button appearance="subtle" icon={<Icon name="trash" size={14} />} onClick={() => patch({ ...block, rows: block.rows.filter((_, i) => i !== ri) })} /></div>)}</div>
-        <Button appearance="secondary" className={styles.full} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, rows: [...block.rows, block.headers.map(() => '')] })}>Dodaj red</Button>
+        <Button appearance="secondary" className={fluentClassNames(styles.full)} icon={<Icon name="plus" size={14} />} onClick={() => patch({ ...block, rows: [...block.rows, block.headers.map(() => '')] })}>Dodaj red</Button>
       </div>}
 
       {block.type === 'image' && <div className={styles.section}>
