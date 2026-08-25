@@ -70,9 +70,10 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
   const fontClass = doc.theme.font === 'Serif' ? 'font-serif' : doc.theme.font === 'Humanist' ? 'font-humanist' : 'font-system'
   const densityClass = doc.theme.density === 'compact' ? 'density-compact' : 'density-comfortable'
   const isCover = page.layout === 'cover'
+  const anchorId = readonly ? `page-${page.id}` : `editor-page-${page.id}`
 
   return (
-    <div className="page-wrap" id={`page-${page.id}`} data-document-page={pageIndex + 1}>
+    <div className="page-wrap" id={anchorId} data-document-page={pageIndex + 1}>
       <section ref={pageRef} className={`a4-page ${isCover ? 'cover-page' : ''} theme-${doc.theme.name.replaceAll(' ', '-').toLowerCase()} ${fontClass} ${densityClass}`} data-accent={doc.theme.accent} onClick={() => { onSelectBlock(undefined); onOpenDocumentSettings() }}>
         {!isCover && <header className="page-header"><span>{doc.headerText || doc.subject}</span><span>{doc.kind === 'praktikum' ? 'Praktikum' : doc.kind === 'specifikacija' ? 'Projektna specifikacija' : doc.title}</span></header>}
         <main className="page-content">
