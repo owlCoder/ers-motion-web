@@ -68,11 +68,11 @@ const introPages = (): DocumentPage[] => [
   ]),
 ]
 
-const closingPages = (): DocumentPage[] => [
+const summaryPages = (): DocumentPage[] => [
   page('Sažetak: od klasičnog ka AI-native softverskom inženjerstvu', [
     text('h1', 'Sažetak: isti principi, novo razvojno okruženje'),
     text('paragraph', 'Klasični principi iz predmeta ostaju osnova i kada se u razvoj uvedu agenti. Interfejs postaje tool contract, SRP pomaže da se odvoje agentne uloge, dependency injection ima analogiju u ubrizgavanju tool/MCP kapabiliteta, a testiranje se širi eval scenarijima celog workflow-a.'),
-    table(['Software Engineering', 'AI-assisted Engineering'], [
+    table(['Softversko inženjerstvo', 'AI podržano softversko inženjerstvo'], [
       ['Interfejs', 'Tool/MCP ugovor sa jasnim ulazom i izlazom.'],
       ['Single Responsibility', 'Specijalizovana uloga/agent sa ograničenim zadatkom.'],
       ['Dependency Injection', 'Kontrolisano dodeljivanje alata i spoljnog konteksta.'],
@@ -84,23 +84,76 @@ const closingPages = (): DocumentPage[] => [
     ]),
     callout('success', 'Odgovornost ostaje kod studenta', 'AI može da ubrza analizu, implementaciju i review, ali student mora da razume zahtev, objasni arhitekturu i pokaže nezavisan dokaz da je promena ispravna.'),
   ]),
+]
+
+const literaturePages = (): DocumentPage[] => [
   page('Preporučena literatura i dokumentacija', [
     text('h1', 'Preporučena literatura i dokumentacija'),
     text('paragraph', 'Literatura služi za produbljivanje tema iz praktikuma. Preporuka je da se čita uz konkretan primer iz projekta, jer se principi najbrže usvajaju kada student može da poveže definiciju sa sopstvenim diff-om, testom ili arhitektonskom odlukom.'),
     list([
-      'Robert C. Martin — Clean Code i Clean Architecture: odgovornosti, granice i smer zavisnosti.',
-      'Git zvanična dokumentacija i GitHub vodiči: distributed version control, branching i pull request workflow.',
-      'The Scrum Guide: sprint, backlog, increment i empirijski pristup razvoju.',
-      'NUnit i Moq zvanična dokumentacija: testovi, fixtures, setup i test doubles.',
-      'Microsoft .NET dokumentacija: dependency injection, testing i arhitektura aplikacija.',
-      'Model Context Protocol dokumentacija: resources, tools, prompts i client/server arhitektura.',
-      'Zvanična dokumentacija AI klijenta koji se koristi na vežbama: projektne instrukcije, skills, agenti/subagenti i hooks.',
+      'Robert C. Martin — <i>Clean Code: A Handbook of Agile Software Craftsmanship</i>.',
+      'Robert C. Martin — <i>Clean Architecture: A Craftsman’s Guide to Software Structure and Design</i>.',
+      'Scott Chacon i Ben Straub — <i>Pro Git</i>; zvanična Git dokumentacija: <a href="https://git-scm.com/doc">git-scm.com/doc</a>.',
+      'Ken Schwaber i Jeff Sutherland — <i>The Scrum Guide</i>: <a href="https://scrumguides.org">scrumguides.org</a>.',
+      'NUnit dokumentacija: <a href="https://docs.nunit.org">docs.nunit.org</a>; Moq projekat i dokumentacija: <a href="https://github.com/devlooped/moq">github.com/devlooped/moq</a>.',
+      'Microsoft Learn — .NET dependency injection, testing i arhitektura aplikacija: <a href="https://learn.microsoft.com/dotnet/">learn.microsoft.com/dotnet</a>.',
+      'Model Context Protocol — specifikacija i koncepti resources/tools/prompts: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a>.',
+      'Zvanična dokumentacija AI razvojnog okruženja koje se koristi na vežbama; pratiti aktuelnu verziju sintakse za instrukcije, skills, agente i hooks.',
     ]),
-    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv fajla, pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model i način verifikacije.'),
+    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv fajla, treba pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model i način verifikacije.'),
   ]),
 ]
 
 const chapter = (pages: DocumentPage[], name: string) => reflowPages(pages, name)
+
+function plain(html: string) {
+  return html.replace(/<[^>]+>/g, '').trim()
+}
+
+function firstHeading(page: DocumentPage) {
+  const block = page.blocks.find((item) => item.type === 'text' && ['h1', 'h2'].includes(item.variant))
+  return block?.type === 'text' ? plain(block.html) : page.label || ''
+}
+
+function contentsPage(body: DocumentPage[]): DocumentPage {
+  const wanted = [
+    ['Uvod', 'Kako koristiti praktikum'],
+    ['Tok semestra i projekta', 'Tok semestra i projekta'],
+    ...Array.from({ length: 10 }, (_, index) => [`Vežba ${index + 1}`, `Vežba ${index + 1}`]),
+    ['Sažetak', 'Sažetak: isti principi'],
+    ['Literatura i dokumentacija', 'Preporučena literatura'],
+  ] as Array<[string, string]>
+
+  const rows = wanted.map(([label, needle]) => {
+    const index = body.findIndex((item) => firstHeading(item).startsWith(needle))
+    if (index < 0) return [label, '—']
+    const target = body[index]
+    const pageNumber = index + 3
+    return [`<a class="toc-link" href="#page-${target.id}">${label}</a>`, String(pageNumber)]
+  })
+
+  return page('Sadržaj', [
+    text('h1', 'Sadržaj'),
+    text('paragraph', 'Pregled oblasti i početnih strana. Naslovi u elektronskoj verziji vode direktno na odgovarajuće poglavlje.'),
+    table(['Oblast', 'Strana'], rows),
+  ])
+}
+
+const bodyPages = [
+  ...chapter(introPages(), 'Uvod'),
+  ...chapter(exercise1(), 'Vežba 1'),
+  ...chapter(exercise2(), 'Vežba 2'),
+  ...chapter(exercise3(), 'Vežba 3'),
+  ...chapter(exercise4(), 'Vežba 4'),
+  ...chapter(exercise5(), 'Vežba 5'),
+  ...chapter(exercise6(), 'Vežba 6'),
+  ...chapter(exercise7(), 'Vežba 7'),
+  ...chapter(exercise8(), 'Vežba 8'),
+  ...chapter(exercise9(), 'Vežba 9'),
+  ...chapter(exercise10(), 'Vežba 10'),
+  ...chapter(summaryPages(), 'Zaključak'),
+  ...chapter(literaturePages(), 'Literatura'),
+]
 
 export const practicum2026: CourseDocument = {
   version: 2,
@@ -112,21 +165,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-25T17:20:00.000Z',
+  updatedAt: '2026-08-25T20:35:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
-  pages: [
-    cover(),
-    ...chapter(introPages(), 'Uvod'),
-    ...chapter(exercise1(), 'Vežba 1'),
-    ...chapter(exercise2(), 'Vežba 2'),
-    ...chapter(exercise3(), 'Vežba 3'),
-    ...chapter(exercise4(), 'Vežba 4'),
-    ...chapter(exercise5(), 'Vežba 5'),
-    ...chapter(exercise6(), 'Vežba 6'),
-    ...chapter(exercise7(), 'Vežba 7'),
-    ...chapter(exercise8(), 'Vežba 8'),
-    ...chapter(exercise9(), 'Vežba 9'),
-    ...chapter(exercise10(), 'Vežba 10'),
-    ...chapter(closingPages(), 'Zaključak'),
-  ],
+  pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
