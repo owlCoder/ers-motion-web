@@ -1,0 +1,183 @@
+/* Word 365-inspired application shell. A4 document rendering remains isolated in document.css. */
+
+[data-ers-app-root="true"] {
+  grid-template-rows: 48px 39px 126px minmax(0, 1fr) 29px !important;
+  background: #f3f3f3 !important;
+  color: #242424;
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+}
+
+[data-ers-titlebar="true"] {
+  padding-inline: 10px 12px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #eeeeee !important;
+  box-shadow: none !important;
+}
+
+[data-ers-titlebar="true"] .fui-Button {
+  border-radius: 6px !important;
+}
+
+[data-ers-tabsbar="true"] {
+  padding-inline: 12px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  box-shadow: none !important;
+}
+
+[data-ers-tabsbar="true"] .fui-Tab {
+  min-width: auto !important;
+  min-height: 38px !important;
+  padding-inline: 10px !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+[data-ers-tabsbar="true"] .fui-Tab[aria-selected="true"] {
+  color: #0f548c !important;
+  font-weight: 650 !important;
+}
+
+[data-ers-ribbon="true"] {
+  margin: 0 6px 7px !important;
+  padding: 7px 6px 6px !important;
+  min-height: 118px !important;
+  background: #fff !important;
+  border: 1px solid #dedede !important;
+  border-top: 0 !important;
+  border-radius: 0 0 9px 9px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .055) !important;
+}
+
+[data-ers-ribbon="true"] > div {
+  border-right-color: #e9e9e9 !important;
+}
+
+[data-ers-ribbon="true"] .fui-Button,
+[data-ers-ribbon="true"] .fui-ToolbarButton {
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  transition: background-color 110ms ease, color 110ms ease, border-color 110ms ease, box-shadow 110ms ease, transform 80ms ease !important;
+}
+
+[data-ers-ribbon="true"] .fui-Button:hover,
+[data-ers-ribbon="true"] .fui-ToolbarButton:hover {
+  background: #f3f6fa !important;
+}
+
+[data-ers-ribbon="true"] .fui-Button:active,
+[data-ers-ribbon="true"] .fui-ToolbarButton:active {
+  background: #e8f0f8 !important;
+  transform: translateY(.5px);
+}
+
+[data-ers-ribbon="true"] .fui-Input,
+[data-ers-ribbon="true"] .fui-Select {
+  border-radius: 4px !important;
+}
+
+[data-ers-editor-grid="true"] {
+  background: #e7e7e7 !important;
+  border-top: 0 !important;
+}
+
+[data-ers-navigation="true"],
+[data-ers-inspector="true"] {
+  background: #fbfbfb !important;
+  color: #242424;
+}
+
+[data-ers-navigation="true"] {
+  border-right: 1px solid #d9d9d9 !important;
+  box-shadow: 1px 0 2px rgba(0, 0, 0, .025);
+}
+
+[data-ers-inspector="true"] {
+  border-left: 1px solid #d9d9d9 !important;
+  box-shadow: -1px 0 2px rgba(0, 0, 0, .025);
+}
+
+[data-ers-navigation="true"] .fui-Button,
+[data-ers-inspector="true"] .fui-Button {
+  border-radius: 5px !important;
+}
+
+[data-ers-navigation="true"] .fui-Button:hover,
+[data-ers-inspector="true"] .fui-Button:hover {
+  background: #f0f4f8 !important;
+}
+
+[data-ers-workspace="true"] {
+  background: #e8e8e8 !important;
+}
+
+[data-ers-statusbar="true"] {
+  min-height: 29px !important;
+  background: #fff !important;
+  border-top: 1px solid #d9d9d9 !important;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, .025) !important;
+  color: #555 !important;
+}
+
+[data-ers-app-root="true"] .fui-Slider input:focus-visible,
+[data-ers-app-root="true"] .fui-Button:focus-visible,
+[data-ers-app-root="true"] .fui-Tab:focus-visible {
+  outline: 2px solid rgba(15, 108, 189, .45) !important;
+  outline-offset: 1px !important;
+}
+
+[data-ers-navigation="true"]::-webkit-scrollbar,
+[data-ers-inspector="true"]::-webkit-scrollbar,
+[data-ers-workspace="true"]::-webkit-scrollbar,
+[data-ers-ribbon="true"]::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+[data-ers-navigation="true"]::-webkit-scrollbar-thumb,
+[data-ers-inspector="true"]::-webkit-scrollbar-thumb,
+[data-ers-workspace="true"]::-webkit-scrollbar-thumb,
+[data-ers-ribbon="true"]::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+
+[data-ers-navigation="true"]::-webkit-scrollbar-thumb:hover,
+[data-ers-inspector="true"]::-webkit-scrollbar-thumb:hover,
+[data-ers-workspace="true"]::-webkit-scrollbar-thumb:hover,
+[data-ers-ribbon="true"]::-webkit-scrollbar-thumb:hover {
+  background: #9f9f9f;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+[data-ers-pane-resizer="true"]::after {
+  width: 2px !important;
+  left: 3.5px !important;
+  border-radius: 2px;
+}
+
+[data-ers-pane-resizer="true"]:hover::after,
+[data-ers-pane-resizer="true"][data-dragging="true"]::after {
+  background: #0f6cbd !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-ers-navigation="true"],
+  [data-ers-inspector="true"] {
+    transition: width 150ms cubic-bezier(.2,.8,.2,1), opacity 140ms ease, transform 140ms ease !important;
+  }
+}
+
+@media print {
+  [data-ers-titlebar="true"],
+  [data-ers-tabsbar="true"],
+  [data-ers-ribbon="true"],
+  [data-ers-statusbar="true"],
+  [data-ers-pane-resizer="true"] {
+    display: none !important;
+  }
+}
