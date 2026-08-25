@@ -20,26 +20,26 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
 
   useEffect(() => {
     const check = () => {
-      const el = pageRef.current
-      if (!el) return
-      setOverflow(el.scrollHeight > el.clientHeight + 8)
+      const element = pageRef.current
+      if (!element) return
+      setOverflow(element.scrollHeight > element.clientHeight + 8)
     }
     check()
-    const ro = new ResizeObserver(check)
-    if (pageRef.current) ro.observe(pageRef.current)
-    return () => ro.disconnect()
+    const observer = new ResizeObserver(check)
+    if (pageRef.current) observer.observe(pageRef.current)
+    return () => observer.disconnect()
   }, [page.blocks, page.layout])
 
-  const updateBlock = (next: Block) => onUpdatePage({ ...page, blocks: page.blocks.map((b) => b.id === next.id ? next : b) })
-  const action = (id: string, a: BlockAction) => {
-    const index = page.blocks.findIndex((b) => b.id === id)
+  const updateBlock = (next: Block) => onUpdatePage({ ...page, blocks: page.blocks.map((block) => block.id === next.id ? next : block) })
+  const action = (id: string, actionType: BlockAction) => {
+    const index = page.blocks.findIndex((block) => block.id === id)
     if (index < 0) return
-    if (a === 'delete') {
-      onUpdatePage({ ...page, blocks: page.blocks.filter((b) => b.id !== id) })
+    if (actionType === 'delete') {
+      onUpdatePage({ ...page, blocks: page.blocks.filter((block) => block.id !== id) })
       if (selectedBlockId === id) onSelectBlock(undefined)
       return
     }
-    if (a === 'duplicate') {
+    if (actionType === 'duplicate') {
       const next = clone(page.blocks[index])
       next.id = `${next.id}-copy-${Date.now().toString(36)}`
       const blocks = [...page.blocks]
@@ -47,17 +47,17 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
       onUpdatePage({ ...page, blocks })
       return
     }
-    const to = a === 'up' ? index - 1 : index + 1
-    if (to < 0 || to >= page.blocks.length) return
+    const target = actionType === 'up' ? index - 1 : index + 1
+    if (target < 0 || target >= page.blocks.length) return
     const blocks = [...page.blocks]
-    ;[blocks[index], blocks[to]] = [blocks[to], blocks[index]]
+    ;[blocks[index], blocks[target]] = [blocks[target], blocks[index]]
     onUpdatePage({ ...page, blocks })
   }
   const insert = (type: Block['type']) => onUpdatePage({ ...page, blocks: [...page.blocks, createBlock(type)] })
   const drop = (targetId: string) => {
     if (!draggedId || draggedId === targetId) return
-    const from = page.blocks.findIndex((b) => b.id === draggedId)
-    const to = page.blocks.findIndex((b) => b.id === targetId)
+    const from = page.blocks.findIndex((block) => block.id === draggedId)
+    const to = page.blocks.findIndex((block) => block.id === targetId)
     if (from < 0 || to < 0) return
     const blocks = [...page.blocks]
     const [moved] = blocks.splice(from, 1)
@@ -77,12 +77,12 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
         <main className="page-content">
           {page.blocks.map((block) => readonly
             ? <div key={block.id} className="readonly-block"><BlockView block={block} selected={false} onSelect={() => {}} onUpdate={() => {}} onAction={() => {}} onDragStart={() => {}} onDrop={() => {}} /></div>
-            : <BlockView key={block.id} block={block} selected={selectedBlockId === block.id} onSelect={() => onSelectBlock(block.id)} onUpdate={updateBlock} onAction={(a) => action(block.id, a)} onDragStart={(e) => { setDraggedId(block.id); e.dataTransfer.effectAllowed = 'move' }} onDrop={(e) => { e.preventDefault(); drop(block.id) }} />
+            : <BlockView key={block.id} block={block} selected={selectedBlockId === block.id} onSelect={() => onSelectBlock(block.id)} onUpdate={updateBlock} onAction={(blockAction) => action(block.id, blockAction)} onDragStart={(event) => { setDraggedId(block.id); event.dataTransfer.effectAllowed = 'move' }} onDrop={(event) => { event.preventDefault(); drop(block.id) }} />
           )}
           {!readonly && <MiniInsertBar onInsert={insert} />}
         </main>
         {!isCover && <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>}
-        {overflow && !readonly && <div className="overflow-warning no-print">Sadržaj prelazi granicu stranice</div>}
+        {overflow && !readonly && <div className="overflow-warning no-print">Content exceeds the page boundary</div>}
       </section>
     </div>
   )
