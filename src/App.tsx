@@ -50,77 +50,33 @@ const useStyles = makeStyles({
     color: tokens.colorNeutralForeground1,
   },
   titlebar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 12px 0 10px',
-    backgroundColor: '#ffffff',
-    borderBottom: '1px solid #ececec',
-    position: 'relative',
-    zIndex: 40,
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px 0 10px',
+    backgroundColor: '#ffffff', borderBottom: '1px solid #ececec', position: 'relative', zIndex: 40,
   },
   titleLeft: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 },
   titleRight: { display: 'flex', alignItems: 'center', gap: '3px' },
   appIcon: {
-    width: '28px',
-    height: '28px',
-    display: 'grid',
-    placeItems: 'center',
-    borderRadius: '4px',
-    backgroundColor: '#185abd',
-    color: '#fff',
-    fontWeight: 700,
-    fontSize: '14px',
-    boxShadow: 'inset 0 0 0 1px rgba(0,0,0,.04)',
+    width: '28px', height: '28px', display: 'grid', placeItems: 'center', borderRadius: '4px',
+    backgroundColor: '#185abd', color: '#fff', fontWeight: 700, fontSize: '14px', boxShadow: 'inset 0 0 0 1px rgba(0,0,0,.04)',
   },
   appName: { color: '#174ea6', fontWeight: 600, whiteSpace: 'nowrap', marginRight: '14px' },
   docTitleTop: {
-    minWidth: 0,
-    maxWidth: '520px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '7px',
-    paddingLeft: '14px',
-    borderLeft: '1px solid #e7e7e7',
+    minWidth: 0, maxWidth: '520px', display: 'flex', alignItems: 'center', gap: '7px',
+    paddingLeft: '14px', borderLeft: '1px solid #e7e7e7',
   },
   docTitleText: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   savedState: { display: 'flex', alignItems: 'center', gap: '6px', color: '#4d4d4d', marginRight: '8px' },
   savedDot: { width: '16px', height: '16px', borderRadius: '50%', border: '1.5px solid #2e7d32', color: '#2e7d32', display: 'grid', placeItems: 'center', fontSize: '10px', lineHeight: 1 },
   avatar: { width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#0f6cbd', color: '#fff', display: 'grid', placeItems: 'center', fontSize: '12px', fontWeight: 700, marginLeft: '5px' },
 
-  tabsBar: {
-    display: 'flex',
-    alignItems: 'end',
-    padding: '0 12px',
-    backgroundColor: '#fff',
-    borderBottom: '1px solid #e5e5e5',
-    position: 'relative',
-    zIndex: 35,
-  },
+  tabsBar: { display: 'flex', alignItems: 'end', padding: '0 12px', backgroundColor: '#fff', borderBottom: '1px solid #e5e5e5', position: 'relative', zIndex: 35 },
   tabs: { minHeight: '37px' },
 
   ribbon: {
-    display: 'flex',
-    alignItems: 'stretch',
-    gap: 0,
-    padding: '7px 10px 6px',
-    backgroundColor: '#fff',
-    borderBottom: '1px solid #dcdcdc',
-    boxShadow: '0 2px 4px rgba(0,0,0,.04)',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    position: 'relative',
-    zIndex: 30,
+    display: 'flex', alignItems: 'stretch', gap: 0, padding: '7px 10px 6px', backgroundColor: '#fff',
+    borderBottom: '1px solid #dcdcdc', boxShadow: '0 2px 4px rgba(0,0,0,.04)', overflowX: 'auto', overflowY: 'hidden', position: 'relative', zIndex: 30,
   },
-  ribbonGroup: {
-    minWidth: '112px',
-    height: '88px',
-    display: 'grid',
-    gridTemplateRows: '1fr 18px',
-    padding: '0 9px',
-    borderRight: '1px solid #e8e8e8',
-    animationDuration: '120ms',
-  },
+  ribbonGroup: { minWidth: '112px', height: '88px', display: 'grid', gridTemplateRows: '1fr 18px', padding: '0 9px', borderRight: '1px solid #e8e8e8' },
   ribbonGroupWide: { minWidth: '220px' },
   ribbonGroupBody: { display: 'flex', alignItems: 'center', gap: '4px', minHeight: 0 },
   ribbonGroupBodyWrap: { display: 'flex', flexWrap: 'wrap', alignContent: 'center', gap: '3px', minHeight: 0 },
@@ -129,37 +85,15 @@ const useStyles = makeStyles({
   ribbonSmallButton: { minWidth: '32px', height: '30px', padding: '0 8px' },
   ribbonSelect: { width: '112px' },
   styleCard: {
-    height: '54px',
-    minWidth: '92px',
-    border: '1px solid #d8d8d8',
-    borderRadius: '2px',
-    background: '#fff',
-    padding: '6px 10px',
-    textAlign: 'left',
-    cursor: 'pointer',
-    transitionProperty: 'background, border-color, box-shadow, transform',
-    transitionDuration: '120ms',
-    ':hover': { background: '#f5f9ff', borderColor: '#aac7e9', boxShadow: '0 1px 2px rgba(0,0,0,.06)' },
-    ':active': { transform: 'translateY(1px)' },
+    height: '54px', minWidth: '92px', border: '1px solid #d8d8d8', borderRadius: '2px', background: '#fff', padding: '6px 10px', textAlign: 'left', cursor: 'pointer',
+    transitionProperty: 'background, border-color, box-shadow, transform', transitionDuration: '120ms',
+    ':hover': { background: '#f5f9ff', borderColor: '#aac7e9', boxShadow: '0 1px 2px rgba(0,0,0,.06)' }, ':active': { transform: 'translateY(1px)' },
   },
   styleCardTitle: { display: 'block', color: '#222', fontSize: '15px', lineHeight: 1.15 },
   styleCardMeta: { display: 'block', color: '#777', fontSize: '9px', marginTop: '3px' },
 
-  editorGrid: {
-    minHeight: 0,
-    display: 'grid',
-    transitionProperty: 'grid-template-columns',
-    transitionDuration: '180ms',
-    transitionTimingFunction: 'cubic-bezier(.2,.8,.2,1)',
-  },
-  sidebar: {
-    minWidth: 0,
-    overflow: 'hidden auto',
-    backgroundColor: '#fff',
-    borderRight: '1px solid #dddddd',
-    transitionProperty: 'opacity, transform',
-    transitionDuration: '160ms',
-  },
+  editorGrid: { minHeight: 0, display: 'grid', transitionProperty: 'grid-template-columns', transitionDuration: '180ms', transitionTimingFunction: 'cubic-bezier(.2,.8,.2,1)' },
+  sidebar: { minWidth: 0, overflow: 'hidden auto', backgroundColor: '#fff', borderRight: '1px solid #dddddd', transitionProperty: 'opacity, transform', transitionDuration: '160ms' },
   sidebarHidden: { opacity: 0, transform: 'translateX(-8px)', pointerEvents: 'none' },
   paneHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 12px 7px' },
   paneHeaderStack: { display: 'flex', flexDirection: 'column', gap: '1px' },
@@ -179,63 +113,19 @@ const useStyles = makeStyles({
   outlineNumber: { width: '22px', flex: '0 0 22px', color: '#8a8a8a', fontVariantNumeric: 'tabular-nums' },
 
   workspace: { minWidth: 0, minHeight: 0, display: 'grid', gridTemplateRows: '24px minmax(0,1fr)', backgroundColor: '#e9e9e9', position: 'relative' },
-  rulerTop: {
-    position: 'relative',
-    backgroundColor: '#f9f9f9',
-    borderBottom: '1px solid #d6d6d6',
-    overflow: 'hidden',
-  },
-  rulerTrack: {
-    width: '794px',
-    height: '100%',
-    margin: '0 auto',
-    position: 'relative',
-    backgroundImage: 'repeating-linear-gradient(to right, transparent 0, transparent 37px, #bdbdbd 38px, transparent 39px)',
-    backgroundSize: 'auto 100%',
-    color: '#777',
-    fontSize: '8px',
-  },
+  rulerTop: { position: 'relative', backgroundColor: '#f9f9f9', borderBottom: '1px solid #d6d6d6', overflow: 'hidden' },
+  rulerTrack: { width: '794px', height: '100%', margin: '0 auto', position: 'relative', backgroundImage: 'repeating-linear-gradient(to right, transparent 0, transparent 37px, #bdbdbd 38px, transparent 39px)', color: '#777', fontSize: '8px' },
   rulerNumbers: { display: 'flex', justifyContent: 'space-between', padding: '2px 4px 0', opacity: .8 },
   canvas: { minHeight: 0, overflow: 'auto', scrollBehavior: 'smooth', backgroundColor: '#d9d9d9', position: 'relative' },
-  verticalRuler: {
-    position: 'sticky',
-    left: 0,
-    top: 0,
-    float: 'left',
-    width: '24px',
-    height: '1123px',
-    marginTop: '28px',
-    marginRight: '-24px',
-    zIndex: 3,
-    backgroundColor: '#f9f9f9',
-    borderRight: '1px solid #d6d6d6',
-    backgroundImage: 'repeating-linear-gradient(to bottom, transparent 0, transparent 37px, #bdbdbd 38px, transparent 39px)',
-    pointerEvents: 'none',
-  },
+  verticalRuler: { position: 'sticky', left: 0, top: 0, float: 'left', width: '24px', height: '1123px', marginTop: '28px', marginRight: '-24px', zIndex: 3, backgroundColor: '#f9f9f9', borderRight: '1px solid #d6d6d6', backgroundImage: 'repeating-linear-gradient(to bottom, transparent 0, transparent 37px, #bdbdbd 38px, transparent 39px)', pointerEvents: 'none' },
   documentStack: { width: 'max-content', minWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '26px', padding: '28px 44px 70px' },
   pageItem: { flex: '0 0 auto', borderRadius: '2px', transitionProperty: 'filter, transform', transitionDuration: '140ms' },
   activePage: { filter: 'drop-shadow(0 0 0 rgba(0,0,0,0))' },
 
-  inspectorWrap: {
-    minWidth: 0,
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    borderLeft: '1px solid #dddddd',
-    transitionProperty: 'opacity, transform',
-    transitionDuration: '160ms',
-  },
+  inspectorWrap: { minWidth: 0, overflow: 'hidden', backgroundColor: '#fff', borderLeft: '1px solid #dddddd', transitionProperty: 'opacity, transform', transitionDuration: '160ms' },
   inspectorHidden: { opacity: 0, transform: 'translateX(8px)', pointerEvents: 'none' },
 
-  statusbar: {
-    display: 'grid',
-    gridTemplateColumns: '280px minmax(0,1fr) 340px',
-    alignItems: 'center',
-    height: '30px',
-    backgroundColor: '#fff',
-    borderTop: '1px solid #dddddd',
-    fontSize: '11px',
-    color: '#555',
-  },
+  statusbar: { display: 'grid', alignItems: 'center', height: '30px', backgroundColor: '#fff', borderTop: '1px solid #dddddd', fontSize: '11px', color: '#555' },
   statusLeft: { display: 'flex', alignItems: 'center', gap: '16px', paddingLeft: '14px', minWidth: 0 },
   statusCenter: { display: 'flex', alignItems: 'center', gap: '18px', paddingLeft: '16px', minWidth: 0 },
   statusRight: { display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px', paddingRight: '12px' },
@@ -366,9 +256,7 @@ export default function App() {
   const selectedBlock = useMemo(() => currentPage?.blocks.find((block) => block.id === selectedBlockId), [currentPage, selectedBlockId])
   const outline = useMemo(() => {
     if (!doc) return []
-    return doc.pages
-      .map((page, index) => ({ page, index, title: pageOutlineTitle(page, index) }))
-      .filter(({ page, index }) => index === 0 || page.blocks.some((block) => block.type === 'text' && block.variant === 'h1'))
+    return doc.pages.map((page, index) => ({ page, index, title: pageOutlineTitle(page, index) })).filter(({ page, index }) => index === 0 || page.blocks.some((block) => block.type === 'text' && block.variant === 'h1'))
   }, [doc])
   const wordCount = useMemo(() => {
     if (!doc) return 0
@@ -498,20 +386,18 @@ export default function App() {
     window.setTimeout(() => scrollToPage(to, 'auto'), 20)
   }
 
-  if (!doc || !currentPage) {
-    return <div style={{ height: '100vh', display: 'grid', placeItems: 'center', background: '#f3f3f3' }}><Text size={400}>Opening ERS Studio…</Text></div>
-  }
+  if (!doc || !currentPage) return <div style={{ height: '100vh', display: 'grid', placeItems: 'center', background: '#f3f3f3' }}><Text size={400}>Opening ERS Studio…</Text></div>
 
   const editorColumns = `${sidebarOpen ? '270px' : '0px'} minmax(0,1fr) ${inspectorOpen ? '310px' : '0px'}`
-  const statusColumns = `${sidebarOpen ? '270px' : '0px'} minmax(0,1fr) ${inspectorOpen ? '310px' : '0px'}`
+  const statusColumns = editorColumns
 
   const ribbonHome = <>
     <div className={styles.ribbonGroup}>
       <div className={styles.ribbonGroupBody}>
-        <Button appearance="subtle" className={mergeClasses(styles.ribbonBigButton)} icon={<Icon name="save" size={22} />} onClick={() => saveDocumentToDisk(doc)}>Paste</Button>
+        <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="note" size={22} />} onClick={() => notify('Use Ctrl+V / Cmd+V to paste into the selected text.', 'info')}>Paste</Button>
         <div className={styles.ribbonGroupBodyWrap}>
-          <Button appearance="subtle" size="small" className={mergeClasses(styles.ribbonSmallButton)} onClick={() => document.execCommand('cut')}>Cut</Button>
-          <Button appearance="subtle" size="small" className={mergeClasses(styles.ribbonSmallButton)} onClick={() => document.execCommand('copy')}>Copy</Button>
+          <Button appearance="subtle" size="small" className={styles.ribbonSmallButton} onClick={() => document.execCommand('cut')}>Cut</Button>
+          <Button appearance="subtle" size="small" className={styles.ribbonSmallButton} onClick={() => document.execCommand('copy')}>Copy</Button>
         </div>
       </div>
       <span className={styles.ribbonGroupLabel}>Clipboard</span>
@@ -549,9 +435,8 @@ export default function App() {
     </div>
     <div className={styles.ribbonGroup}>
       <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" className={styles.ribbonSmallButton}>Find</Button>
-        <Button appearance="subtle" className={styles.ribbonSmallButton}>Replace</Button>
-        <Button appearance="subtle" className={styles.ribbonSmallButton} onClick={() => setInspectorOpen(true)}>Select</Button>
+        <Button appearance="subtle" className={styles.ribbonSmallButton} onClick={() => setInspectorOpen(true)}>Properties</Button>
+        <Button appearance="subtle" className={styles.ribbonSmallButton} onClick={() => setSelectedBlockId(undefined)}>Clear selection</Button>
       </div>
       <span className={styles.ribbonGroupLabel}>Editing</span>
     </div>
@@ -560,78 +445,30 @@ export default function App() {
   const ribbonInsert = <>
     <div className={mergeClasses(styles.ribbonGroup, styles.ribbonGroupWide)}>
       <div className={styles.ribbonGroupBodyWrap}>
-        {([
-          ['text', 'Text'], ['list', 'List'], ['code', 'Code'], ['callout', 'Callout'], ['table', 'Table'], ['diagram', 'Diagram'], ['image', 'Image'], ['institution', 'Institution'], ['divider', 'Divider'],
-        ] as Array<[Block['type'], string]>).map(([type, label]) => <Button key={type} appearance="subtle" className={styles.ribbonSmallButton} onClick={() => insertBlock(type)}>{label}</Button>)}
+        {([['text', 'Text'], ['list', 'List'], ['code', 'Code'], ['callout', 'Callout'], ['table', 'Table'], ['diagram', 'Diagram'], ['image', 'Image'], ['institution', 'Institution'], ['divider', 'Divider']] as Array<[Block['type'], string]>).map(([type, label]) => <Button key={type} appearance="subtle" className={styles.ribbonSmallButton} onClick={() => insertBlock(type)}>{label}</Button>)}
       </div>
       <span className={styles.ribbonGroupLabel}>Content blocks</span>
     </div>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" onClick={addPage}>New page</Button>
-        <Button appearance="subtle" onClick={duplicatePage}>Duplicate</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Pages</span>
-    </div>
+    <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance="subtle" onClick={addPage}>New page</Button><Button appearance="subtle" onClick={duplicatePage}>Duplicate</Button></div><span className={styles.ribbonGroupLabel}>Pages</span></div>
   </>
 
-  const ribbonFile = <>
-    <div className={mergeClasses(styles.ribbonGroup, styles.ribbonGroupWide)}>
-      <div className={styles.ribbonGroupBody}>
-        <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="plus" size={22} />} onClick={newDoc}>New</Button>
-        <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="open" size={22} />} onClick={openFromDisk}>Open</Button>
-        <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="save" size={22} />} onClick={() => saveDocumentToDisk(doc)}>Save as</Button>
-        <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="print" size={22} />} onClick={() => window.print()}>PDF</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Document</span>
-    </div>
-  </>
+  const ribbonFile = <div className={mergeClasses(styles.ribbonGroup, styles.ribbonGroupWide)}><div className={styles.ribbonGroupBody}>
+    <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="plus" size={22} />} onClick={newDoc}>New</Button>
+    <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="open" size={22} />} onClick={openFromDisk}>Open</Button>
+    <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="save" size={22} />} onClick={() => saveDocumentToDisk(doc)}>Save as</Button>
+    <Button appearance="subtle" className={styles.ribbonBigButton} icon={<Icon name="print" size={22} />} onClick={() => window.print()}>PDF</Button>
+  </div><span className={styles.ribbonGroupLabel}>Document</span></div>
 
   const ribbonLayout = <>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" onClick={() => movePage(-1)} disabled={pageIndex === 0}>Move up</Button>
-        <Button appearance="subtle" onClick={() => movePage(1)} disabled={pageIndex === doc.pages.length - 1}>Move down</Button>
-        <Button appearance="subtle" onClick={() => setDeleteTarget('page')} disabled={doc.pages.length <= 1}>Delete page</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Page order</span>
-    </div>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" onClick={() => setZoom(.75)}>75%</Button>
-        <Button appearance="subtle" onClick={() => setZoom(1)}>100%</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Scale</span>
-    </div>
+    <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance="subtle" onClick={() => movePage(-1)} disabled={pageIndex === 0}>Move up</Button><Button appearance="subtle" onClick={() => movePage(1)} disabled={pageIndex === doc.pages.length - 1}>Move down</Button><Button appearance="subtle" onClick={() => setDeleteTarget('page')} disabled={doc.pages.length <= 1}>Delete page</Button></div><span className={styles.ribbonGroupLabel}>Page order</span></div>
+    <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance="subtle" onClick={() => setZoom(.75)}>75%</Button><Button appearance="subtle" onClick={() => setZoom(1)}>100%</Button></div><span className={styles.ribbonGroupLabel}>Scale</span></div>
   </>
 
-  const ribbonReview = <>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" onClick={() => setInspectorOpen(true)}>Properties</Button>
-        <Button appearance="subtle" onClick={() => setPresenting(true)}>Preview</Button>
-        <Button appearance="subtle" onClick={() => window.print()}>Print preview</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Review</span>
-    </div>
-  </>
+  const ribbonReview = <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance="subtle" onClick={() => setInspectorOpen(true)}>Properties</Button><Button appearance="subtle" onClick={() => setPresenting(true)}>Preview</Button><Button appearance="subtle" onClick={() => window.print()}>Print preview</Button></div><span className={styles.ribbonGroupLabel}>Review</span></div>
 
   const ribbonView = <>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance={sidebarOpen ? 'secondary' : 'subtle'} onClick={() => setSidebarOpen((value) => !value)}>Navigation</Button>
-        <Button appearance={inspectorOpen ? 'secondary' : 'subtle'} onClick={() => setInspectorOpen((value) => !value)}>Inspector</Button>
-        <Button appearance="subtle" onClick={() => setPresenting(true)}>Focus</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Show</span>
-    </div>
-    <div className={styles.ribbonGroup}>
-      <div className={styles.ribbonGroupBodyWrap}>
-        <Button appearance="subtle" onClick={() => setZoom((value) => Math.max(.55, +(value - .08).toFixed(2)))}>Zoom out</Button>
-        <Button appearance="subtle" onClick={() => setZoom((value) => Math.min(1.1, +(value + .08).toFixed(2)))}>Zoom in</Button>
-      </div>
-      <span className={styles.ribbonGroupLabel}>Zoom</span>
-    </div>
+    <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance={sidebarOpen ? 'secondary' : 'subtle'} onClick={() => setSidebarOpen((value) => !value)}>Navigation</Button><Button appearance={inspectorOpen ? 'secondary' : 'subtle'} onClick={() => setInspectorOpen((value) => !value)}>Inspector</Button><Button appearance="subtle" onClick={() => setPresenting(true)}>Focus</Button></div><span className={styles.ribbonGroupLabel}>Show</span></div>
+    <div className={styles.ribbonGroup}><div className={styles.ribbonGroupBodyWrap}><Button appearance="subtle" onClick={() => setZoom((value) => Math.max(.55, +(value - .08).toFixed(2)))}>Zoom out</Button><Button appearance="subtle" onClick={() => setZoom((value) => Math.min(1.1, +(value + .08).toFixed(2)))}>Zoom in</Button></div><span className={styles.ribbonGroupLabel}>Zoom</span></div>
   </>
 
   const ribbonContent = ribbonTab === 'file' ? ribbonFile : ribbonTab === 'insert' ? ribbonInsert : ribbonTab === 'layout' ? ribbonLayout : ribbonTab === 'review' ? ribbonReview : ribbonTab === 'view' ? ribbonView : ribbonHome
@@ -641,13 +478,8 @@ export default function App() {
       <header className={mergeClasses(styles.titlebar, styles.noPrint)}>
         <div className={styles.titleLeft}>
           <Tooltip content={sidebarOpen ? 'Hide navigation' : 'Show navigation'} relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="menu" size={17} />} onClick={() => setSidebarOpen((value) => !value)} /></Tooltip>
-          <span className={styles.appIcon}>E</span>
-          <Text className={styles.appName}>ERS Studio</Text>
-          <div className={styles.docTitleTop}>
-            <Badge appearance="tint" color="brand">{kindLabel(doc.kind)}</Badge>
-            <Text className={styles.docTitleText} weight="semibold">{doc.title}</Text>
-            <Icon name="down" size={13} />
-          </div>
+          <span className={styles.appIcon}>E</span><Text className={styles.appName}>ERS Studio</Text>
+          <div className={styles.docTitleTop}><Badge appearance="tint" color="brand">{kindLabel(doc.kind)}</Badge><Text className={styles.docTitleText} weight="semibold">{doc.title}</Text><Icon name="down" size={13} /></div>
         </div>
         <div className={styles.titleRight}>
           <span className={styles.savedState}><span className={styles.savedDot}>✓</span><Caption1>{status}</Caption1></span>
@@ -660,77 +492,41 @@ export default function App() {
         </div>
       </header>
 
-      <div className={mergeClasses(styles.tabsBar, styles.noPrint)}>
-        <TabList className={styles.tabs} selectedValue={ribbonTab} onTabSelect={(_, data) => setRibbonTab(String(data.value) as RibbonTab)}>
-          <Tab value="file">File</Tab><Tab value="home">Home</Tab><Tab value="insert">Insert</Tab><Tab value="layout">Layout</Tab><Tab value="review">Review</Tab><Tab value="view">View</Tab>
-        </TabList>
-      </div>
-
+      <div className={mergeClasses(styles.tabsBar, styles.noPrint)}><TabList className={styles.tabs} selectedValue={ribbonTab} onTabSelect={(_, data) => setRibbonTab(String(data.value) as RibbonTab)}><Tab value="file">File</Tab><Tab value="home">Home</Tab><Tab value="insert">Insert</Tab><Tab value="layout">Layout</Tab><Tab value="review">Review</Tab><Tab value="view">View</Tab></TabList></div>
       <div className={mergeClasses(styles.ribbon, styles.noPrint)}>{ribbonContent}</div>
 
       <div className={styles.editorGrid} style={{ gridTemplateColumns: editorColumns }}>
         <aside className={mergeClasses(styles.sidebar, !sidebarOpen && styles.sidebarHidden, styles.noPrint)}>
           <div className={styles.paneHeader}><span className={styles.paneHeaderStack}><Text className={styles.paneSectionTitle}>Documents</Text><Caption1 className={styles.paneSubtle}>{library.length} saved locally</Caption1></span><Tooltip content="New document" relationship="label"><Button appearance="subtle" size="small" icon={<Icon name="plus" size={14} />} onClick={newDoc} /></Tooltip></div>
-          <div className={styles.library}>
-            {library.map((entry) => <Button key={entry.id} appearance="subtle" className={entry.id === doc.id ? styles.libraryItemActive : styles.libraryItem} onClick={() => loadDoc(entry.id)} icon={<Icon name="file" size={17} />}>
-              <span className={styles.libraryText}><Text className={styles.truncate} weight="semibold">{entry.title}</Text><Caption1>{kindLabel(entry.kind)} · {new Date(entry.updatedAt).toLocaleDateString()}</Caption1></span>
-            </Button>)}
-          </div>
-          <div className={styles.docTools}>
-            <Button appearance="subtle" className={styles.leftAction} icon={<Icon name="copy" size={14} />} onClick={duplicateDoc}>Duplicate</Button>
-            <Button appearance="subtle" className={styles.leftAction} icon={<Icon name="undo" size={14} />} onClick={restoreSeeds}>Restore bundled version</Button>
-            <Button appearance="subtle" className={mergeClasses(styles.leftAction, styles.destructive)} icon={<Icon name="trash" size={14} />} onClick={() => setDeleteTarget('document')}>Delete document</Button>
-          </div>
+          <div className={styles.library}>{library.map((entry) => <Button key={entry.id} appearance="subtle" className={entry.id === doc.id ? styles.libraryItemActive : styles.libraryItem} onClick={() => loadDoc(entry.id)} icon={<Icon name="file" size={17} />}><span className={styles.libraryText}><Text className={styles.truncate} weight="semibold">{entry.title}</Text><Caption1>{kindLabel(entry.kind)} · {new Date(entry.updatedAt).toLocaleDateString()}</Caption1></span></Button>)}</div>
+          <div className={styles.docTools}><Button appearance="subtle" className={styles.leftAction} icon={<Icon name="copy" size={14} />} onClick={duplicateDoc}>Duplicate</Button><Button appearance="subtle" className={styles.leftAction} icon={<Icon name="undo" size={14} />} onClick={restoreSeeds}>Restore bundled version</Button><Button appearance="subtle" className={mergeClasses(styles.leftAction, styles.destructive)} icon={<Icon name="trash" size={14} />} onClick={() => setDeleteTarget('document')}>Delete document</Button></div>
           <Divider />
           <div className={styles.paneHeader}><span className={styles.paneHeaderStack}><Text className={styles.paneSectionTitle}>Document outline</Text><Caption1 className={styles.paneSubtle}>Jump to a section</Caption1></span></div>
-          <nav className={styles.outline}>
-            {outline.map(({ page, index, title }) => <Button key={page.id} appearance="subtle" className={index === pageIndex ? styles.outlineItemActive : styles.outlineItem} onClick={() => scrollToPage(index)}>
-              <span className={styles.outlineNumber}>{index + 1}</span><span className={styles.truncate}>{title}</span>
-            </Button>)}
-          </nav>
+          <nav className={styles.outline}>{outline.map(({ page, index, title }) => <Button key={page.id} appearance="subtle" className={index === pageIndex ? styles.outlineItemActive : styles.outlineItem} onClick={() => scrollToPage(index)}><span className={styles.outlineNumber}>{index + 1}</span><span className={styles.truncate}>{title}</span></Button>)}</nav>
         </aside>
 
         <main className={styles.workspace}>
           <div className={mergeClasses(styles.rulerTop, styles.noPrint)}><div className={styles.rulerTrack}><div className={styles.rulerNumbers}>{Array.from({ length: 11 }, (_, index) => <span key={index}>{index}</span>)}</div></div></div>
           <div ref={canvasRef} className={styles.canvas} onClick={() => { setSelectedBlockId(undefined); setInspectorOpen(true) }}>
             <div className={mergeClasses(styles.verticalRuler, styles.noPrint)} />
-            <div className={styles.documentStack}>
-              {doc.pages.map((page, index) => <div key={page.id} ref={(element) => { pageRefs.current[index] = element }} data-page-index={index} className={mergeClasses(styles.pageItem, index === pageIndex && styles.activePage)} onMouseDown={() => setPageIndex(index)}>
-                <div style={{ zoom }}>
-                  <PageCanvas doc={doc} page={page} pageIndex={index} selectedBlockId={index === pageIndex ? selectedBlockId : undefined} onSelectBlock={(id) => { setPageIndex(index); setSelectedBlockId(id); if (id) setInspectorOpen(true) }} onUpdatePage={(next) => updatePageAt(index, next)} onOpenDocumentSettings={() => { setPageIndex(index); setInspectorOpen(true) }} />
-                </div>
-              </div>)}
-            </div>
+            <div className={styles.documentStack}>{doc.pages.map((page, index) => <div key={page.id} ref={(element) => { pageRefs.current[index] = element }} data-page-index={index} className={mergeClasses(styles.pageItem, index === pageIndex && styles.activePage)} onMouseDown={() => setPageIndex(index)}><div style={{ zoom }}><PageCanvas doc={doc} page={page} pageIndex={index} selectedBlockId={index === pageIndex ? selectedBlockId : undefined} onSelectBlock={(id) => { setPageIndex(index); setSelectedBlockId(id); if (id) setInspectorOpen(true) }} onUpdatePage={(next) => updatePageAt(index, next)} onOpenDocumentSettings={() => { setPageIndex(index); setInspectorOpen(true) }} /></div></div>)}</div>
           </div>
         </main>
 
-        <div className={mergeClasses(styles.inspectorWrap, !inspectorOpen && styles.inspectorHidden, styles.noPrint)}>
-          <Inspector doc={doc} block={selectedBlock} onDocumentChange={patchDoc} onBlockChange={updateBlock} onClose={() => setInspectorOpen(false)} />
-        </div>
+        <div className={mergeClasses(styles.inspectorWrap, !inspectorOpen && styles.inspectorHidden, styles.noPrint)}><Inspector doc={doc} block={selectedBlock} onDocumentChange={patchDoc} onBlockChange={updateBlock} onClose={() => setInspectorOpen(false)} /></div>
       </div>
 
       <div className={mergeClasses(styles.statusbar, styles.noPrint)} style={{ gridTemplateColumns: statusColumns }}>
         <div className={styles.statusLeft}><span>Page {pageIndex + 1} of {doc.pages.length}</span><span>{wordCount.toLocaleString()} words</span></div>
         <div className={styles.statusCenter}><span className={styles.statusSaved}><span className={styles.greenDot} />{status}</span><span>Language: Auto</span><span>{pageLabel(currentPage, pageIndex)}</span></div>
-        <div className={styles.statusRight}><span>{Math.round(zoom * 100)}%</span><button aria-label="Zoom" className={styles.zoomRange as unknown as string} style={{ display: 'none' }} /><input className={styles.zoomRange} aria-label="Zoom" type="range" min="55" max="110" value={Math.round(zoom * 100)} onChange={(event) => setZoom(Number(event.target.value) / 100)} /><Button appearance="subtle" size="small" onClick={() => setZoom((value) => Math.max(.55, +(value - .05).toFixed(2)))}>−</Button><Button appearance="subtle" size="small" onClick={() => setZoom((value) => Math.min(1.1, +(value + .05).toFixed(2)))}>+</Button></div>
+        <div className={styles.statusRight}><span>{Math.round(zoom * 100)}%</span><input className={styles.zoomRange} aria-label="Zoom" type="range" min="55" max="110" value={Math.round(zoom * 100)} onChange={(event) => setZoom(Number(event.target.value) / 100)} /><Button appearance="subtle" size="small" onClick={() => setZoom((value) => Math.max(.55, +(value - .05).toFixed(2)))}>−</Button><Button appearance="subtle" size="small" onClick={() => setZoom((value) => Math.min(1.1, +(value + .05).toFixed(2)))}>+</Button></div>
       </div>
 
-      <div className={mergeClasses(styles.printOnly, styles.printDocument)}>
-        {doc.pages.map((page, index) => <PageCanvas key={page.id} doc={doc} page={page} pageIndex={index} selectedBlockId={undefined} onSelectBlock={() => {}} onUpdatePage={() => {}} onOpenDocumentSettings={() => {}} readonly />)}
-      </div>
-
+      <div className={mergeClasses(styles.printOnly, styles.printDocument)}>{doc.pages.map((page, index) => <PageCanvas key={page.id} doc={doc} page={page} pageIndex={index} selectedBlockId={undefined} onSelectBlock={() => {}} onUpdatePage={() => {}} onOpenDocumentSettings={() => {}} readonly />)}</div>
       {presenting && <Presentation doc={doc} startPage={pageIndex} onClose={() => setPresenting(false)} />}
       <Toaster toasterId={toasterId} position="top-end" />
 
-      <Dialog open={deleteTarget !== null} onOpenChange={(_, data) => { if (!data.open) setDeleteTarget(null) }}>
-        <DialogSurface>
-          <DialogBody>
-            <DialogTitle>{deleteTarget === 'document' ? 'Delete document?' : 'Delete page?'}</DialogTitle>
-            <DialogContent><Text className={styles.dialogText}>{deleteTarget === 'document' ? `“${doc.title}” will be removed from the local library. This action cannot be undone.` : `Page ${pageIndex + 1} will be permanently removed from this document.`}</Text></DialogContent>
-            <DialogActions><Button appearance="secondary" onClick={() => setDeleteTarget(null)}>Cancel</Button><Button appearance="primary" onClick={() => deleteTarget === 'document' ? confirmRemoveDoc() : confirmDeletePage()}>Delete</Button></DialogActions>
-          </DialogBody>
-        </DialogSurface>
-      </Dialog>
+      <Dialog open={deleteTarget !== null} onOpenChange={(_, data) => { if (!data.open) setDeleteTarget(null) }}><DialogSurface><DialogBody><DialogTitle>{deleteTarget === 'document' ? 'Delete document?' : 'Delete page?'}</DialogTitle><DialogContent><Text className={styles.dialogText}>{deleteTarget === 'document' ? `“${doc.title}” will be removed from the local library. This action cannot be undone.` : `Page ${pageIndex + 1} will be permanently removed from this document.`}</Text></DialogContent><DialogActions><Button appearance="secondary" onClick={() => setDeleteTarget(null)}>Cancel</Button><Button appearance="primary" onClick={() => deleteTarget === 'document' ? confirmRemoveDoc() : confirmDeletePage()}>Delete</Button></DialogActions></DialogBody></DialogSurface></Dialog>
     </div>
   )
 }
