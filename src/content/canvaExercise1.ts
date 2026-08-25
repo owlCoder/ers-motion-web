@@ -24,7 +24,7 @@ export const exercise1 = (): DocumentPage[] => [
   page('1.2. Zamenjive implementacije', [
     text('h2', '1.2. Zamenjive implementacije: primer pretraživača'),
     text('paragraph', 'Drugi primer demonstrira zamenjive strategije pretrage preko ugovora `IPretrazivac`. Dve implementacije mogu da obilaze listu različitim redosledom, ali moraju poštovati isto značenje ulaza i rezultata. Primer direktno priprema teren za Liskov Substitution Principle: zamena implementacije ne sme da promeni očekivanja klijentskog koda.'),
-    code('csharp', `public interface IPretrazivac\n{\n    int Pretraga(string pojam, string[] lista);\n}\n\npublic static int Prebroj(IPretrazivac pretrazivac, string pojam, string[] lista)\n    => pretrazivac.Pretraga(pojam, lista);`, 'Klijent zavisi od ugovora'),
+    code('csharp', `public interface IPretrazivac\n{\n    int Pretraga(string pojam, string[] lista);\n}\n\npublic static class PrimerPretrage\n{\n    public static int Prebroj(\n        IPretrazivac pretrazivac,\n        string pojam,\n        string[] lista)\n        => pretrazivac.Pretraga(pojam, lista);\n}`, 'Klijent zavisi od ugovora'),
     list([
       'Definisati precizno šta znači rezultat metode: broj tačnih pogodaka, case-sensitive ili case-insensitive poređenje i ponašanje za praznu listu.',
       'Napisati najmanje tri mala primera koji moraju dati isti rezultat za obe implementacije.',
