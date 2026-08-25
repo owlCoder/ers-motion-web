@@ -3,6 +3,7 @@ import type { Block, CourseDocument, DocumentPage } from '../types'
 import { BlockView, type BlockAction } from './BlockView'
 import { clone, computeArtifactMeta } from '../utils'
 import '../document.css'
+import '../document-polish.css'
 
 export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBlock, onUpdatePage, onOpenDocumentSettings, readonly = false }: {
   doc: CourseDocument
