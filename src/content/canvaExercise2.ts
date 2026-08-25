@@ -36,7 +36,7 @@ export const exercise2 = (): DocumentPage[] => [
       ['git push -u origin feature/x', 'Objavljuje lokalnu granu i postavlja upstream vezu.'],
       ['git clone <url>', 'Kreira lokalnu kopiju repozitorijuma sa istorijom i remote konfiguracijom.'],
     ]),
-    code('bash', `git checkout main\ngit fetch origin\ngit log --oneline --left-right main...origin/main\ngit pull origin main\ngit checkout -b feature/equipment-reservation\ngit push -u origin feature/equipment-reservation`),
+    code('bash', `git checkout main\ngit fetch origin\ngit log --oneline --left-right main...origin/main\ngit pull origin main\ngit checkout -b feature/equipment-reservation\ngit push -u origin feature/equipment-reservation`, 'Rad sa udaljenim repozitorijumom'),
     callout('warning', 'Force push nije redovan workflow', '`git push --force` prepisuje udaljenu istoriju i može ukloniti tuđe commit-e. Na deljenim granama ne koristi se bez jasnog razloga i dogovora. Ako je promena istorije neophodna, tim mora razumeti posledice.'),
   ]),
   page('2.3. Grane, konflikti i pull request', [
@@ -49,19 +49,27 @@ export const exercise2 = (): DocumentPage[] => [
       ['pull request', 'review + build/test', 'amber'],
       ['merge', 'integracija u stabilnu granu', 'emerald'],
     ], 'PR je kontrolna tačka procesa, ne samo dugme za merge.'),
-    code('bash', `git checkout main\ngit pull\ngit checkout feature/reservation-policy\ngit merge main\n# ručno rešiti konflikt u fajlu\ngit add src/Application/ReservationService.cs\ngit commit -m "Resolve reservation policy conflict"\ndotnet test`),
+    code('bash', `git checkout main\ngit pull\ngit checkout feature/reservation-policy\ngit merge main\n# ručno rešiti konflikt u fajlu\ngit add src/Application/ReservationService.cs\ngit commit -m "Resolve reservation policy conflict"\ndotnet test`, 'Rešavanje konflikta i završna provera'),
     callout('task', 'Rad na vežbi', 'Napraviti dve grane koje menjaju isti deo jedne datoteke, izazvati konflikt, rešiti ga i nakon toga pokrenuti build/test. U PR opisu navesti šta je bilo u konfliktu i kako je provereno da konačno ponašanje odgovara zahtevu.'),
   ]),
   page('2.4. GitHub Desktop, Visual Studio i .gitignore', [
     text('h2', '2.4. Git kroz razvojno okruženje'),
-    text('paragraph', 'Canva materijal prikazuje GitHub Desktop i Visual Studio kao grafičke klijente za iste Git operacije. GUI menja način pozivanja komandi, ali ne menja model: changes/staged changes odgovaraju working tree/staging area fazama, a Fetch, Pull, Push i Commit imaju iste posledice kao komandna linija.'),
+    text('paragraph', 'Git operacije se mogu izvršavati iz komandne linije ili kroz grafičke klijente kao što su GitHub Desktop i integracija u Visual Studio. Grafički interfejs menja način pozivanja operacije, ali ne menja Git model: radne izmene, staging, commit, fetch, pull i push imaju isto značenje bez obzira na alat.'),
+    table(['Grafička akcija', 'Git koncept / komanda'], [
+      ['Changes', 'Izmene u working tree-u koje još nisu pripremljene za commit.'],
+      ['Stage / +', '`git add` — izbor sadržaja za naredni commit.'],
+      ['Commit', '`git commit` — upis nove tačke u lokalnu istoriju.'],
+      ['Fetch', '`git fetch` — osvežavanje podataka o udaljenom repozitorijumu.'],
+      ['Pull', '`git pull` — preuzimanje i integracija promena.'],
+      ['Push', '`git push` — objavljivanje lokalnih commit-a na udaljenom repozitorijumu.'],
+    ]),
     list([
       'U Visual Studio Git Changes prozoru prvo pregledati promenjene datoteke, zatim staged promene i tek onda kreirati commit.',
       'U `.gitignore` treba isključiti generisane i lokalne artefakte poput `bin/`, `obj/`, `.vs/` i lokalnih tajni ili korisničkih podešavanja.',
-      'IDE nije izgovor da se ne razume razlika između commit-a i push-a ili fetch-a i pull-a.',
-      'Na GitHub-u za projekat koristiti privatan repozitorijum i uredno dodati članove tima i predmetno osoblje kada se to traži.'
+      'Korišćenje IDE-a ne menja potrebu da se razume razlika između commit-a i push-a, odnosno fetch-a i pull-a.',
+      'Projektni repozitorijum je privatan tokom razvoja; članovi tima i predmetno osoblje dobijaju odgovarajući pristup.',
     ]),
-    code('text', `# .gitignore — tipičan .NET minimum\nbin/\nobj/\n.vs/\n*.user\n*.suo\n.env\nappsettings.Development.local.json`),
+    code('text', `# .gitignore — tipičan .NET minimum\nbin/\nobj/\n.vs/\n*.user\n*.suo\n.env\nappsettings.Development.local.json`, 'Osnovni .gitignore za .NET projekat'),
     callout('task', 'Mini domaći — bonus 1 bod', 'Kreirati mali repozitorijum sa najmanje četiri smisleno odvojena commit-a, jednom feature granom i jednim pull request-om. U PR-u navesti koje su provere izvršene pre merge-a.'),
   ]),
   page('2.5. Projektni checkpoint: repozitorijum kao trag rada', [
@@ -72,7 +80,7 @@ export const exercise2 = (): DocumentPage[] => [
       'Dodati početni README sa nazivom teme, članovima tima i kratkim opisom problema.',
       'Definisati osnovni `.gitignore` pre prve ozbiljne implementacije.',
       'Dogovoriti pravilo imenovanja grana i commit poruka.',
-      'Sačuvati najmanje jedan PR koji pokazuje review, build/test proveru ili argumentovanu diskusiju.'
+      'Sačuvati najmanje jedan PR koji pokazuje review, build/test proveru ili argumentovanu diskusiju.',
     ]),
     callout('success', 'Ishod vežbe', 'Student ume da objasni gde se promena nalazi u Git modelu, kako se bezbedno razmenjuje sa timom i zašto istorija razvoja predstavlja važan deo softverskog artefakta.'),
   ]),
