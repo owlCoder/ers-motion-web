@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f5f6f9"/>
+  <rect x="22" y="22" width="1156" height="631" rx="18" fill="#fff" stroke="#d9dee8"/>
+  <path d="M22 80H1178" stroke="#e5e7eb"/>
+  <circle cx="51" cy="51" r="14" fill="#5b5bd6"/>
+  <text x="74" y="58" font-family="Inter,Segoe UI,Arial" font-size="22" font-weight="700" fill="#202334">Tapiz Boards</text>
+  <text x="76" y="128" font-family="Inter,Segoe UI,Arial" font-size="14" fill="#667085">Sprint 1 / Rezervacija opreme</text>
+  <text x="76" y="162" font-family="Inter,Segoe UI,Arial" font-size="27" font-weight="750" fill="#1d2939">TASK-17 · Sprečiti preklapanje rezervacija</text>
+  <rect x="76" y="188" width="728" height="414" rx="14" fill="#fff" stroke="#dde2eb"/>
+  <text x="104" y="228" font-family="Inter,Segoe UI,Arial" font-size="13" font-weight="700" fill="#667085">OPIS</text>
+  <text x="104" y="257" font-family="Inter,Segoe UI,Arial" font-size="15" fill="#344054">Sistem mora da odbije novu rezervaciju ako postoji aktivna</text>
+  <text x="104" y="280" font-family="Inter,Segoe UI,Arial" font-size="15" fill="#344054">rezervacija iste opreme koja se vremenski preklapa.</text>
+  <text x="104" y="326" font-family="Inter,Segoe UI,Arial" font-size="13" font-weight="700" fill="#667085">KRITERIJUMI I KONTEKST</text>
+  <rect x="104" y="343" width="668" height="74" rx="10" fill="#fafaff" stroke="#e5e7ef"/>
+  <text x="124" y="369" font-family="Inter,Segoe UI,Arial" font-size="14" fill="#344054">• Slobodan termin → rezervacija se kreira.</text>
+  <text x="124" y="393" font-family="Inter,Segoe UI,Arial" font-size="14" fill="#344054">• Preklapanje termina → eksplicitan poslovni neuspeh.</text>
+  <text x="104" y="458" font-family="Inter,Segoe UI,Arial" font-size="13" font-weight="700" fill="#667085">KOMENTARI</text>
+  <circle cx="118" cy="490" r="14" fill="#e7e8ff"/><text x="113" y="495" font-family="Inter,Segoe UI,Arial" font-size="12" font-weight="700" fill="#4f46e5">A</text>
+  <text x="143" y="487" font-family="Inter,Segoe UI,Arial" font-size="13" font-weight="700" fill="#344054">Asistent</text>
+  <text x="143" y="508" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">Dodati i granični slučaj kada prethodna rezervacija završava</text>
+  <text x="143" y="528" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">tačno u trenutku početka nove.</text>
+  <rect x="836" y="188" width="306" height="414" rx="14" fill="#fafbfc" stroke="#dde2eb"/>
+  <g font-family="Inter,Segoe UI,Arial">
+    <text x="864" y="228" font-size="13" font-weight="700" fill="#667085">DETALJI</text>
+    <text x="864" y="265" font-size="12" fill="#667085">Status</text><rect x="864" y="277" width="112" height="28" rx="14" fill="#fff7ed"/><text x="889" y="296" font-size="12" fill="#c2410c">U radu</text>
+    <text x="864" y="337" font-size="12" fill="#667085">Učesnici</text><circle cx="878" cy="362" r="13" fill="#dbeafe"/><circle cx="906" cy="362" r="13" fill="#dcfce7"/><text x="933" y="367" font-size="13" fill="#344054">2 člana</text>
+    <text x="864" y="410" font-size="12" fill="#667085">Povezano sa</text><text x="864" y="434" font-size="13" font-weight="650" fill="#4f46e5">US-05 Rezervacija opreme</text>
+    <text x="864" y="480" font-size="12" fill="#667085">Istorija</text><text x="864" y="505" font-size="13" fill="#344054">11:24 · status promenjen</text><text x="864" y="528" font-size="13" fill="#344054">10:56 · dodat komentar</text>
+    <text x="864" y="563" font-size="12" fill="#667085">Procena</text><text x="931" y="563" font-size="13" font-weight="700" fill="#344054">3 SP</text>
+  </g>
+</svg>
