@@ -1,0 +1,1 @@
+Real Tapiz Boards screenshots are being added as binary WebP assets in the final integration commit.
