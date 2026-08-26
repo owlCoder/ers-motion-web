@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { Block, CourseDocument, DiagramBlock, TextBlock } from './types'
 import { practicum2026 } from './content/canvaPracticum'
 import { projectSpec2026Reflowed } from './content/projectSpecReflow'
@@ -154,11 +154,11 @@ function DiagramView({ block, label }: { block: DiagramBlock; label?: string }) 
   return (
     <figure className="diagram-figure keep-together">
       {block.title && <h4>{block.title}</h4>}
-      <div className={`diagram-grid diagram-${block.variant}`} style={{ '--diagram-columns': columns } as React.CSSProperties}>
+      <div className={`diagram-grid diagram-${block.variant}`} style={{ '--diagram-columns': columns } as CSSProperties}>
         {block.items.map((item, index) => {
           const accent = ACCENTS[item.accent || 'blue']
           return (
-            <div className="diagram-card" key={item.id} style={{ '--card-accent': accent.solid, '--card-soft': accent.soft } as React.CSSProperties}>
+            <div className="diagram-card" key={item.id} style={{ '--card-accent': accent.solid, '--card-soft': accent.soft } as CSSProperties}>
               <span className="diagram-index">{index + 1}</span>
               <strong>{item.title}</strong>
               {item.subtitle && <span>{item.subtitle}</span>}
