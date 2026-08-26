@@ -19,7 +19,15 @@ export const callout = (tone: 'info' | 'note' | 'task' | 'warning' | 'success', 
 export const code = (language: 'csharp' | 'bash' | 'json' | 'markdown' | 'typescript' | 'text', value: string, caption?: string): Block => ({ id: id('code'), type: 'code', language, code: value, caption: caption?.replace(/[\uFFFE\uFFFF]/g, '-'), lineNumbers: true })
 export const table = (headers: string[], rows: string[][], caption?: string): Block => ({ id: id('table'), type: 'table', headers: headers.map(clean), rows: cleanRows(rows), caption: caption?.replace(/[\uFFFE\uFFFF]/g, '-') })
 export const image = (src: string, caption: string, alt: string): Block => ({ id: id('image'), type: 'image', src, caption: caption.replace(/[\uFFFE\uFFFF]/g, '-'), alt, widthPercent: 100 })
-export const diagram = (title: string, items: Array<[string, string, Accent]>, footer?: string): Block => ({ id: id('diagram'), type: 'diagram', variant: 'flow', title: clean(title), columns: Math.min(5, Math.max(2, items.length)) as 2 | 3 | 4 | 5, items: items.map(([itemTitle, subtitle, accent]) => ({ id: id('item'), title: clean(itemTitle), subtitle: clean(subtitle), accent })), footer: footer?.replace(/[\uFFFE\uFFFF]/g, '-') })
+export const diagram = (title: string, items: Array<[string, string, Accent]>, footer?: string): Block => ({
+  id: id('diagram'),
+  type: 'diagram',
+  variant: 'flow',
+  title: clean(title),
+  columns: Math.min(4, Math.max(2, items.length)) as 2 | 3 | 4,
+  items: items.map(([itemTitle, subtitle, accent]) => ({ id: id('item'), title: clean(itemTitle), subtitle: clean(subtitle), accent })),
+  footer: footer?.replace(/[\uFFFE\uFFFF]/g, '-'),
+})
 export const page = (label: string, blocks: Block[]): DocumentPage => ({ id: id('page'), label, layout: 'standard', blocks })
 
 export type { CourseDocument }
