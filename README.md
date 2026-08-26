@@ -1,36 +1,15 @@
-# ERS Studio
+# ERS nastavni materijali
 
-ERS Studio je lokalni A4 editor za nastavne materijale predmeta **Elementi razvoja softvera**. Aplikacija je izrađena u React + Vite + TypeScript okruženju i nema serverski backend.
+Ovaj repozitorijum sadrži statički read-only sajt za predmet **Elementi razvoja softvera**.
 
-Repo: `https://github.com/owlCoder/ers-motion-web`
+Glavni prikaz ima dva dokumenta:
 
-## Korisnički interfejs
+- **Praktikum 2026/27**
+- **Specifikacija projektnog zadatka 2026/27**
 
-Interaktivni deo aplikacije koristi **Fluent UI React v9** (`@fluentui/react-components`): alatne trake, dugmad, paneli, forme, tooltip-ovi, obaveštenja i dijalozi dele isti Fluent sistem komponenti i dizajn tokena. Browser-native `alert`/`confirm` dijalozi se ne koriste za akcije editora.
-
-A4 dokument je namerno odvojen od aplikacionog interfejsa. `src/document.css` sadrži isključivo stilove sadržaja koji se prikazuje na papiru/PDF-u: tipografiju dokumenta, code blokove, tabele, dijagrame, slike, naslovnu stranu i print pravila. Na taj način Fluent UI upravlja editorom, dok dokument ostaje stabilan i predvidljiv za štampu.
-
-## Šta je uključeno
-
-- kontinuirani Word/LibreOffice stil prikaza A4 stranica;
-- lokalna biblioteka dokumenata u IndexedDB-u;
-- početni **Praktikum 2026/27** i **Specifikacija projektnog zadatka 2026/27**;
-- tekst, naslovi, liste, istaknuti blokovi, tabele, slike, vektorski/responsive dijagrami i code blokovi;
-- code blokovi su uvek u **light mode-u** radi štampe, projektora i čitljivosti;
-- syntax highlighting za C#, Bash, JSON, Markdown i TypeScript;
-- Open / Save preko `.ersdoc.json` formata;
-- autosave u browseru;
-- PDF export preko browser Print dijaloga;
-- režim prikaza za izvođenje nastave;
-- podešavanje tipografije, gustine sadržaja i akcentne boje.
+Sadržaj se prikazuje kao kontinuiran akademski dokument. U browseru nema simulacije A4 stranica, editora, lokalne baze dokumenata niti ručnog prelamanja sadržaja. Na taj način se izbegavaju velike praznine, odsečeni blokovi i drugi problemi koji nastaju kada se browser koristi kao Word-style page editor.
 
 ## Pokretanje
-
-### Windows
-
-Dvoklik na `start.cmd`. Skripta proverava okruženje, instalira zavisnosti ako nedostaju, pokreće build, zatim Vite na `http://localhost:5600` i otvara browser.
-
-### Ručno
 
 ```bash
 npm install
@@ -38,50 +17,52 @@ npm run build
 npm run dev -- --host 127.0.0.1 --port 5600
 ```
 
-Aplikacija je dostupna na:
+Zatim otvoriti:
 
 ```text
 http://localhost:5600
 ```
 
-Za production build:
+Na macOS/Linux može se koristiti i:
 
 ```bash
-npm run build
-npm run preview
+./start.sh
 ```
 
-## Čuvanje dokumenata
+Na Windows-u:
 
-ERS Studio koristi dva nivoa čuvanja:
+```text
+start.cmd
+```
 
-1. **Autosave** — dokument se automatski čuva u IndexedDB-u browsera.
-2. **Sačuvaj** — dokument se izvozi na disk kao `*.ersdoc.json`.
+## Organizacija sajta
 
-U Chromium browserima koristi se File System Access API kada je dostupan. U drugim browserima aplikacija koristi upload/download fallback.
+- `src/main.tsx` — minimalni entry point
+- `src/StaticApp.tsx` — read-only prikaz Praktikuma i Specifikacije
+- `src/static-site.css` — kompletan web i print stil
+- `src/content/` — strukturirani nastavni sadržaj
+- `public/course-assets/` — nastavne ilustracije i dijagrami
+- `public/brand/` — institucionalni logotipi
 
-Sadržaj slika ubačenih u dokument može biti sačuvan kao data URL unutar JSON dokumenta, tako da dokument ostaje prenosiv.
+Statički prikaz automatski generiše:
+
+- navigaciju kroz naslove;
+- numeraciju slika, listinga i tabela;
+- light-mode code blokove sa syntax highlighting-om;
+- akademske tabele, callout blokove, dijagrame i slike.
 
 ## PDF i štampa
 
-Dugme **Izvezi PDF** otvara sistemski Print dijalog. A4 renderer koristi svetlu pozadinu i posebno vodi računa da code blokovi ostanu light mode. Editor chrome nije deo dokumenta koji se izvozi.
+Dugme **Štampaj / PDF** koristi browser print dijalog. A4 lom se primenjuje tek kroz `@media print`, dok web prikaz ostaje kontinualan i nema fiksnu visinu stranice.
 
-## Struktura
+Print CSS koristi `break-inside: avoid` za slike, dijagrame, tabele, callout blokove i listinge kako bi se izbeglo njihovo razdvajanje između dve strane kad god je to fizički moguće.
 
-- `src/App.tsx` — Fluent UI aplikacioni shell, biblioteka, navigacija i lifecycle editora
-- `src/components/Inspector.tsx` — Fluent UI panel za svojstva dokumenta i blokova
-- `src/components/BlockView.tsx` — render sadržajnih blokova i Fluent UI editing chrome
-- `src/components/PageCanvas.tsx` — A4 strana
-- `src/components/Presentation.tsx` — režim prikaza
-- `src/document.css` — isključivo A4/PDF dokument stilovi
-- `src/seeds/praktikum.part1.txt` + `src/seeds/praktikum.chunk*.txt` — transportni delovi početnog praktikuma
-- `src/seeds/project-spec.json` — početna projektna specifikacija
-- `src/seed.ts` — sklapanje početnih dokumenata
-- `src/db.ts` — IndexedDB persistence
-- `src/fileIO.ts` — Open / Save `.ersdoc.json`
+## Sačuvana verzija starog editora
 
-Transportni delovi praktikuma postoje samo zbog ograničenja pojedinačnog remote upload-a. Aplikacija ih pri učitavanju spaja i parsira kao jedan `CourseDocument`.
+Prethodni Word/Fluent UI editor je sačuvan na grani:
 
-## Lokalni AI-assisted setup
+```text
+archive/editor-word-ui-2026-08-26
+```
 
-`LUNA_LOCAL_SETUP_PROMPT.md` sadrži gotov prompt za lokalnog coding agenta. Prompt koristi ovaj privatni repozitorijum i vodi kroz clone, dependency install, build, smoke test i pokretanje na `http://localhost:5600`.
+`main` više ne koristi editor, IndexedDB, Fluent UI shell niti `.ersdoc` workflow.
