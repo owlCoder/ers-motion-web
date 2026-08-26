@@ -110,7 +110,7 @@ export type DocumentTheme = {
 }
 
 export type CourseDocument = {
-  version: 2
+  version: number
   id: string
   title: string
   subtitle?: string
