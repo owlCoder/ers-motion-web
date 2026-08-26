@@ -39,8 +39,8 @@ const cover = (): DocumentPage => ({
 })
 
 const introPages = (): DocumentPage[] => [
-  page('Kako koristiti praktikum', [
-    text('h1', 'Kako koristiti praktikum'),
+  page('0.1. Kako koristiti praktikum', [
+    text('h1', '0.1. Kako koristiti praktikum'),
     text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Svaka oblast sadrži teorijsko objašnjenje, praktičan primer, pitanja za proveru razumevanja i zadatke koji povezuju gradivo sa projektnim repozitorijumom. Cilj je da student nakon časa može samostalno da obnovi postupak, razume razloge koji stoje iza donetih odluka i primeni isti princip u drugom kontekstu.'),
     table(['Faza', 'Preporučeni način rada'], [
       ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji zahtevaju dodatno razjašnjenje.'],
@@ -51,19 +51,19 @@ const introPages = (): DocumentPage[] => [
     callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija unapred pripremljen projektni šablon: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
     callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i evaluacioni scenariji.'),
   ]),
-  page('Tok semestra i projekta', [
-    text('h1', 'Tok semestra i projekta'),
-    text('paragraph', 'Prve dve vežbe služe kao osvežavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
+  page('0.2. Tok semestra i projekta', [
+    text('h1', '0.2. Tok semestra i projekta'),
+    text('paragraph', 'Prve dve vežbe služe za obnovu i ujednačavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
     image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
     list([
       'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
       'P2 — arhitektonske granice i najmanje jedan vertikalni prolaz kroz sistem.',
       'P3 — koherentni use-case-ovi i eksplicitni poslovni ishodi.',
       'P4 — testirano funkcionalno jezgro i Git tag `manual-core-baseline`.',
-      'P5 — stabilne projektne instrukcije, strukturirani izlaz i disciplina vođenja `AI_USAGE.md` evidencije.',
-      'P6 — prilagođeni skills i najmanji smisleni agentski tok rada.',
+      'P5 — stabilne projektne instrukcije, strukturirani izlaz i uredna evidencija u `AI_USAGE.md`.',
+      'P6 — prilagođeni skills kao ponovljive procedure i najmanji smisleni agentski tok rada.',
       'P7 — MCP resursi i alati povezani sa stvarnim projektnim signalima.',
-      'P8 — hooks, guardrails, evaluacioni scenariji, peer QA i završna odbrana.',
+      'P8 — hook i guardrail mehanizmi, evaluacioni scenariji, vršnjačka provera kvaliteta i završna odbrana.',
     ]),
   ]),
 ]
@@ -116,8 +116,8 @@ function pageContainsHeading(page: DocumentPage, needle: string) {
 
 function contentsPage(body: DocumentPage[]): DocumentPage {
   const wanted = [
-    ['Uvod', 'Kako koristiti praktikum'],
-    ['Tok semestra i projekta', 'Tok semestra i projekta'],
+    ['Uvod i način rada', '0.1. Kako koristiti praktikum'],
+    ['Tok semestra i projekta', '0.2. Tok semestra i projekta'],
     ...Array.from({ length: 10 }, (_, index) => [`Vežba ${index + 1}`, `Vežba ${index + 1}`]),
     ['Sažetak', 'Sažetak: isti principi'],
     ['Literatura i dokumentacija', 'Preporučena literatura'],
@@ -155,7 +155,7 @@ const bodyPages = [
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 3,
+  version: 4,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -164,7 +164,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-26T07:10:00.000Z',
+  updatedAt: '2026-08-26T08:20:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
