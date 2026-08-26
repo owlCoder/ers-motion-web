@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f5f6f9"/>
+  <rect x="22" y="22" width="1156" height="631" rx="18" fill="#fff" stroke="#d9dee8"/>
+  <path d="M22 80H1178" stroke="#e5e7eb"/>
+  <circle cx="51" cy="51" r="14" fill="#5b5bd6"/>
+  <text x="74" y="58" font-family="Inter,Segoe UI,Arial" font-size="22" font-weight="700" fill="#202334">Tapiz Boards</text>
+  <text x="76" y="128" font-family="Inter,Segoe UI,Arial" font-size="26" font-weight="750" fill="#1d2939">Sprint 1 · Radna tabla</text>
+  <text x="76" y="154" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">Cilj: osnovni tok rezervacije i negativni scenariji</text>
+  <rect x="936" y="115" width="180" height="38" rx="10" fill="#5b5bd6"/><text x="979" y="139" font-family="Inter,Segoe UI,Arial" font-size="14" font-weight="700" fill="#fff">Start stand-up</text>
+  <g font-family="Inter,Segoe UI,Arial">
+    <rect x="70" y="188" width="252" height="404" rx="14" fill="#f8fafc" stroke="#dfe3ec"/>
+    <text x="94" y="220" font-size="15" font-weight="700" fill="#344054">To do</text><rect x="269" y="202" width="31" height="24" rx="12" fill="#eef2f6"/><text x="281" y="219" font-size="12" fill="#667085">2</text>
+    <rect x="90" y="242" width="212" height="112" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <text x="108" y="268" font-size="13" font-weight="700" fill="#25314a">US-05 Rezervacija opreme</text><text x="108" y="292" font-size="12" fill="#667085">User Story · 5 SP</text><text x="108" y="320" font-size="12" fill="#667085">2 zadatka · prioritet P1</text>
+    <rect x="90" y="368" width="212" height="88" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <text x="108" y="394" font-size="13" font-weight="700" fill="#25314a">TASK-21 Validacija termina</text><text x="108" y="420" font-size="12" fill="#667085">2 SP · bez učesnika</text>
+
+    <rect x="336" y="188" width="252" height="404" rx="14" fill="#f8fafc" stroke="#dfe3ec"/>
+    <text x="360" y="220" font-size="15" font-weight="700" fill="#344054">U radu</text><rect x="535" y="202" width="31" height="24" rx="12" fill="#fff7ed"/><text x="547" y="219" font-size="12" fill="#c2410c">2</text>
+    <rect x="356" y="242" width="212" height="125" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <rect x="356" y="242" width="5" height="125" rx="3" fill="#f59e0b"/>
+    <text x="376" y="270" font-size="13" font-weight="700" fill="#25314a">TASK-17 Sprečiti preklapanje</text><text x="376" y="294" font-size="12" fill="#667085">3 SP · 2 učesnika</text><text x="376" y="319" font-size="12" fill="#667085">1 komentar · 1 veza</text><text x="376" y="344" font-size="12" fill="#4f46e5">US-05 Rezervacija opreme</text>
+    <rect x="356" y="382" width="212" height="92" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <text x="376" y="410" font-size="13" font-weight="700" fill="#25314a">TASK-18 Unit testovi</text><text x="376" y="436" font-size="12" fill="#667085">3 SP · testiranje pravila</text>
+
+    <rect x="602" y="188" width="252" height="404" rx="14" fill="#f8fafc" stroke="#dfe3ec"/>
+    <text x="626" y="220" font-size="15" font-weight="700" fill="#344054">Pregled</text><rect x="801" y="202" width="31" height="24" rx="12" fill="#eef2ff"/><text x="813" y="219" font-size="12" fill="#4f46e5">1</text>
+    <rect x="622" y="242" width="212" height="111" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <rect x="622" y="242" width="5" height="111" rx="3" fill="#6366f1"/>
+    <text x="642" y="270" font-size="13" font-weight="700" fill="#25314a">TASK-14 Repository ugovor</text><text x="642" y="294" font-size="12" fill="#667085">2 SP · čeka pregled</text><text x="642" y="322" font-size="12" fill="#667085">build ✓ · testovi ✓</text>
+
+    <rect x="868" y="188" width="252" height="404" rx="14" fill="#f8fafc" stroke="#dfe3ec"/>
+    <text x="892" y="220" font-size="15" font-weight="700" fill="#344054">Završeno</text><rect x="1067" y="202" width="31" height="24" rx="12" fill="#ecfdf3"/><text x="1079" y="219" font-size="12" fill="#067647">3</text>
+    <rect x="888" y="242" width="212" height="104" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <rect x="888" y="242" width="5" height="104" rx="3" fill="#12b76a"/>
+    <text x="908" y="270" font-size="13" font-weight="700" fill="#25314a">TASK-08 Domain model</text><text x="908" y="294" font-size="12" fill="#667085">Definition of Done ✓</text><text x="908" y="319" font-size="12" fill="#667085">završeno danas</text>
+    <rect x="888" y="362" width="212" height="88" rx="11" fill="#fff" stroke="#dfe3ec"/>
+    <text x="908" y="390" font-size="13" font-weight="700" fill="#25314a">TASK-09 README dopuna</text><text x="908" y="416" font-size="12" fill="#667085">dokumentacija ✓</text>
+  </g>
+</svg>
