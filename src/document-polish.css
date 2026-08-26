@@ -255,6 +255,24 @@
   white-space: normal;
 }
 
+/* A semantic block must remain a complete teaching unit. The reflow engine already
+   creates physical A4 pages; these rules are a final browser/print safeguard. */
+.code-figure,
+.table-figure,
+.image-figure,
+.diagram,
+.callout {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.text-h1,
+.text-h2,
+.text-h3 {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
 @media print {
   .inline-code {
     background: #f5f7f9 !important;
@@ -275,5 +293,13 @@
     width: auto !important;
     max-width: 100% !important;
     max-height: 82mm !important;
+  }
+  .code-figure,
+  .table-figure,
+  .image-figure,
+  .diagram,
+  .callout {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
