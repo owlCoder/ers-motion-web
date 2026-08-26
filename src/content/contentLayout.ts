@@ -1,10 +1,15 @@
 import type { Block, DocumentPage, TextBlock } from '../types'
 
-const TARGET_HEIGHT = 640
-const HARD_LIMIT = 770
-const MERGE_LIMIT = 800
-const SPARSE_PAGE = 250
-const ORPHAN_PAGE = 175
+// The previous estimator was intentionally too conservative and produced a 111-page
+// practicum with many pages using only one third of the available A4 body. These values
+// are calibrated against the actual fixed 794x1123 renderer and leave a safety margin
+// above the footer while still allowing related material to stay together.
+const HEIGHT_SCALE = 0.68
+const TARGET_HEIGHT = 690
+const HARD_LIMIT = 835
+const MERGE_LIMIT = 860
+const SPARSE_PAGE = 360
+const ORPHAN_PAGE = 235
 
 function plain(value: string) {
   return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -25,57 +30,61 @@ function pagePrefix(prefix: string) {
 
 function tableHeight(block: Extract<Block, { type: 'table' }>) {
   const columns = Math.max(1, block.headers.length || block.rows[0]?.length || 1)
-  const charsPerCell = columns <= 2 ? 38 : columns === 3 ? 25 : 18
+  const charsPerCell = columns <= 2 ? 42 : columns === 3 ? 28 : 21
   const headerLines = block.headers.length
     ? Math.max(...block.headers.map((cell) => wrappedLines(cell, charsPerCell)))
     : 1
   const rows = block.rows.reduce((sum, row) => {
     const lineCount = Math.max(1, ...row.map((cell) => wrappedLines(cell, charsPerCell)))
-    return sum + 18 + lineCount * 18
+    return sum + 16 + lineCount * 17
   }, 0)
-  return 48 + headerLines * 18 + rows + (block.caption ? 28 : 0)
+  return 42 + headerLines * 17 + rows + (block.caption ? 24 : 0)
 }
 
 function diagramHeight(block: Extract<Block, { type: 'diagram' }>) {
-  if (block.variant === 'stack') return 96 + block.items.length * 78 + (block.footer ? 28 : 0)
+  if (block.variant === 'stack') return 82 + block.items.length * 66 + (block.footer ? 24 : 0)
   const columns = Math.max(1, block.columns || Math.min(4, block.items.length))
   const rows = Math.max(1, Math.ceil(block.items.length / columns))
-  return 96 + rows * 138 + (block.footer ? 28 : 0)
+  return 84 + rows * 118 + (block.footer ? 24 : 0)
 }
 
-/** Approximate rendered height in the fixed 794x1123 A4 renderer. */
-export function blockHeight(block: Block): number {
+function rawBlockHeight(block: Block): number {
   switch (block.type) {
     case 'text': {
       const heights: Record<TextBlock['variant'], number> = {
-        title: 92,
-        subtitle: 58,
-        h1: 78,
-        h2: 58,
-        h3: 46,
-        paragraph: 22 + wrappedLines(block.html, 76) * 23,
-        caption: 32,
-        quote: 66 + wrappedLines(block.html, 68) * 22,
+        title: 88,
+        subtitle: 52,
+        h1: 70,
+        h2: 52,
+        h3: 42,
+        paragraph: 18 + wrappedLines(block.html, 82) * 21,
+        caption: 28,
+        quote: 58 + wrappedLines(block.html, 74) * 20,
       }
       return heights[block.variant]
     }
     case 'list':
-      return 24 + block.items.reduce((height, item) => height + wrappedLines(item, 70) * 22 + 8, 0)
+      return 18 + block.items.reduce((height, item) => height + wrappedLines(item, 76) * 20 + 6, 0)
     case 'code':
-      return 72 + block.code.split('\n').length * 20 + (block.caption ? 28 : 0)
+      return 62 + block.code.split('\n').length * 18 + (block.caption ? 24 : 0)
     case 'callout':
-      return 78 + wrappedLines(`${block.title} ${block.text}`, 68) * 20
+      return 66 + wrappedLines(`${block.title} ${block.text}`, 74) * 18
     case 'table':
       return tableHeight(block)
     case 'diagram':
       return diagramHeight(block)
     case 'image':
-      return 405 + (block.caption ? 28 : 0)
+      return 350 + (block.caption ? 24 : 0)
     case 'institution':
-      return 148
+      return 132
     case 'divider':
-      return 32
+      return 26
   }
+}
+
+/** Approximate rendered height in the fixed 794x1123 A4 renderer. */
+export function blockHeight(block: Block): number {
+  return Math.ceil(rawBlockHeight(block) * HEIGHT_SCALE)
 }
 
 function pageHeight(blocks: Block[]) {
@@ -93,7 +102,7 @@ function isHeading(block: Block) {
 
 function isSmallClosingBlock(block: Block) {
   if (block.type === 'callout') return block.tone === 'task' || block.tone === 'success' || block.tone === 'note'
-  if (block.type === 'list') return block.items.length <= 5
+  if (block.type === 'list') return block.items.length <= 6
   if (block.type === 'text') return block.variant === 'paragraph' || block.variant === 'caption'
   return false
 }
@@ -106,7 +115,7 @@ function keepTogetherHeight(blocks: Block[], index: number) {
   for (let offset = 1; offset <= lookAhead; offset += 1) {
     const next = blocks[index + offset]
     if (!next || isHeading(next)) break
-    sum += Math.min(blockHeight(next), 300)
+    sum += Math.min(blockHeight(next), 250)
   }
   return sum
 }
@@ -129,22 +138,29 @@ function repairOrphanHeading(previous: DocumentPage, current: DocumentPage) {
   return true
 }
 
-function moveTrailingClosingBlock(previous: DocumentPage, current: DocumentPage) {
-  const first = current.blocks[0]
-  if (!first || !isSmallClosingBlock(first)) return false
-  const previousHeight = pageHeight(previous.blocks)
-  const candidateHeight = blockHeight(first)
-  if (previousHeight + candidateHeight > MERGE_LIMIT) return false
-  previous.blocks.push(first)
-  current.blocks.shift()
+function candidateCount(page: DocumentPage) {
+  const first = page.blocks[0]
+  if (!first) return 0
+  if (!isHeading(first)) return 1
+  const second = page.blocks[1]
+  return second && !isHeading(second) ? 2 : 1
+}
+
+function pullForward(previous: DocumentPage, current: DocumentPage) {
+  if (current.blocks.length === 0) return false
+  const count = candidateCount(current)
+  const candidate = current.blocks.slice(0, count)
+  const candidateHeight = pageHeight(candidate)
+  if (pageHeight(previous.blocks) + candidateHeight > MERGE_LIMIT) return false
+  previous.blocks.push(...candidate)
+  current.blocks.splice(0, count)
   return true
 }
 
 /**
- * Reflows logical source sections into readable A4 pages.
- * Source page boundaries are editorial hints. Physical page breaks are generated
- * from conservative height estimates and balancing passes that keep headings with
- * their first explanatory blocks and avoid task/checkpoint fragments on isolated pages.
+ * Reflows logical source sections into readable A4 pages. Source page boundaries are
+ * editorial hints only. The balancing pass fills the available A4 body, keeps headings
+ * with their first explanatory block and avoids isolated task/checkpoint fragments.
  */
 export function reflowPages(sourcePages: DocumentPage[], prefix: string): DocumentPage[] {
   const blocks = sourcePages.flatMap((page) => page.blocks)
@@ -179,10 +195,16 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     repairOrphanHeading(result[index - 1], result[index])
   }
 
+  // Repeatedly pull complete blocks (or a heading with its first block) back to the
+  // previous page while there is real space. This is the key pass that removes pages
+  // containing only one callout, one short table or a handful of bullets.
   for (let index = 1; index < result.length; index += 1) {
     const previous = result[index - 1]
     const currentPage = result[index]
-    if (moveTrailingClosingBlock(previous, currentPage) && currentPage.blocks.length === 0) {
+    while (pullForward(previous, currentPage)) {
+      if (currentPage.blocks.length === 0) break
+    }
+    if (currentPage.blocks.length === 0) {
       result.splice(index, 1)
       index -= 1
     }
@@ -193,8 +215,8 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     const currentPage = result[index]
     const previousHeight = pageHeight(previous.blocks)
     const currentHeight = pageHeight(currentPage.blocks)
-    const onlyClosingMaterial = currentPage.blocks.length <= 3 && currentPage.blocks.every(isSmallClosingBlock)
-    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 20 : MERGE_LIMIT
+    const onlyClosingMaterial = currentPage.blocks.length <= 4 && currentPage.blocks.every(isSmallClosingBlock)
+    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 25 : MERGE_LIMIT
 
     if (currentHeight <= SPARSE_PAGE && previousHeight + currentHeight <= mergeThreshold) {
       previous.blocks.push(...currentPage.blocks)
@@ -207,7 +229,7 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     const last = result[result.length - 1]
     const previous = result[result.length - 2]
     const lastHeight = pageHeight(last.blocks)
-    if (last.blocks.length <= 3 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 30) {
+    if (last.blocks.length <= 4 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 35) {
       previous.blocks.push(...last.blocks)
       result.pop()
     }
