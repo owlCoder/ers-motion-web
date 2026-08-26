@@ -120,13 +120,40 @@ a { color: inherit; }
 .doc-list li { margin: 7px 0; padding-left: 4px; }
 .doc-list li::marker { color: #2673bd; font-weight: 700; }
 
-.callout { margin: 22px 0; padding: 16px 18px; border: 1px solid #dce4ec; border-left: 4px solid #2563eb; border-radius: 10px; background: #f8fbff; }
-.callout strong { display: block; margin-bottom: 6px; color: #203b5a; font-size: 14px; }
-.callout div { color: #526277; font-size: 14px; line-height: 1.58; }
+.callout {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  margin: 22px 0;
+  padding: 16px 18px;
+  border: 1px solid #dce4ec;
+  border-left: 4px solid #2563eb;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+.callout-icon {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #cfe0fb;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #eaf2ff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+.callout-content { min-width: 0; }
+.callout-content strong { display: block; margin-bottom: 6px; color: #203b5a; font-size: 14px; }
+.callout-content > div { color: #526277; font-size: 14px; line-height: 1.58; }
 .callout-note { border-left-color: #7c3aed; background: #fbfaff; }
+.callout-note .callout-icon { border-color: #e2d3fb; background: #f1eafe; color: #6d28d9; }
 .callout-task { border-left-color: #d97706; background: #fffdf7; }
+.callout-task .callout-icon { border-color: #f2d7a2; background: #fff4d6; color: #b45309; }
 .callout-warning { border-left-color: #e11d48; background: #fff9fa; }
+.callout-warning .callout-icon { border-color: #f3cbd3; background: #fde8ec; color: #be123c; }
 .callout-success { border-left-color: #059669; background: #f7fcfa; }
+.callout-success .callout-icon { border-color: #c8e9d8; background: #e7f7ef; color: #047857; }
 
 .code-figure,
 .table-figure,
@@ -157,7 +184,17 @@ tr:last-child td { border-bottom: 0; }
 tbody tr:nth-child(even) { background: #fbfcfd; }
 
 .image-figure { width: 100%; margin-left: auto; margin-right: auto; }
-.image-figure img { display: block; width: 100%; height: auto; max-height: 640px; object-fit: contain; border: 1px solid #e0e5eb; border-radius: 9px; background: #fff; }
+.image-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 640px;
+  object-fit: contain;
+  border: 1px solid #e0e5eb;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(15,23,42,.06);
+}
 
 .diagram-figure { padding: 20px; border: 1px solid #dfe5ec; border-radius: 12px; background: #fff; }
 .diagram-figure h4 { margin: 0 0 16px; color: #173b66; font-size: 17px; }
