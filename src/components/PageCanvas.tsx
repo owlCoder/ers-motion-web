@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { Block, CourseDocument, DocumentPage } from '../types'
 import { BlockView, type BlockAction } from './BlockView'
 import { clone, computeArtifactMeta } from '../utils'
@@ -15,22 +15,8 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
   onOpenDocumentSettings: () => void
   readonly?: boolean
 }) {
-  const pageRef = useRef<HTMLDivElement>(null)
-  const [overflow, setOverflow] = useState(false)
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const artifactMeta = useMemo(() => computeArtifactMeta(doc), [doc])
-
-  useEffect(() => {
-    const check = () => {
-      const element = pageRef.current
-      if (!element) return
-      setOverflow(element.scrollHeight > element.clientHeight + 8)
-    }
-    check()
-    const observer = new ResizeObserver(check)
-    if (pageRef.current) observer.observe(pageRef.current)
-    return () => observer.disconnect()
-  }, [page.blocks, page.layout])
 
   const updateBlock = (next: Block) => onUpdatePage({ ...page, blocks: page.blocks.map((block) => block.id === next.id ? next : block) })
   const action = (id: string, actionType: BlockAction) => {
@@ -74,7 +60,7 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
 
   return (
     <div className="page-wrap" id={anchorId} data-document-page={pageIndex + 1}>
-      <section ref={pageRef} className={`a4-page ${isCover ? 'cover-page' : ''} theme-${doc.theme.name.replaceAll(' ', '-').toLowerCase()} ${fontClass} ${densityClass}`} data-accent={doc.theme.accent} onClick={() => { onSelectBlock(undefined); onOpenDocumentSettings() }}>
+      <section className={`a4-page ${isCover ? 'cover-page' : ''} theme-${doc.theme.name.replaceAll(' ', '-').toLowerCase()} ${fontClass} ${densityClass}`} data-accent={doc.theme.accent} onClick={() => { onSelectBlock(undefined); onOpenDocumentSettings() }}>
         {!isCover && <header className="page-header"><span>{doc.headerText || doc.subject}</span><span>{doc.kind === 'praktikum' ? 'Praktikum' : doc.kind === 'specifikacija' ? 'Projektna specifikacija' : doc.title}</span></header>}
         <main className="page-content">
           {page.blocks.map((block) => readonly
@@ -83,7 +69,6 @@ export function PageCanvas({ doc, page, pageIndex, selectedBlockId, onSelectBloc
           )}
         </main>
         {!isCover && <footer className="page-footer"><span>{doc.footerText || 'Elementi razvoja softvera'}</span><span>{pageIndex + 1}</span></footer>}
-        {overflow && !readonly && <div className="overflow-warning no-print">Content exceeds the page boundary</div>}
       </section>
     </div>
   )
