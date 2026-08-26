@@ -1,10 +1,10 @@
 import type { Block, DocumentPage, TextBlock } from '../types'
 
-const TARGET_HEIGHT = 760
-const HARD_LIMIT = 900
-const MERGE_LIMIT = 940
-const SPARSE_PAGE = 315
-const ORPHAN_PAGE = 220
+const TARGET_HEIGHT = 640
+const HARD_LIMIT = 770
+const MERGE_LIMIT = 800
+const SPARSE_PAGE = 250
+const ORPHAN_PAGE = 175
 
 function plain(value: string) {
   return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -25,22 +25,22 @@ function pagePrefix(prefix: string) {
 
 function tableHeight(block: Extract<Block, { type: 'table' }>) {
   const columns = Math.max(1, block.headers.length || block.rows[0]?.length || 1)
-  const charsPerCell = columns <= 2 ? 42 : columns === 3 ? 27 : 20
+  const charsPerCell = columns <= 2 ? 38 : columns === 3 ? 25 : 18
   const headerLines = block.headers.length
     ? Math.max(...block.headers.map((cell) => wrappedLines(cell, charsPerCell)))
     : 1
   const rows = block.rows.reduce((sum, row) => {
     const lineCount = Math.max(1, ...row.map((cell) => wrappedLines(cell, charsPerCell)))
-    return sum + 15 + lineCount * 16
+    return sum + 18 + lineCount * 18
   }, 0)
-  return 38 + headerLines * 16 + rows + (block.caption ? 25 : 0)
+  return 48 + headerLines * 18 + rows + (block.caption ? 28 : 0)
 }
 
 function diagramHeight(block: Extract<Block, { type: 'diagram' }>) {
-  if (block.variant === 'stack') return 82 + block.items.length * 72 + (block.footer ? 25 : 0)
+  if (block.variant === 'stack') return 96 + block.items.length * 78 + (block.footer ? 28 : 0)
   const columns = Math.max(1, block.columns || Math.min(4, block.items.length))
   const rows = Math.max(1, Math.ceil(block.items.length / columns))
-  return 82 + rows * 118 + (block.footer ? 25 : 0)
+  return 96 + rows * 138 + (block.footer ? 28 : 0)
 }
 
 /** Approximate rendered height in the fixed 794x1123 A4 renderer. */
@@ -48,33 +48,33 @@ export function blockHeight(block: Block): number {
   switch (block.type) {
     case 'text': {
       const heights: Record<TextBlock['variant'], number> = {
-        title: 82,
-        subtitle: 52,
-        h1: 70,
-        h2: 50,
-        h3: 40,
-        paragraph: 16 + wrappedLines(block.html, 82) * 22,
-        caption: 28,
-        quote: 58 + wrappedLines(block.html, 72) * 21,
+        title: 92,
+        subtitle: 58,
+        h1: 78,
+        h2: 58,
+        h3: 46,
+        paragraph: 22 + wrappedLines(block.html, 76) * 23,
+        caption: 32,
+        quote: 66 + wrappedLines(block.html, 68) * 22,
       }
       return heights[block.variant]
     }
     case 'list':
-      return 20 + block.items.reduce((height, item) => height + wrappedLines(item, 76) * 21 + 7, 0)
+      return 24 + block.items.reduce((height, item) => height + wrappedLines(item, 70) * 22 + 8, 0)
     case 'code':
-      return 58 + block.code.split('\n').length * 18.5 + (block.caption ? 25 : 0)
+      return 72 + block.code.split('\n').length * 20 + (block.caption ? 28 : 0)
     case 'callout':
-      return 62 + wrappedLines(`${block.title} ${block.text}`, 76) * 19
+      return 78 + wrappedLines(`${block.title} ${block.text}`, 68) * 20
     case 'table':
       return tableHeight(block)
     case 'diagram':
       return diagramHeight(block)
     case 'image':
-      return 325 + (block.caption ? 25 : 0)
+      return 405 + (block.caption ? 28 : 0)
     case 'institution':
-      return 138
+      return 148
     case 'divider':
-      return 28
+      return 32
   }
 }
 
@@ -93,7 +93,7 @@ function isHeading(block: Block) {
 
 function isSmallClosingBlock(block: Block) {
   if (block.type === 'callout') return block.tone === 'task' || block.tone === 'success' || block.tone === 'note'
-  if (block.type === 'list') return block.items.length <= 6
+  if (block.type === 'list') return block.items.length <= 5
   if (block.type === 'text') return block.variant === 'paragraph' || block.variant === 'caption'
   return false
 }
@@ -106,7 +106,7 @@ function keepTogetherHeight(blocks: Block[], index: number) {
   for (let offset = 1; offset <= lookAhead; offset += 1) {
     const next = blocks[index + offset]
     if (!next || isHeading(next)) break
-    sum += Math.min(blockHeight(next), 260)
+    sum += Math.min(blockHeight(next), 300)
   }
   return sum
 }
@@ -126,6 +126,17 @@ function repairOrphanHeading(previous: DocumentPage, current: DocumentPage) {
   if (!tail || !isHeading(tail)) return false
   const moved = previous.blocks.pop()!
   current.blocks.unshift(moved)
+  return true
+}
+
+function moveTrailingClosingBlock(previous: DocumentPage, current: DocumentPage) {
+  const first = current.blocks[0]
+  if (!first || !isSmallClosingBlock(first)) return false
+  const previousHeight = pageHeight(previous.blocks)
+  const candidateHeight = blockHeight(first)
+  if (previousHeight + candidateHeight > MERGE_LIMIT) return false
+  previous.blocks.push(first)
+  current.blocks.shift()
   return true
 }
 
@@ -171,10 +182,19 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
   for (let index = 1; index < result.length; index += 1) {
     const previous = result[index - 1]
     const currentPage = result[index]
+    if (moveTrailingClosingBlock(previous, currentPage) && currentPage.blocks.length === 0) {
+      result.splice(index, 1)
+      index -= 1
+    }
+  }
+
+  for (let index = 1; index < result.length; index += 1) {
+    const previous = result[index - 1]
+    const currentPage = result[index]
     const previousHeight = pageHeight(previous.blocks)
     const currentHeight = pageHeight(currentPage.blocks)
     const onlyClosingMaterial = currentPage.blocks.length <= 3 && currentPage.blocks.every(isSmallClosingBlock)
-    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 55 : MERGE_LIMIT
+    const mergeThreshold = onlyClosingMaterial && currentHeight <= ORPHAN_PAGE ? MERGE_LIMIT + 20 : MERGE_LIMIT
 
     if (currentHeight <= SPARSE_PAGE && previousHeight + currentHeight <= mergeThreshold) {
       previous.blocks.push(...currentPage.blocks)
@@ -187,16 +207,18 @@ export function reflowPages(sourcePages: DocumentPage[], prefix: string): Docume
     const last = result[result.length - 1]
     const previous = result[result.length - 2]
     const lastHeight = pageHeight(last.blocks)
-    if (last.blocks.length <= 3 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 70) {
+    if (last.blocks.length <= 3 && last.blocks.every(isSmallClosingBlock) && lastHeight <= ORPHAN_PAGE && pageHeight(previous.blocks) + lastHeight <= MERGE_LIMIT + 30) {
       previous.blocks.push(...last.blocks)
       result.pop()
     }
   }
 
   const slug = pagePrefix(prefix)
-  return result.map((page, index) => ({
-    ...page,
-    id: `reflow-${slug}-${String(index + 1).padStart(2, '0')}`,
-    label: headingText(page.blocks) || `${prefix} — nastavak ${index + 1}`,
-  }))
+  return result
+    .filter((page) => page.blocks.length > 0)
+    .map((page, index) => ({
+      ...page,
+      id: `reflow-${slug}-${String(index + 1).padStart(2, '0')}`,
+      label: headingText(page.blocks) || `${prefix} — nastavak ${index + 1}`,
+    }))
 }
