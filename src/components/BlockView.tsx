@@ -79,7 +79,11 @@ function ArtifactCaption({ meta, caption }: { meta?: ArtifactMeta; caption?: str
 
 function TextView({ block, update, select }: { block: TextBlock; update: (b: Block) => void; select: () => void }) {
   const cls = `text-block text-${block.variant} align-${block.align || 'left'}`
-  return <EditableText html={block.html} className={cls} onFocus={select} onChange={(html) => update({ ...block, html })} />
+  const props = { html: block.html, className: cls, onFocus: select, onChange: (html: string) => update({ ...block, html }) }
+  if (block.variant === 'h1') return <h1 className="semantic-heading"><EditableText {...props} /></h1>
+  if (block.variant === 'h2') return <h2 className="semantic-heading"><EditableText {...props} /></h2>
+  if (block.variant === 'h3') return <h3 className="semantic-heading"><EditableText {...props} /></h3>
+  return <EditableText {...props} />
 }
 
 function ListView({ block, update, select }: { block: ListBlock; update: (b: Block) => void; select: () => void }) {
@@ -153,7 +157,11 @@ function DiagramView({ block, meta }: { block: DiagramBlock; meta?: ArtifactMeta
     return <figure className="diagram diagram-hub">{block.title && <div className="diagram-heading">{block.title}</div>}{hub && <div className="hub-center"><DiagramCard item={hub} /></div>}<div className="hub-connector" /><div className="hub-children" style={{ gridTemplateColumns: `repeat(${Math.min(block.columns || 4, Math.max(children.length, 1))}, minmax(0,1fr))` }}>{children.map((item) => <DiagramCard key={item.id} item={item} compact />)}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
   }
   const columns = block.columns || Math.min(5, Math.max(2, block.items.length)) as 2 | 3 | 4 | 5
-  return <figure className={`diagram diagram-${block.variant}`}>{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>{block.items.map((item, i) => <div key={item.id} className="flow-item-wrap"><DiagramCard item={item} compact={block.items.length > 5} />{i < block.items.length - 1 && <span className="flow-arrow" aria-hidden="true">→</span>}</div>)}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
+  return <figure className={`diagram diagram-${block.variant}`}>{block.title && <div className="diagram-heading">{block.title}</div>}<div className="diagram-flow" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0,1fr))` }}>{block.items.map((item, i) => {
+    const hasNext = i < block.items.length - 1
+    const isRowEnd = (i + 1) % columns === 0
+    return <div key={item.id} className="flow-item-wrap"><DiagramCard item={item} compact={block.items.length > 5} />{hasNext && !isRowEnd && <span className="flow-arrow" aria-hidden="true">→</span>}</div>
+  })}</div><ArtifactCaption meta={meta} caption={block.footer} /></figure>
 }
 
 function ImageView({ block, meta }: { block: ImageBlock; meta?: ArtifactMeta }) {
