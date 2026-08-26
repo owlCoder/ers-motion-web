@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f4f5f8"/>
+  <rect x="22" y="22" width="1156" height="631" rx="18" fill="#fff" stroke="#d9dee8"/>
+  <rect x="22" y="22" width="1156" height="58" rx="18" fill="#fff"/>
+  <path d="M22 80H1178" stroke="#e5e7eb"/>
+  <circle cx="51" cy="51" r="14" fill="#5b5bd6"/>
+  <text x="74" y="58" font-family="Inter,Segoe UI,Arial" font-size="22" font-weight="700" fill="#202334">Tapiz Boards</text>
+  <text x="76" y="132" font-family="Inter,Segoe UI,Arial" font-size="25" font-weight="750" fill="#1d2939">Sprintovi</text>
+  <rect x="930" y="109" width="186" height="42" rx="10" fill="#5b5bd6"/><text x="974" y="136" font-family="Inter,Segoe UI,Arial" font-size="15" font-weight="700" fill="#fff">+ Novi sprint</text>
+  <rect x="76" y="171" width="1040" height="390" rx="14" fill="#f9fafb" stroke="#e2e5ec"/>
+  <rect x="112" y="203" width="410" height="128" rx="13" fill="#fff" stroke="#dfe3ec"/>
+  <text x="138" y="236" font-family="Inter,Segoe UI,Arial" font-size="17" font-weight="700" fill="#25314a">Sprint 1 · Osnovni tok rezervacije</text>
+  <text x="138" y="264" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">7 dana · 21 story point · 4 stavke</text>
+  <rect x="138" y="284" width="118" height="24" rx="12" fill="#ecfdf3"/><text x="162" y="301" font-family="Inter,Segoe UI,Arial" font-size="12" fill="#067647">Planiran</text>
+  <rect x="112" y="350" width="410" height="128" rx="13" fill="#fff" stroke="#dfe3ec"/>
+  <text x="138" y="383" font-family="Inter,Segoe UI,Arial" font-size="17" font-weight="700" fill="#25314a">Sprint 2 · Upravljanje opremom</text>
+  <text x="138" y="411" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">7 dana · cilj još nije potvrđen</text>
+  <rect x="138" y="431" width="118" height="24" rx="12" fill="#fff7ed"/><text x="163" y="448" font-family="Inter,Segoe UI,Arial" font-size="12" fill="#c2410c">Nacrt</text>
+  <rect x="575" y="138" width="485" height="430" rx="18" fill="#fff" stroke="#cfd5df"/>
+  <text x="607" y="182" font-family="Inter,Segoe UI,Arial" font-size="22" font-weight="750" fill="#1d2939">Novi sprint</text>
+  <text x="607" y="208" font-family="Inter,Segoe UI,Arial" font-size="13" fill="#667085">Definišite vremenski okvir i jasan cilj iteracije.</text>
+  <g font-family="Inter,Segoe UI,Arial">
+    <text x="607" y="249" font-size="13" font-weight="650" fill="#344054">Naziv sprinta</text>
+    <rect x="607" y="261" width="421" height="45" rx="9" fill="#fff" stroke="#cfd5df"/>
+    <text x="624" y="289" font-size="14" fill="#344054">Sprint 3 · Završetak osnovnog jezgra</text>
+    <text x="607" y="337" font-size="13" font-weight="650" fill="#344054">Trajanje</text>
+    <rect x="607" y="349" width="196" height="45" rx="9" fill="#fff" stroke="#cfd5df"/>
+    <text x="624" y="377" font-size="14" fill="#344054">7 dana</text>
+    <text x="607" y="425" font-size="13" font-weight="650" fill="#344054">Cilj sprinta</text>
+    <rect x="607" y="437" width="421" height="70" rx="9" fill="#fff" stroke="#cfd5df"/>
+    <text x="624" y="463" font-size="13" fill="#344054">Završiti rezervaciju, negativne scenarije i</text>
+    <text x="624" y="484" font-size="13" fill="#344054">osnovne testove za ključna poslovna pravila.</text>
+    <rect x="843" y="522" width="91" height="34" rx="9" fill="#f3f4f6"/><text x="866" y="544" font-size="13" fill="#344054">Otkaži</text>
+    <rect x="943" y="522" width="85" height="34" rx="9" fill="#5b5bd6"/><text x="964" y="544" font-size="13" font-weight="700" fill="#fff">Kreiraj</text>
+  </g>
+</svg>
