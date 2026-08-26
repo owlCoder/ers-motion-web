@@ -41,48 +41,48 @@ const cover = (): DocumentPage => ({
 const introPages = (): DocumentPage[] => [
   page('Kako koristiti praktikum', [
     text('h1', 'Kako koristiti praktikum'),
-    text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Svaka oblast sadrži teorijsko objašnjenje, praktičan primer, pitanja za proveru razumevanja i zadatke koji povezuju gradivo sa projektnim repozitorijumom. Cilj je da student nakon časa može samostalno da obnovi postupak, razume razlog iza donete odluke i primeni isti princip u drugom kontekstu.'),
+    text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Svaka oblast sadrži teorijsko objašnjenje, praktičan primer, pitanja za proveru razumevanja i zadatke koji povezuju gradivo sa projektnim repozitorijumom. Cilj je da student nakon časa može samostalno da obnovi postupak, razume razloge koji stoje iza donetih odluka i primeni isti princip u drugom kontekstu.'),
     table(['Faza', 'Preporučeni način rada'], [
-      ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji nisu jasni.'],
-      ['Tokom vežbe', 'Pratiti demonstraciju i razloge za odluke, ne samo konačan kod ili komande.'],
-      ['Posle vežbe', 'Ponoviti isti princip na projektnom repozitorijumu i sačuvati proverljiv trag kroz commit, test, dokument ili AI_USAGE zapis.'],
-      ['Pred checkpoint', 'Proći checklist-u, build/test i pregled diff-a; svaki član tima treba da ume da objasni urađeno.'],
+      ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji zahtevaju dodatno razjašnjenje.'],
+      ['Tokom vežbe', 'Pratiti demonstraciju i obrazloženje odluka, a ne samo konačan kod ili niz komandi.'],
+      ['Posle vežbe', 'Primeniti isti princip na projektnom repozitorijumu i sačuvati proverljiv razvojni trag kroz commit, test, dokument ili zapis o upotrebi AI alata.'],
+      ['Pre projektne kontrolne tačke', 'Proći kontrolnu listu, proveriti izgradnju projekta i testove, a zatim pregledati konačni diff. Svaki član tima treba da ume da obrazloži urađeno.'],
     ]),
-    callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija gotov projektni template: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
-    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može da se menja između verzija, zato se naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i eval scenariji.'),
+    callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija unapred pripremljen projektni šablon: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
+    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i evaluacioni scenariji.'),
   ]),
   page('Tok semestra i projekta', [
     text('h1', 'Tok semestra i projekta'),
     text('paragraph', 'Prve dve vežbe služe kao osvežavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
-    image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → AI workflow → MCP → QA.', 'Mapa semestra'),
+    image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
     list([
-      'P1 — problem, backlog, acceptance criteria i početni AI trag.',
-      'P2 — arhitektonske granice i najmanje jedan vertikalni prolaz.',
+      'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
+      'P2 — arhitektonske granice i najmanje jedan vertikalni prolaz kroz sistem.',
       'P3 — koherentni use-case-ovi i eksplicitni poslovni ishodi.',
-      'P4 — testirano jezgro i Git tag `manual-core-baseline`.',
-      'P5 — stabilne instrukcije, structured output i AI_USAGE disciplina.',
-      'P6 — custom skills i najmanji smisleni agentni workflow.',
-      'P7 — MCP resource/tool integracija sa stvarnim projektnim signalima.',
-      'P8 — hooks/guardrails, evals, peer QA i završna odbrana.',
+      'P4 — testirano funkcionalno jezgro i Git tag `manual-core-baseline`.',
+      'P5 — stabilne projektne instrukcije, strukturirani izlaz i disciplina vođenja `AI_USAGE.md` evidencije.',
+      'P6 — prilagođeni skills i najmanji smisleni agentski tok rada.',
+      'P7 — MCP resursi i alati povezani sa stvarnim projektnim signalima.',
+      'P8 — hooks, guardrails, evaluacioni scenariji, peer QA i završna odbrana.',
     ]),
   ]),
 ]
 
 const summaryPages = (): DocumentPage[] => [
-  page('Sažetak: od klasičnog ka AI-native softverskom inženjerstvu', [
-    text('h1', 'Sažetak: isti principi, novo razvojno okruženje'),
-    text('paragraph', 'Klasični principi iz predmeta ostaju osnova i kada se u razvoj uvedu agenti. Interfejs postaje tool contract, SRP pomaže da se odvoje agentne uloge, dependency injection ima analogiju u ubrizgavanju tool/MCP kapabiliteta, a testiranje se širi eval scenarijima celog workflow-a.'),
-    table(['Softversko inženjerstvo', 'AI podržano softversko inženjerstvo'], [
-      ['Interfejs', 'Tool/MCP ugovor sa jasnim ulazom i izlazom.'],
-      ['Single Responsibility', 'Specijalizovana uloga/agent sa ograničenim zadatkom.'],
+  page('Sažetak: isti principi u novom razvojnom okruženju', [
+    text('h1', 'Sažetak: isti principi u novom razvojnom okruženju'),
+    text('paragraph', 'Klasični principi iz predmeta ostaju osnova i kada se u razvoj uvedu AI agenti. Jasan interfejs odgovara dobro definisanom ugovoru alata, SRP pomaže pri razdvajanju agentskih uloga, dependency injection ima analogiju u kontrolisanom dodeljivanju alata i spoljnog konteksta, a testiranje se proširuje evaluacionim scenarijima celog toka rada.'),
+    table(['Softversko inženjerstvo', 'Razvoj uz podršku AI alata'], [
+      ['Interfejs', 'Ugovor alata ili MCP funkcionalnosti sa jasnim ulazom, izlazom i ograničenjima.'],
+      ['Single Responsibility', 'Specijalizovana agentska uloga sa ograničenom odgovornošću.'],
       ['Dependency Injection', 'Kontrolisano dodeljivanje alata i spoljnog konteksta.'],
       ['Unit test', 'Deterministička provera softverskog ponašanja.'],
-      ['Integration test', 'Provera workflow-a kroz više komponenti.'],
-      ['Code coverage', 'Signal nepokrivenog koda; analogno razmišljanje o scenario/eval coverage-u.'],
-      ['Middleware / policy', 'Hook ili guardrail koji se izvršava na lifecycle granici.'],
-      ['Reusable service/procedure', 'Skill koji čuva ponovljiv razvojni postupak.'],
+      ['Integracioni test', 'Provera toka rada kroz više komponenti.'],
+      ['Pokrivenost koda', 'Signal nepokrivenog koda; sličan način razmišljanja koristi se pri izboru skupa evaluacionih scenarija.'],
+      ['Middleware / policy', 'Hook ili guardrail koji se izvršava na definisanoj granici životnog ciklusa.'],
+      ['Ponovljiva procedura', 'Skill koji čuva i verzioniše razvojni postupak.'],
     ]),
-    callout('success', 'Odgovornost ostaje kod studenta', 'AI može da ubrza analizu, implementaciju i review, ali student mora da razume zahtev, objasni arhitekturu i pokaže nezavisan dokaz da je promena ispravna.'),
+    callout('success', 'Odgovornost ostaje kod studenta', 'AI može da ubrza analizu, implementaciju i pregled, ali student mora da razume zahtev, objasni arhitekturu i pokaže nezavisan dokaz da je promena ispravna.'),
   ]),
 ]
 
@@ -98,9 +98,9 @@ const literaturePages = (): DocumentPage[] => [
       'NUnit dokumentacija: <a href="https://docs.nunit.org">docs.nunit.org</a>; Moq projekat i dokumentacija: <a href="https://github.com/devlooped/moq">github.com/devlooped/moq</a>.',
       'Microsoft Learn — .NET dependency injection, testing i arhitektura aplikacija: <a href="https://learn.microsoft.com/dotnet/">learn.microsoft.com/dotnet</a>.',
       'Model Context Protocol — specifikacija i koncepti resources/tools/prompts: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a>.',
-      'Zvanična dokumentacija AI razvojnog okruženja koje se koristi na vežbama; pratiti aktuelnu verziju sintakse za instrukcije, skills, agente i hooks.',
+      'Zvanična dokumentacija AI razvojnog okruženja koje se koristi na vežbama; pratiti aktuelnu verziju sintakse za projektne instrukcije, skills, agente i hooks.',
     ]),
-    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv fajla, treba pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model i način verifikacije.'),
+    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv konfiguracione datoteke, treba pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model, granice odgovornosti i način verifikacije.'),
   ]),
 ]
 
@@ -110,9 +110,8 @@ function plain(html: string) {
   return html.replace(/<[^>]+>/g, '').trim()
 }
 
-function firstHeading(page: DocumentPage) {
-  const block = page.blocks.find((item) => item.type === 'text' && ['h1', 'h2'].includes(item.variant))
-  return block?.type === 'text' ? plain(block.html) : page.label || ''
+function pageContainsHeading(page: DocumentPage, needle: string) {
+  return page.blocks.some((item) => item.type === 'text' && ['h1', 'h2'].includes(item.variant) && plain(item.html).startsWith(needle))
 }
 
 function contentsPage(body: DocumentPage[]): DocumentPage {
@@ -125,7 +124,7 @@ function contentsPage(body: DocumentPage[]): DocumentPage {
   ] as Array<[string, string]>
 
   const rows = wanted.map(([label, needle]) => {
-    const index = body.findIndex((item) => firstHeading(item).startsWith(needle))
+    const index = body.findIndex((item) => pageContainsHeading(item, needle))
     if (index < 0) return [label, '—']
     const target = body[index]
     const pageNumber = index + 3
@@ -156,7 +155,7 @@ const bodyPages = [
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 2,
+  version: 3,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -165,7 +164,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-25T20:35:00.000Z',
+  updatedAt: '2026-08-26T07:10:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
