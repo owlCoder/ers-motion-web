@@ -1,0 +1,1 @@
+Tapiz Boards screenshots used in the practicum are stored in this directory as PNG files.
