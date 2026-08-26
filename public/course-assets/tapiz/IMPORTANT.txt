@@ -1,0 +1,1 @@
+PNG assets are referenced directly by the practicum renderer.
