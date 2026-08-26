@@ -1,0 +1,9 @@
+02-board-overview.png
+03-backlog-view.png
+04-user-story-detail.png
+05-create-or-edit-story.png
+06-acceptance-criteria-example.png
+07-task-breakdown.png
+08-workflow-transition.png
+09-priority-labels-assignees.png
+10-activity-comments.png
