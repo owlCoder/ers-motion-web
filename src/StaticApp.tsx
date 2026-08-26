@@ -25,6 +25,14 @@ const documents: Record<DocumentKey, CourseDocument> = {
   specifikacija: projectSpec2026Reflowed,
 }
 
+const calloutIcons = {
+  info: 'i',
+  note: '✦',
+  task: '✓',
+  warning: '!',
+  success: '✓',
+}
+
 function plain(html: string) {
   const node = document.createElement('div')
   node.innerHTML = html
@@ -182,8 +190,13 @@ function BlockView({ item }: { item: PreparedBlock }) {
   if (block.type === 'callout') {
     return (
       <aside className={`callout callout-${block.tone} keep-together`}>
-        <strong>{block.title}</strong>
-        <div dangerouslySetInnerHTML={{ __html: inlineMarkup(block.text) }} />
+        <span className="callout-icon" aria-hidden="true">
+          {calloutIcons[block.tone]}
+        </span>
+        <div className="callout-content">
+          <strong>{block.title}</strong>
+          <div dangerouslySetInnerHTML={{ __html: inlineMarkup(block.text) }} />
+        </div>
       </aside>
     )
   }
