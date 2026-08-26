@@ -144,7 +144,13 @@ function sectionNumber(block: TextBlock) {
   const numbered = value.match(/^(\d+(?:\.\d+)*)\.?\s+/)
   if (numbered) return numbered[1]
   const exercise = value.match(/^Vežba\s+(\d+)\b/i)
-  return exercise?.[1]
+  if (exercise) return exercise[1]
+  if (/^Sadržaj\b/i.test(value)) return '0'
+  if (/^Kako koristiti praktikum\b/i.test(value)) return '0'
+  if (/^Tok semestra i projekta\b/i.test(value)) return '0'
+  if (/^Sažetak\b/i.test(value)) return 'S'
+  if (/^Preporučena literatura\b/i.test(value)) return 'L'
+  return undefined
 }
 
 export function computeArtifactMeta(doc: CourseDocument): Record<string, ArtifactMeta> {
@@ -161,7 +167,11 @@ export function computeArtifactMeta(doc: CourseDocument): Record<string, Artifac
 
   for (const page of doc.pages) {
     for (const block of page.blocks) {
-      if (block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)) section = sectionNumber(block) || section
+      if (block.type === 'text' && ['h1', 'h2', 'h3'].includes(block.variant)) {
+        const detected = sectionNumber(block)
+        if (detected) section = detected
+        else if (block.variant === 'h1') section = '0'
+      }
       if (block.type === 'image' || block.type === 'diagram') {
         const number = next('figure')
         result[block.id] = { kind: 'figure', number, label: `Slika ${number}` }
