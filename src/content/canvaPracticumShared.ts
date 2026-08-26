@@ -24,7 +24,7 @@ export const diagram = (title: string, items: Array<[string, string, Accent]>, f
   type: 'diagram',
   variant: 'flow',
   title: clean(title),
-  columns: Math.min(4, Math.max(2, items.length)) as 2 | 3 | 4,
+  columns: Math.min(5, Math.max(2, items.length)) as 2 | 3 | 4 | 5,
   items: items.map(([itemTitle, subtitle, accent]) => ({ id: id('item'), title: clean(itemTitle), subtitle: clean(subtitle), accent })),
   footer: footer?.replace(/[\uFFFE\uFFFF]/g, '-'),
 })
