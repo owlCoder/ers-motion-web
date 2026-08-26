@@ -1,0 +1,1 @@
+Binary PNG assets are referenced directly from this directory.
