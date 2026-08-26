@@ -143,8 +143,6 @@
 .callout-body,
 .callout-title,
 .callout-text,
-.diagram-title,
-.diagram-subtitle,
 .list-item-editor,
 .text-block {
   min-width: 0;
@@ -197,14 +195,26 @@
 }
 
 .diagram-card.compact { padding: 10px 9px; }
-.diagram-title { font-size: 11px; line-height: 1.3; }
-.diagram-subtitle { font-size: 9.4px; line-height: 1.42; }
+.diagram-title {
+  font-size: 11px;
+  line-height: 1.3;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.diagram-subtitle {
+  font-size: 9.4px;
+  line-height: 1.42;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
 
 .diagram-hub .hub-center { width: min(48%, 330px); }
 .hub-connector::after { left: -230px; right: -230px; }
 
 .image-figure img {
-  max-height: 470px;
+  max-height: 365px;
   object-fit: contain;
 }
 
@@ -253,4 +263,5 @@
   .code-block.with-lines .code-line { grid-template-columns: 12mm minmax(0, 1fr); }
   .line-number { min-width: 12mm; padding-right: 2.7mm; }
   .code-line code { padding-right: 3mm; }
+  .image-figure img { max-height: 96mm; }
 }
