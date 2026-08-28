@@ -1,19 +1,24 @@
 # ERS nastavni materijali
 
-Ovaj repozitorijum sadrži statički read-only sajt za predmet **Elementi razvoja softvera**.
+Javni statički sajt za predmet **Elementi razvoja softvera** na studijskom programu Primenjeno softversko inženjerstvo, Fakultet tehničkih nauka, Univerzitet u Novom Sadu.
 
-Glavni prikaz ima dva dokumenta:
+Sajt sadrži dva dokumenta:
 
 - **Praktikum 2026/27**
 - **Specifikacija projektnog zadatka 2026/27**
 
-Sadržaj se prikazuje kao kontinuiran akademski dokument. U browseru nema simulacije A4 stranica, editora, lokalne baze dokumenata niti ručnog prelamanja sadržaja. Na taj način se izbegavaju velike praznine, odsečeni blokovi i drugi problemi koji nastaju kada se browser koristi kao Word-style page editor.
+Produkcijska verzija je predviđena za GitHub Pages:
 
-## Pokretanje
+**https://owlcoder.github.io/ers-motion-web/**
+
+> Ako Pages još nije aktiviran za repozitorijum, u **Settings → Pages → Build and deployment** treba jednokratno izabrati **GitHub Actions**. Nakon toga svaki push na `main` automatski gradi i objavljuje sajt.
+
+## Pokretanje lokalno
+
+Potreban je Node.js 22 (podržan je i Node.js `^20.19.0`).
 
 ```bash
 npm install
-npm run build
 npm run dev -- --host 127.0.0.1 --port 5600
 ```
 
@@ -35,27 +40,48 @@ Na Windows-u:
 start.cmd
 ```
 
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages project URL-u (`/ers-motion-web/`).
+
 ## Organizacija sajta
 
 - `src/main.tsx` — minimalni entry point
-- `src/StaticApp.tsx` — read-only prikaz Praktikuma i Specifikacije
-- `src/static-site.css` — kompletan web i print stil
+- `src/StaticApp.tsx` — read-only prikaz Praktikuma i Specifikacije i direktan PDF export
+- `src/static-site.css` — web i print stilovi
 - `src/content/` — strukturirani nastavni sadržaj
-- `public/course-assets/` — nastavne ilustracije i dijagrami
+- `public/course-assets/` — nastavne ilustracije i TAPIZ screenshots
 - `public/brand/` — institucionalni logotipi
+- `.github/workflows/build.yml` — build provera
+- `.github/workflows/pages.yml` — automatski deploy na GitHub Pages
 
-Statički prikaz automatski generiše:
+Statički prikaz automatski generiše navigaciju kroz naslove, numeraciju slika/listinga/tabela, light-mode code blokove sa syntax highlighting-om i akademske tabele, callout blokove, dijagrame i slike.
 
-- navigaciju kroz naslove;
-- numeraciju slika, listinga i tabela;
-- light-mode code blokove sa syntax highlighting-om;
-- akademske tabele, callout blokove, dijagrame i slike.
+## TAPIZ Boards screenshots
 
-## PDF i štampa
+Screenshotovi za TAPIZ Boards koriste slike dostavljene uz praktikum u izvornim piksel dimenzijama, bez resize-a. Cilj je da tekst i detalji interfejsa ostanu čitljivi i pri uvećanju, umesto prethodnog blurry prikaza.
 
-Dugme **Štampaj / PDF** koristi browser print dijalog. A4 lom se primenjuje tek kroz `@media print`, dok web prikaz ostaje kontinualan i nema fiksnu visinu stranice.
+## PDF
 
-Print CSS koristi `break-inside: avoid` za slike, dijagrame, tabele, callout blokove i listinge kako bi se izbeglo njihovo razdvajanje između dve strane kad god je to fizički moguće.
+Dugme **Preuzmi PDF** više ne otvara browser print dijalog. PDF se generiše direktno u browseru za trenutno otvoreni dokument i preuzima kao A4 fajl.
+
+Dokument se tokom izvoza deli na A4 stranice pre renderovanja, umesto da se ceo praktikum pretvara u jedan ogroman canvas. To izbegava browser ograničenja za veoma dugačke dokumente i zadržava bolju čitljivost slika.
+
+## GitHub Pages
+
+Workflow `.github/workflows/pages.yml` na svaki push na `main`:
+
+1. instalira dependencies;
+2. pokreće `npm run build`;
+3. pakuje `dist/` kao Pages artifact;
+4. objavljuje artifact preko zvaničnog `actions/deploy-pages` workflow-a.
+
+Repository je javan, pa GitHub Pages može da se koristi i na GitHub Free planu.
 
 ## Sačuvana verzija starog editora
 
@@ -65,4 +91,4 @@ Prethodni Word/Fluent UI editor je sačuvan na grani:
 archive/editor-word-ui-2026-08-26
 ```
 
-`main` više ne koristi editor, IndexedDB, Fluent UI shell niti `.ersdoc` workflow.
+`main` koristi samo statički read-only prikaz i nema IndexedDB, Fluent UI shell niti `.ersdoc` workflow.
