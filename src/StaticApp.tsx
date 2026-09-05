@@ -35,12 +35,6 @@ const calloutIcons = {
   success: '✓',
 }
 
-const PDF_PAGE_WIDTH = 794
-const PDF_PAGE_HEIGHT = 1123
-const PDF_MARGIN_X = 57
-const PDF_MARGIN_TOP = 60
-const PDF_MARGIN_BOTTOM = 64
-
 function assetUrl(src: string) {
   if (/^(?:data:|blob:|https?:|\/\/)/i.test(src)) return src
   return `${import.meta.env.BASE_URL}${src.replace(/^\/+/, '')}`
@@ -95,6 +89,7 @@ function prepareDocument(doc: CourseDocument) {
 
   for (const page of doc.pages) {
     if (page.layout === 'cover' || page.label === 'Sadržaj') continue
+
     for (const block of page.blocks) {
       let anchor: string | undefined
       let artifactLabel: string | undefined
@@ -194,6 +189,7 @@ function DiagramView({ block, label }: { block: DiagramBlock; label?: string }) 
 
 function BlockView({ item }: { item: PreparedBlock }) {
   const { block, anchor, artifactLabel } = item
+
   if (block.type === 'text') return <TextView block={block} anchor={anchor} />
   if (block.type === 'list') {
     const Tag = block.ordered ? 'ol' : 'ul'
@@ -203,9 +199,7 @@ function BlockView({ item }: { item: PreparedBlock }) {
   if (block.type === 'callout') {
     return (
       <aside className={`callout callout-${block.tone} keep-together`}>
-        <span className="callout-icon" aria-hidden="true">
-          {calloutIcons[block.tone]}
-        </span>
+        <span className="callout-icon" aria-hidden="true">{calloutIcons[block.tone]}</span>
         <div className="callout-content">
           <strong>{block.title}</strong>
           <div dangerouslySetInnerHTML={{ __html: inlineMarkup(block.text) }} />
@@ -282,7 +276,7 @@ function StaticDocument({ doc }: { doc: CourseDocument }) {
 
   return (
     <div className="document-layout">
-      <aside className="toc-panel no-print">
+      <aside className="toc-panel">
         <div className="toc-title">Sadržaj</div>
         <nav>
           {toc.filter((entry) => entry.level <= 2).map((entry) => (
@@ -305,109 +299,6 @@ function StaticDocument({ doc }: { doc: CourseDocument }) {
   )
 }
 
-async function waitForImages(root: ParentNode) {
-  const images = Array.from(root.querySelectorAll('img'))
-  await Promise.all(images.map(async (image) => {
-    if (!image.complete) {
-      await new Promise<void>((resolve) => {
-        image.addEventListener('load', () => resolve(), { once: true })
-        image.addEventListener('error', () => resolve(), { once: true })
-      })
-    }
-    if ('decode' in image) await image.decode().catch(() => undefined)
-  }))
-}
-
-function createPdfPage(stage: HTMLElement) {
-  const page = document.createElement('section')
-  page.style.width = `${PDF_PAGE_WIDTH}px`
-  page.style.height = `${PDF_PAGE_HEIGHT}px`
-  page.style.boxSizing = 'border-box'
-  page.style.background = '#fff'
-  page.style.overflow = 'hidden'
-  page.style.position = 'relative'
-  stage.appendChild(page)
-  return page
-}
-
-function createPdfBodyPage(stage: HTMLElement, pageNumber: number) {
-  const page = createPdfPage(stage)
-  page.style.padding = `${PDF_MARGIN_TOP}px ${PDF_MARGIN_X}px ${PDF_MARGIN_BOTTOM}px`
-
-  const body = document.createElement('div')
-  body.className = 'document-body'
-  body.style.padding = '0'
-  body.style.width = '100%'
-  body.style.minHeight = '0'
-  page.appendChild(body)
-
-  const footer = document.createElement('div')
-  footer.style.position = 'absolute'
-  footer.style.left = `${PDF_MARGIN_X}px`
-  footer.style.right = `${PDF_MARGIN_X}px`
-  footer.style.bottom = '22px'
-  footer.style.display = 'flex'
-  footer.style.justifyContent = 'space-between'
-  footer.style.fontSize = '10px'
-  footer.style.color = '#7b8795'
-  footer.innerHTML = `<span>Elementi razvoja softvera</span><span>${pageNumber}</span>`
-  page.appendChild(footer)
-
-  return { page, body }
-}
-
-async function buildPdfPages(source: HTMLElement) {
-  const stage = document.createElement('div')
-  stage.setAttribute('aria-hidden', 'true')
-  stage.style.position = 'fixed'
-  stage.style.left = '-100000px'
-  stage.style.top = '0'
-  stage.style.width = `${PDF_PAGE_WIDTH}px`
-  stage.style.background = '#fff'
-  stage.style.zIndex = '-1'
-  stage.style.pointerEvents = 'none'
-  document.body.appendChild(stage)
-
-  const pages: HTMLElement[] = []
-  const cover = source.querySelector<HTMLElement>('.document-cover')
-  const sourceBody = source.querySelector<HTMLElement>('.document-body')
-
-  if (cover) {
-    const coverPage = createPdfPage(stage)
-    const clonedCover = cover.cloneNode(true) as HTMLElement
-    clonedCover.style.width = '100%'
-    clonedCover.style.height = '100%'
-    clonedCover.style.minHeight = '0'
-    clonedCover.style.boxSizing = 'border-box'
-    clonedCover.style.border = '0'
-    coverPage.appendChild(clonedCover)
-    pages.push(coverPage)
-  }
-
-  if (sourceBody) {
-    const maxBodyHeight = PDF_PAGE_HEIGHT - PDF_MARGIN_TOP - PDF_MARGIN_BOTTOM
-    let pageNumber = pages.length + 1
-    let current = createPdfBodyPage(stage, pageNumber)
-    pages.push(current.page)
-
-    for (const child of Array.from(sourceBody.children)) {
-      const clone = child.cloneNode(true) as HTMLElement
-      current.body.appendChild(clone)
-
-      if (current.body.scrollHeight > maxBodyHeight && current.body.children.length > 1) {
-        current.body.removeChild(clone)
-        pageNumber += 1
-        current = createPdfBodyPage(stage, pageNumber)
-        pages.push(current.page)
-        current.body.appendChild(clone)
-      }
-    }
-  }
-
-  await waitForImages(stage)
-  return { stage, pages }
-}
-
 export default function StaticApp() {
   const initial: DocumentKey = window.location.hash.startsWith('#specifikacija')
     ? 'specifikacija'
@@ -415,7 +306,6 @@ export default function StaticApp() {
       ? 'projekat'
       : 'praktikum'
   const [active, setActive] = useState<DocumentKey>(initial)
-  const [isExporting, setIsExporting] = useState(false)
   const doc = documents[active]
 
   useEffect(() => {
@@ -433,59 +323,9 @@ export default function StaticApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const downloadPdf = async () => {
-    if (isExporting) return
-    const source = document.querySelector<HTMLElement>('.document-paper')
-    if (!source) return
-
-    setIsExporting(true)
-    let stage: HTMLElement | undefined
-    try {
-      await document.fonts.ready
-      await waitForImages(source)
-
-      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-        import('html2canvas'),
-        import('jspdf'),
-      ])
-
-      const prepared = await buildPdfPages(source)
-      stage = prepared.stage
-
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT], hotfixes: ['px_scaling'], compress: true })
-
-      for (let index = 0; index < prepared.pages.length; index += 1) {
-        const canvas = await html2canvas(prepared.pages[index], {
-          backgroundColor: '#ffffff',
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-        })
-        const image = canvas.toDataURL('image/jpeg', 0.95)
-        if (index > 0) pdf.addPage([PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT], 'portrait')
-        pdf.addImage(image, 'JPEG', 0, 0, PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT, undefined, 'FAST')
-      }
-
-      const filenames: Record<DocumentKey, string> = {
-        praktikum: 'ERS-Praktikum-2026-27.pdf',
-        specifikacija: 'ERS-Specifikacija-projektnog-zadatka-2026-27.pdf',
-        projekat: 'ERS-Projekat-2026-27.pdf',
-      }
-      pdf.save(filenames[active])
-    } catch (error) {
-      console.error('PDF export failed', error)
-      window.alert('PDF trenutno nije moguće napraviti. Pokušajte ponovo nakon što se dokument u potpunosti učita.')
-    } finally {
-      stage?.remove()
-      setIsExporting(false)
-    }
-  }
-
   return (
     <div className="site-shell">
-      <header className="site-header no-print">
+      <header className="site-header">
         <a className="site-brand" href="#praktikum" onClick={(event) => { event.preventDefault(); choose('praktikum') }}>
           <span className="brand-mark">E</span>
           <span><strong>ERS</strong><small>Elementi razvoja softvera</small></span>
@@ -495,9 +335,6 @@ export default function StaticApp() {
           <button className={active === 'specifikacija' ? 'active' : ''} onClick={() => choose('specifikacija')}>Specifikacija</button>
           <button className={active === 'projekat' ? 'active' : ''} onClick={() => choose('projekat')}>Projekat</button>
         </nav>
-        <button className="print-button" onClick={downloadPdf} disabled={isExporting}>
-          {isExporting ? 'Pravim PDF…' : 'Preuzmi PDF'}
-        </button>
       </header>
       <StaticDocument doc={doc} />
     </div>
