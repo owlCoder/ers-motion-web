@@ -88,7 +88,8 @@ export const exercise1 = (): DocumentPage[] => [
       'Najmanje jedna stavka ima proverljive kriterijume prihvatanja i povezana je sa konkretnom granom ili pull request-om.',
       'Tim koristi dogovoreni tok Backlog → Ready → In Progress → Code Review → QA/Verify → Done.',
       'Najmanje jedan pull request pokazuje pregled diff-a, rezultat provere i smislen razgovor o promeni.',
-      'Ako je AI alat korišćen pri analizi zahteva, tim može da objasni šta je prihvaćeno, šta je odbačeno i kako je rezultat proveravan.'),
+      'Ako je AI alat korišćen pri analizi zahteva, tim može da objasni šta je prihvaćeno, šta je odbačeno i kako je rezultat proveravan.',
+    ]),
     callout('success', 'Ishod vežbe', 'Student ume da poveže zahtev, backlog, Git istoriju, pull request i proveru ponašanja u jedan sledljiv razvojni proces.'),
   ]),
 ]
