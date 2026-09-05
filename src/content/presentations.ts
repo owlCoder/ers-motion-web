@@ -4,6 +4,7 @@ export type PresentationSlide = {
   points?: string[]
   example?: string
   question?: string
+  note?: never
 }
 
 export type PresentationDeck = {
@@ -318,7 +319,7 @@ export const presentationDecks: PresentationDeck[] = [
           'repozitorijum kao ugovor',
           'sat kao zavisnost kada vreme utiče na pravilo',
           'spoljni servis kao adapter',
-          'test može zameniti zavisnost kontrolisanim dvojnikiom',
+          'test može zameniti zavisnost kontrolisanim dvojnikom',
         ],
       },
       {
