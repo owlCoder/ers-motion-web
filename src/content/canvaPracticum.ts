@@ -1,11 +1,10 @@
 import type { Block, CourseDocument, DocumentPage } from '../types'
-import { exercise2 } from './canvaExercise2'
-import { exercise3 } from './canvaExercise3'
+import { exercise1 } from './canvaExercise1'
 import { exercise4 } from './canvaExercise4'
 import { exercise5 } from './canvaExercise5'
 import { exercise6 } from './canvaExercise6'
-import { exercise7 } from './canvaExercise7'
-import { exercise8 } from './canvaExercise8'
+import { exerciseIntegration } from './canvaExerciseIntegration'
+import { exerciseAiWorkflow } from './canvaExerciseAiWorkflow'
 import { exercise9 } from './canvaExercise9'
 import { exercise10 } from './canvaExercise10'
 import { reflowPages } from './contentLayout'
@@ -45,22 +44,22 @@ const introPages = (): DocumentPage[] => [
       ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji zahtevaju dodatno razjašnjenje.'],
       ['Tokom vežbe', 'Pratiti demonstraciju i obrazloženje odluka, a ne samo konačan kod ili niz komandi.'],
       ['Posle vežbe', 'Primeniti isti princip na projektnom repozitorijumu i sačuvati proverljiv razvojni trag kroz commit, test, dokument ili zapis o upotrebi AI alata.'],
-      ['Pre projektne kontrolne tačke', 'Proći kontrolnu listu, proveriti izgradnju projekta i testove, a zatim pregledati konačni diff. Svaki član tima treba da ume da obrazloži urađeno.'],
+      ['Pre projektne kontrolne tačke', 'Proći kontrolnu listu, proveriti izgradnju projekta i testove, a zatim pregledati konačan diff. Svaki član tima treba da ume da obrazloži urađeno.'],
     ]),
     callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija unapred pripremljen projektni šablon: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
-    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i evaluacioni scenariji.'),
+    callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Sintaksa pojedinih AI alata može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, provera rezultata i evaluacioni scenariji.'),
   ]),
   page('0.2. Tok semestra i projekta', [
     text('h1', '0.2. Tok semestra i projekta'),
-    text('paragraph', 'Početni deo semestra postavlja razvojni tok, rad sa zahtevima i način praćenja projekta. Vežba 3 objedinjuje potrebne OOP i Clean Code osnove sa SOLID principima i Clean Architecture, nakon čega gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
-    image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
+    text('paragraph', 'Praktikum je organizovan u osam povezanih vežbi. Prva vežba objedinjuje zahteve, backlog, Git i timski razvojni tok. Druga povezuje OOP i Clean Code sa SOLID principima i Clean Architecture. Nakon poslovne logike i testiranja uvodi se posebna oblast integracije modula i podataka, što je važno za zajednički proizvod na kome radi više timova. Završni deo praktikuma obrađuje kontrolisan razvoj uz AI podršku, MCP i determinističke mehanizme provere.'),
+    image('/course-assets/semester-map.svg', 'Tok praktikuma: zahtevi i razvojni proces → arhitektura → poslovna logika → testiranje → integracija modula → razvoj uz AI podršku → MCP → završna provera kvaliteta.', 'Mapa semestra'),
     list([
-      'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
+      'P1 — problem, backlog, kriterijumi prihvatanja i uredan razvojni tok kroz Git i pull request.',
       'P2 — arhitektonske granice i najmanje jedan vertikalni prolaz kroz sistem.',
-      'P3 — koherentni use-case-ovi i eksplicitni poslovni ishodi.',
+      'P3 — koherentni slučajevi upotrebe i eksplicitni poslovni ishodi.',
       'P4 — testirano funkcionalno jezgro i Git tag `manual-core-baseline`.',
       'P5 — stabilne projektne instrukcije, strukturirani izlaz i uredna evidencija u `AI_USAGE.md`.',
-      'P6 — prilagođeni skills kao ponovljive procedure i najmanji smisleni agentski tok rada.',
+      'P6 — ponovljive procedure i najmanji smisleni agentski tok rada.',
       'P7 — MCP resursi i alati povezani sa stvarnim projektnim signalima.',
       'P8 — hook i guardrail mehanizmi, evaluacioni scenariji, vršnjačka provera kvaliteta i završna odbrana.',
     ]),
@@ -70,13 +69,13 @@ const introPages = (): DocumentPage[] => [
 const summaryPages = (): DocumentPage[] => [
   page('Sažetak: isti principi u novom razvojnom okruženju', [
     text('h1', 'Sažetak: isti principi u novom razvojnom okruženju'),
-    text('paragraph', 'Klasični principi iz predmeta ostaju osnova i kada se u razvoj uvedu AI agenti. Jasan interfejs odgovara dobro definisanom ugovoru alata, SRP pomaže pri razdvajanju agentskih uloga, dependency injection ima analogiju u kontrolisanom dodeljivanju alata i spoljnog konteksta, a testiranje se proširuje evaluacionim scenarijima celog toka rada.'),
+    text('paragraph', 'Klasični principi softverskog inženjerstva ostaju osnova i kada se u razvoj uvedu AI agenti i dodatna automatizacija. Jasan interfejs odgovara dobro definisanom ugovoru alata, SRP pomaže pri razdvajanju agentskih uloga, dependency injection ima analogiju u kontrolisanom dodeljivanju alata i spoljnog konteksta, a testiranje se proširuje evaluacionim scenarijima celog toka rada.'),
     table(['Softversko inženjerstvo', 'Razvoj uz podršku AI alata'], [
       ['Interfejs', 'Ugovor alata ili MCP funkcionalnosti sa jasnim ulazom, izlazom i ograničenjima.'],
       ['Single Responsibility', 'Specijalizovana agentska uloga sa ograničenom odgovornošću.'],
       ['Dependency Injection', 'Kontrolisano dodeljivanje alata i spoljnog konteksta.'],
-      ['Unit test', 'Deterministička provera softverskog ponašanja.'],
-      ['Integracioni test', 'Provera toka rada kroz više komponenti.'],
+      ['Jedinični test', 'Deterministička provera softverskog ponašanja.'],
+      ['Integracioni test', 'Provera toka rada kroz više komponenti ili modula.'],
       ['Pokrivenost koda', 'Signal nepokrivenog koda; sličan način razmišljanja koristi se pri izboru skupa evaluacionih scenarija.'],
       ['Middleware / policy', 'Hook ili guardrail koji se izvršava na definisanoj granici životnog ciklusa.'],
       ['Ponovljiva procedura', 'Skill koji čuva i verzioniše razvojni postupak.'],
@@ -95,11 +94,11 @@ const literaturePages = (): DocumentPage[] => [
       'Scott Chacon i Ben Straub — <i>Pro Git</i>; zvanična Git dokumentacija: <a href="https://git-scm.com/doc">git-scm.com/doc</a>.',
       'Ken Schwaber i Jeff Sutherland — <i>The Scrum Guide</i>: <a href="https://scrumguides.org">scrumguides.org</a>.',
       'NUnit dokumentacija: <a href="https://docs.nunit.org">docs.nunit.org</a>; Moq projekat i dokumentacija: <a href="https://github.com/devlooped/moq">github.com/devlooped/moq</a>.',
-      'Microsoft Learn — .NET dependency injection, testing i arhitektura aplikacija: <a href="https://learn.microsoft.com/dotnet/">learn.microsoft.com/dotnet</a>.',
+      'Microsoft Learn — .NET dependency injection, testiranje i arhitektura aplikacija: <a href="https://learn.microsoft.com/dotnet/">learn.microsoft.com/dotnet</a>.',
       'Model Context Protocol — specifikacija i koncepti resources/tools/prompts: <a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a>.',
-      'Zvanična dokumentacija AI razvojnog okruženja koje se koristi na vežbama; pratiti aktuelnu verziju sintakse za projektne instrukcije, skills, agente i hooks.',
+      'Zvanična dokumentacija AI razvojnog okruženja koje se koristi na vežbama; pratiti aktuelnu verziju sintakse za projektne instrukcije, procedure, agente i hooks.',
     ]),
-    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv konfiguracione datoteke, treba pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model, granice odgovornosti i način verifikacije.'),
+    callout('note', 'Napomena o verzijama', 'AI alati i njihova konfiguraciona sintaksa menjaju se brže od osnovnih principa softverskog inženjerstva. Kada se razlikuje konkretna komanda ili naziv konfiguracione datoteke, treba pratiti aktuelnu zvaničnu dokumentaciju, ali zadržati isti mentalni model, granice odgovornosti i način provere.'),
   ]),
 ]
 
@@ -135,7 +134,7 @@ function pageContainsHeading(page: DocumentPage, needle: string) {
 }
 
 function contentsPage(body: DocumentPage[]): DocumentPage {
-  const exerciseNumbers = Array.from({ length: 9 }, (_, index) => index + 1)
+  const exerciseNumbers = Array.from({ length: 8 }, (_, index) => index + 1)
   const wanted = [
     ['Uvod i način rada', '0.1. Kako koristiti praktikum'],
     ['Tok semestra i projekta', '0.2. Tok semestra i projekta'],
@@ -161,21 +160,20 @@ function contentsPage(body: DocumentPage[]): DocumentPage {
 
 const bodyPages = [
   ...chapter(introPages(), 'Uvod'),
-  ...chapter(renumberExercisePages(exercise2(), 2, 1), 'Vežba 1'),
-  ...chapter(renumberExercisePages(exercise3(), 3, 2), 'Vežba 2'),
-  ...chapter(renumberExercisePages(exercise4(), 4, 3), 'Vežba 3'),
-  ...chapter(renumberExercisePages(exercise5(), 5, 4), 'Vežba 4'),
-  ...chapter(renumberExercisePages(exercise6(), 6, 5), 'Vežba 5'),
-  ...chapter(renumberExercisePages(exercise7(), 7, 6), 'Vežba 6'),
-  ...chapter(renumberExercisePages(exercise8(), 8, 7), 'Vežba 7'),
-  ...chapter(renumberExercisePages(exercise9(), 9, 8), 'Vežba 8'),
-  ...chapter(renumberExercisePages(exercise10(), 10, 9), 'Vežba 9'),
+  ...chapter(exercise1(), 'Vežba 1'),
+  ...chapter(renumberExercisePages(exercise4(), 4, 2), 'Vežba 2'),
+  ...chapter(renumberExercisePages(exercise5(), 5, 3), 'Vežba 3'),
+  ...chapter(renumberExercisePages(exercise6(), 6, 4), 'Vežba 4'),
+  ...chapter(exerciseIntegration(), 'Vežba 5'),
+  ...chapter(exerciseAiWorkflow(), 'Vežba 6'),
+  ...chapter(renumberExercisePages(exercise9(), 9, 7), 'Vežba 7'),
+  ...chapter(renumberExercisePages(exercise10(), 10, 8), 'Vežba 8'),
   ...chapter(summaryPages(), 'Zaključak'),
   ...chapter(literaturePages(), 'Literatura'),
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 6,
+  version: 7,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -184,7 +182,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-09-05T20:45:00.000Z',
+  updatedAt: '2026-09-05T22:45:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
