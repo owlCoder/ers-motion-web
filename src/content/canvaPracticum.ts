@@ -1,5 +1,4 @@
 import type { Block, CourseDocument, DocumentPage } from '../types'
-import { exercise1 } from './canvaExercise1'
 import { exercise2 } from './canvaExercise2'
 import { exercise3 } from './canvaExercise3'
 import { exercise4 } from './canvaExercise4'
@@ -53,7 +52,7 @@ const introPages = (): DocumentPage[] => [
   ]),
   page('0.2. Tok semestra i projekta', [
     text('h1', '0.2. Tok semestra i projekta'),
-    text('paragraph', 'Prve dve vežbe služe za obnovu i ujednačavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
+    text('paragraph', 'Početni deo semestra postavlja razvojni tok, rad sa zahtevima i način praćenja projekta. Vežba 4 objedinjuje potrebne OOP i Clean Code osnove sa SOLID principima i Clean Architecture, nakon čega gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
     image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
     list([
       'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
@@ -115,10 +114,11 @@ function pageContainsHeading(page: DocumentPage, needle: string) {
 }
 
 function contentsPage(body: DocumentPage[]): DocumentPage {
+  const exerciseNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10]
   const wanted = [
     ['Uvod i način rada', '0.1. Kako koristiti praktikum'],
     ['Tok semestra i projekta', '0.2. Tok semestra i projekta'],
-    ...Array.from({ length: 10 }, (_, index) => [`Vežba ${index + 1}`, `Vežba ${index + 1}`]),
+    ...exerciseNumbers.map((number) => [`Vežba ${number}`, `Vežba ${number}`] as [string, string]),
     ['Sažetak', 'Sažetak: isti principi'],
     ['Literatura i dokumentacija', 'Preporučena literatura'],
   ] as Array<[string, string]>
@@ -140,7 +140,6 @@ function contentsPage(body: DocumentPage[]): DocumentPage {
 
 const bodyPages = [
   ...chapter(introPages(), 'Uvod'),
-  ...chapter(exercise1(), 'Vežba 1'),
   ...chapter(exercise2(), 'Vežba 2'),
   ...chapter(exercise3(), 'Vežba 3'),
   ...chapter(exercise4(), 'Vežba 4'),
@@ -155,7 +154,7 @@ const bodyPages = [
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 4,
+  version: 5,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -164,7 +163,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-26T08:20:00.000Z',
+  updatedAt: '2026-09-05T20:35:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
