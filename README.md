@@ -4,19 +4,19 @@ Javni statički sajt za predmet **Elementi razvoja softvera** na studijskom prog
 
 Sajt sadrži tri dokumenta:
 
-- **Praktikum 2026/27**
-- **Specifikacija projektnog zadatka 2026/27**
-- **Projekat 2026/27** — organizacija rada kao simulacija softverske firme: više timova, jedan zajednički proizvod i repozitorijum, Tapiz backlog-i, ownership, Pull Request workflow, automatizacija i kontrolisana upotreba AI alata
+- **Praktikum 2026/27** — nastavni materijal za vežbe i samostalni rad;
+- **Specifikacija projektnog zadatka 2026/27** — zvanični uslovi za izradu, predaju i odbranu projekta;
+- **Projekat 2026/27** — jedna zajednička projektna tema, jedan proizvod i više razvojnih timova.
 
 Produkcijska verzija je predviđena za GitHub Pages:
 
 **https://owlcoder.github.io/ers-motion-web/**
 
-> Ako Pages još nije aktiviran za repozitorijum, u **Settings → Pages → Build and deployment** treba jednokratno izabrati **GitHub Actions**. Nakon toga svaki push na `main` automatski gradi i objavljuje sajt.
+> Ako GitHub Pages još nije aktiviran za repozitorijum, u **Settings → Pages → Build and deployment** treba jednokratno izabrati **GitHub Actions**. Nakon toga svaki push na `main` automatski gradi i objavljuje sajt.
 
-## Pokretanje lokalno
+## Lokalno pokretanje
 
-Potreban je Node.js 22 (podržan je i Node.js `^20.19.0`).
+Potreban je Node.js 22, a podržan je i Node.js `^20.19.0`.
 
 ```bash
 npm install
@@ -29,74 +29,74 @@ Zatim otvoriti:
 http://localhost:5600
 ```
 
-Na macOS/Linux može se koristiti i:
+Na macOS/Linux sistemima može se koristiti i:
 
 ```bash
 ./start.sh
 ```
 
-Na Windows-u:
+Na Windows sistemu:
 
 ```text
 start.cmd
 ```
 
-## Build
+## Izgradnja
 
 ```bash
 npm run build
 npm run preview
 ```
 
-Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages project URL-u (`/ers-motion-web/`).
+Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages adresi projekta (`/ers-motion-web/`).
 
 ## Organizacija sajta
 
-- `src/main.tsx` — minimalni entry point
-- `src/StaticApp.tsx` — read-only prikaz Praktikuma, Specifikacije i Projekta i direktan PDF export
-- `src/static-site.css` — web i print stilovi
-- `src/content/` — strukturirani nastavni sadržaj
-- `src/content/teamProject.ts` — pravila i organizacija zajedničkog timskog projekta
-- `public/course-assets/` — nastavne ilustracije i TAPIZ screenshots
-- `public/brand/` — institucionalni logotipi
-- `.github/workflows/build.yml` — build provera
-- `.github/workflows/pages.yml` — automatski deploy na GitHub Pages
+- `src/main.tsx` — minimalna ulazna tačka aplikacije;
+- `src/StaticApp.tsx` — prikaz Praktikuma, Specifikacije i Projekta samo za čitanje, sa direktnim izvozom u PDF;
+- `src/static-site.css` — stilovi za prikaz na ekranu i štampu;
+- `src/content/` — strukturirani nastavni sadržaj;
+- `src/content/teamProject.ts` — pravila i organizacija zajedničkog timskog projekta;
+- `public/course-assets/` — nastavne ilustracije i snimci ekrana iz Tapiz Boards;
+- `public/brand/` — institucionalni logotipi;
+- `.github/workflows/build.yml` — automatska provera izgradnje;
+- `.github/workflows/pages.yml` — automatsko objavljivanje na GitHub Pages.
 
-Statički prikaz automatski generiše navigaciju kroz naslove, numeraciju slika/listinga/tabela, light-mode code blokove sa syntax highlighting-om i akademske tabele, callout blokove, dijagrame i slike.
+Statički prikaz automatski generiše navigaciju kroz naslove, numeraciju slika, listinga i tabela, blokove koda sa označavanjem sintakse, akademske tabele, napomene, dijagrame i slike.
 
 ## Projektni model
 
-Tab **Projekat** opisuje način na koji se gradivo iz praktikuma primenjuje na semestralni rad. Studenti rade u timovima od približno 6–10 članova nad jednim zajedničkim proizvodom i repozitorijumom. Timovi preuzimaju vlasništvo nad poslovnim domenima kao što su Accounting, Ticketing, CRM ili Inventory, ali moraju da usaglase cross-team ugovore i integrišu rezultat u jedan sistem.
+Tab **Projekat** opisuje jednu zajedničku temu: razvoj integrisanog poslovnog informacionog sistema. Studenti rade u više timova nad istim proizvodom i istim repozitorijumom. Svaki tim preuzima odgovornost za jedan modul, na primer Finansije, Podršku korisnicima, CRM, Zalihe, Ljudske resurse, Projekte, Platformu ili Analitiku. To nisu zasebne teme, već delovi istog sistema koji moraju da se integrišu u jednu celinu.
 
-Postojeća pravila praktikuma ostaju obavezna: SOLID, Clean Code, Clean Architecture, testiranje, Tapiz Boards za backlog i praćenje, proverljiv Git/Pull Request trag, `AI_USAGE.md`, skills/agents/MCP/hooks i nezavisna verifikacija rezultata dobijenih uz pomoć AI alata.
+Zvanični uslovi nalaze se u tabu **Specifikacija**. Tab **Projekat** opisuje organizaciju rada: Tapiz Boards, podelu odgovornosti, Git i zahteve za spajanje, pregled koda, testiranje, automatizaciju, arhitektonske odluke i saradnju između timova. Pravila iz Specifikacije imaju prednost ako postoji razlika u tumačenju.
 
-## TAPIZ Boards screenshots
+## Tapiz Boards — snimci ekrana
 
-Screenshotovi za TAPIZ Boards koriste slike dostavljene uz praktikum u izvornim piksel dimenzijama, bez resize-a. Cilj je da tekst i detalji interfejsa ostanu čitljivi i pri uvećanju, umesto prethodnog blurry prikaza.
+Snimci ekrana za Tapiz Boards koriste slike dostavljene uz Praktikum u izvornim dimenzijama, bez promene veličine. Cilj je da tekst i detalji interfejsa ostanu čitljivi i pri uvećanju.
 
 ## PDF
 
-Dugme **Preuzmi PDF** više ne otvara browser print dijalog. PDF se generiše direktno u browseru za trenutno otvoreni dokument i preuzima kao A4 fajl.
+Dugme **Preuzmi PDF** ne otvara dijalog za štampu. PDF se generiše direktno u pregledaču za trenutno otvoreni dokument i preuzima kao A4 datoteka.
 
-Dokument se tokom izvoza deli na A4 stranice pre renderovanja, umesto da se ceo praktikum pretvara u jedan ogroman canvas. To izbegava browser ograničenja za veoma dugačke dokumente i zadržava bolju čitljivost slika.
+Dokument se tokom izvoza deli na A4 stranice pre iscrtavanja. Time se izbegavaju ograničenja pregledača kod veoma dugih dokumenata i zadržava se bolja čitljivost slika.
 
 ## GitHub Pages
 
-Workflow `.github/workflows/pages.yml` na svaki push na `main`:
+Tok rada `.github/workflows/pages.yml` pri svakom push-u na `main`:
 
-1. instalira dependencies;
+1. instalira zavisnosti;
 2. pokreće `npm run build`;
-3. pakuje `dist/` kao Pages artifact;
-4. objavljuje artifact preko zvaničnog `actions/deploy-pages` workflow-a.
+3. pakuje `dist/` kao GitHub Pages artefakt;
+4. objavljuje artefakt pomoću zvanične GitHub Pages akcije.
 
-Repository je javan, pa GitHub Pages može da se koristi i na GitHub Free planu.
+Repozitorijum je javan, pa GitHub Pages može da se koristi i na GitHub Free planu.
 
 ## Sačuvana verzija starog editora
 
-Prethodni Word/Fluent UI editor je sačuvan na grani:
+Prethodni Word/Fluent UI editor sačuvan je na grani:
 
 ```text
 archive/editor-word-ui-2026-08-26
 ```
 
-`main` koristi samo statički read-only prikaz i nema IndexedDB, Fluent UI shell niti `.ersdoc` workflow.
+`main` koristi samo statički prikaz i nema IndexedDB, Fluent UI okruženje niti `.ersdoc` tok rada.
