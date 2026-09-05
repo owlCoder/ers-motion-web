@@ -90,7 +90,8 @@ export const exerciseIntegration = (): DocumentPage[] => [
       'Objasniti da li se koristi sinhroni poziv ili događaj i zbog čega je taj izbor prikladan.',
       'Navesti transakcionu granicu i ponašanje u slučaju konkurentne izmene ili ponovljenog zahteva kada je to relevantno.',
       'Dodati ili prilagoditi integracione testove koji štite novu međumodulsku saradnju.',
-      'Ako promena utiče na više timova, odluku evidentirati u odgovarajućem ADR-u ili drugom trajnom projektnom zapisu.'),
+      'Ako promena utiče na više timova, odluku evidentirati u odgovarajućem ADR-u ili drugom trajnom projektnom zapisu.',
+    ]),
     callout('success', 'Ishod vežbe', 'Student ume da objasni kako dva modula sarađuju bez narušavanja njihovih granica i kako se ispravnost te saradnje nezavisno proverava.'),
   ]),
 ]
