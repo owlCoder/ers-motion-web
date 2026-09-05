@@ -2,10 +2,11 @@
 
 Javni statički sajt za predmet **Elementi razvoja softvera** na studijskom programu Primenjeno softversko inženjerstvo, Fakultet tehničkih nauka, Univerzitet u Novom Sadu.
 
-Sajt sadrži dva dokumenta:
+Sajt sadrži tri dokumenta:
 
 - **Praktikum 2026/27**
 - **Specifikacija projektnog zadatka 2026/27**
+- **Projekat 2026/27** — organizacija rada kao simulacija softverske firme: više timova, jedan zajednički proizvod i repozitorijum, Tapiz backlog-i, ownership, Pull Request workflow, automatizacija i kontrolisana upotreba AI alata
 
 Produkcijska verzija je predviđena za GitHub Pages:
 
@@ -52,15 +53,22 @@ Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages 
 ## Organizacija sajta
 
 - `src/main.tsx` — minimalni entry point
-- `src/StaticApp.tsx` — read-only prikaz Praktikuma i Specifikacije i direktan PDF export
+- `src/StaticApp.tsx` — read-only prikaz Praktikuma, Specifikacije i Projekta i direktan PDF export
 - `src/static-site.css` — web i print stilovi
 - `src/content/` — strukturirani nastavni sadržaj
+- `src/content/teamProject.ts` — pravila i organizacija zajedničkog timskog projekta
 - `public/course-assets/` — nastavne ilustracije i TAPIZ screenshots
 - `public/brand/` — institucionalni logotipi
 - `.github/workflows/build.yml` — build provera
 - `.github/workflows/pages.yml` — automatski deploy na GitHub Pages
 
 Statički prikaz automatski generiše navigaciju kroz naslove, numeraciju slika/listinga/tabela, light-mode code blokove sa syntax highlighting-om i akademske tabele, callout blokove, dijagrame i slike.
+
+## Projektni model
+
+Tab **Projekat** opisuje način na koji se gradivo iz praktikuma primenjuje na semestralni rad. Studenti rade u timovima od približno 6–10 članova nad jednim zajedničkim proizvodom i repozitorijumom. Timovi preuzimaju vlasništvo nad poslovnim domenima kao što su Accounting, Ticketing, CRM ili Inventory, ali moraju da usaglase cross-team ugovore i integrišu rezultat u jedan sistem.
+
+Postojeća pravila praktikuma ostaju obavezna: SOLID, Clean Code, Clean Architecture, testiranje, Tapiz Boards za backlog i praćenje, proverljiv Git/Pull Request trag, `AI_USAGE.md`, skills/agents/MCP/hooks i nezavisna verifikacija rezultata dobijenih uz pomoć AI alata.
 
 ## TAPIZ Boards screenshots
 

@@ -33,7 +33,7 @@ const cover = (): DocumentPage => ({
     institution(),
     { id: id('title'), type: 'text', variant: 'title', html: 'Praktikum iz predmeta Elementi razvoja softvera', align: 'center' },
     { id: id('subtitle'), type: 'text', variant: 'subtitle', html: 'Studijska 2026/2027. godina', align: 'center' },
-    { id: id('quote'), type: 'text', variant: 'quote', html: 'Radni materijal za vežbe, samostalno ponavljanje i kontinuiran razvoj projektnog zadatka.', align: 'center' },
+    { id: id('quote'), type: 'text', variant: 'quote', html: 'Radni materijal za vežbe, samostalno ponavljanje i kontinuiran razvoj zajedničkog timskog projekta.', align: 'center' },
     { id: id('caption'), type: 'text', variant: 'caption', html: 'Univerzitet u Novom Sadu · Fakultet tehničkih nauka · Primenjeno softversko inženjerstvo', align: 'center' },
   ],
 })
@@ -42,28 +42,30 @@ const introPages = (): DocumentPage[] => [
   page('0.1. Kako koristiti praktikum', [
     text('h1', '0.1. Kako koristiti praktikum'),
     text('paragraph', 'Praktikum je zamišljen kao jedinstven pratilac vežbi i projektnog zadatka. Svaka oblast sadrži teorijsko objašnjenje, praktičan primer, pitanja za proveru razumevanja i zadatke koji povezuju gradivo sa projektnim repozitorijumom. Cilj je da student nakon časa može samostalno da obnovi postupak, razume razloge koji stoje iza donetih odluka i primeni isti princip u drugom kontekstu.'),
+    text('paragraph', 'Projektni rad se tokom semestra organizuje kao simulacija male softverske firme: više timova razvija jedan zajednički proizvod u istom repozitorijumu, dok svaki tim ima jasno vlasništvo nad svojim poslovnim domenom i sopstveni Tapiz backlog. Detaljna pravila organizacije nalaze se u tabu Projekat; ona ne zamenjuju gradivo praktikuma, već određuju kontekst u kome se gradivo primenjuje.'),
     table(['Faza', 'Preporučeni način rada'], [
       ['Pre vežbe', 'Pročitati uvodni deo oblasti i označiti pojmove koji zahtevaju dodatno razjašnjenje.'],
       ['Tokom vežbe', 'Pratiti demonstraciju i obrazloženje odluka, a ne samo konačan kod ili niz komandi.'],
-      ['Posle vežbe', 'Primeniti isti princip na projektnom repozitorijumu i sačuvati proverljiv razvojni trag kroz commit, test, dokument ili zapis o upotrebi AI alata.'],
-      ['Pre projektne kontrolne tačke', 'Proći kontrolnu listu, proveriti izgradnju projekta i testove, a zatim pregledati konačni diff. Svaki član tima treba da ume da obrazloži urađeno.'],
+      ['Posle vežbe', 'Primeniti isti princip na zajedničkom projektnom repozitorijumu u okviru domena svog tima i sačuvati proverljiv razvojni trag kroz backlog stavku, commit, Pull Request, test, dokument ili zapis o upotrebi AI alata.'],
+      ['Pre projektne kontrolne tačke', 'Proći kontrolnu listu, proveriti izgradnju projekta i testove, pregledati konačni diff i proveriti uticaj na druge timove. Svaki član tima treba da ume da obrazloži urađeno.'],
     ]),
-    callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija unapred pripremljen projektni šablon: principe primenjuje na sopstvenu temu i samostalno oblikuje strukturu koju može da obrazloži.'),
+    callout('info', 'Nastavni primeri', 'Praktikum koristi mali domen rezervacije fakultetske opreme, kao i studije slučaja Logger–Blogger i ECommerce kada su korisne za poređenje arhitektonskih odluka. Studentski tim ne dobija unapred pripremljen projektni šablon: principe primenjuje na dodeljeni domen zajedničkog proizvoda i samostalno oblikuje strukturu koju može da obrazloži.'),
     callout('note', 'Jezik i alati', 'Primeri su pretežno u C#/.NET okruženju. Konfiguraciona sintaksa pojedinih AI alata može se menjati između verzija, zato se u praktikumu naglašavaju stabilni koncepti: kontekst, ugovori, granice alata, verifikacija i evaluacioni scenariji.'),
   ]),
   page('0.2. Tok semestra i projekta', [
     text('h1', '0.2. Tok semestra i projekta'),
-    text('paragraph', 'Prve dve vežbe služe za obnovu i ujednačavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
+    text('paragraph', 'Prve dve vežbe služe za obnovu i ujednačavanje osnova. Od treće vežbe gotovo svaka oblast ostavlja konkretan trag u istom zajedničkom projektnom repozitorijumu. Studenti rade u timovima od približno 6 do 10 članova; svaki tim razvija svoj poslovni domen, ali se rezultat kontinuirano integriše u jedan proizvod. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
     image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
+    callout('task', 'Projektni način rada', 'Svaki tim vodi backlog i praćenje rada u Tapiz Boards, radi kroz kratkotrajne Git grane i Pull Request-ove, poštuje vlasništvo nad modulima i zajednički Definition of Done. SOLID, Clean Code, Clean Architecture, testiranje i pravila AI usage-a iz praktikuma ostaju obavezni kroz ceo projekat.'),
     list([
-      'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
-      'P2 — arhitektonske granice i najmanje jedan vertikalni prolaz kroz sistem.',
-      'P3 — koherentni use-case-ovi i eksplicitni poslovni ishodi.',
-      'P4 — testirano funkcionalno jezgro i Git tag `manual-core-baseline`.',
+      'P1 — tim definiše problem svog domena, backlog, kriterijume prihvatanja i početni trag upotrebe AI podrške.',
+      'P2 — tim definiše arhitektonske granice svog modula, cross-team ugovore i najmanje jedan vertikalni prolaz kroz sistem.',
+      'P3 — koherentni use-case-ovi i eksplicitni poslovni ishodi moraju da funkcionišu u okviru zajedničkog proizvoda.',
+      'P4 — testirano funkcionalno jezgro, provera integracije i Git tag `manual-core-baseline`.',
       'P5 — stabilne projektne instrukcije, strukturirani izlaz i uredna evidencija u `AI_USAGE.md`.',
-      'P6 — prilagođeni skills kao ponovljive procedure i najmanji smisleni agentski tok rada.',
-      'P7 — MCP resursi i alati povezani sa stvarnim projektnim signalima.',
-      'P8 — hook i guardrail mehanizmi, evaluacioni scenariji, vršnjačka provera kvaliteta i završna odbrana.',
+      'P6 — prilagođeni skills kao ponovljive procedure i najmanji smisleni agentski tok rada vezan za realan timski proces.',
+      'P7 — MCP resursi i alati povezani sa stvarnim projektnim signalima i jasnim granicama odgovornosti.',
+      'P8 — hook i guardrail mehanizmi, evaluacioni scenariji, cross-team vršnjačka provera kvaliteta i završna odbrana integrisanog proizvoda.',
     ]),
   ]),
 ]
@@ -155,7 +157,7 @@ const bodyPages = [
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 4,
+  version: 5,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -164,7 +166,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-26T08:20:00.000Z',
+  updatedAt: '2026-09-05T12:00:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
