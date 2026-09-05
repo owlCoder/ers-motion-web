@@ -52,7 +52,7 @@ const introPages = (): DocumentPage[] => [
   ]),
   page('0.2. Tok semestra i projekta', [
     text('h1', '0.2. Tok semestra i projekta'),
-    text('paragraph', 'Početni deo semestra postavlja razvojni tok, rad sa zahtevima i način praćenja projekta. Vežba 4 objedinjuje potrebne OOP i Clean Code osnove sa SOLID principima i Clean Architecture, nakon čega gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
+    text('paragraph', 'Početni deo semestra postavlja razvojni tok, rad sa zahtevima i način praćenja projekta. Vežba 3 objedinjuje potrebne OOP i Clean Code osnove sa SOLID principima i Clean Architecture, nakon čega gotovo svaka oblast ostavlja konkretan trag u istom projektnom repozitorijumu. AI podrška se uvodi rano kroz analizu zahteva, dok samostalnije izmene koda dolaze tek nakon stabilizacije funkcionalnog jezgra i osnovnih testova.'),
     image('/course-assets/semester-map.svg', 'Teme se nadovezuju na isti projekat: zahtevi → arhitektura → poslovna logika → testovi → tok rada uz podršku AI alata → MCP → završna provera kvaliteta.', 'Mapa semestra'),
     list([
       'P1 — problem, backlog, kriterijumi prihvatanja i početni trag upotrebe AI podrške.',
@@ -105,6 +105,27 @@ const literaturePages = (): DocumentPage[] => [
 
 const chapter = (pages: DocumentPage[], name: string) => reflowPages(pages, name)
 
+function renumberExercisePages(pages: DocumentPage[], from: number, to: number): DocumentPage[] {
+  const exercisePrefix = new RegExp(`^Vežba ${from}\\b`)
+  const sectionPrefix = new RegExp(`^${from}(?=\\.)`)
+
+  return pages.map((sourcePage) => ({
+    ...sourcePage,
+    label: sourcePage.label
+      .replace(exercisePrefix, `Vežba ${to}`)
+      .replace(sectionPrefix, String(to)),
+    blocks: sourcePage.blocks.map((block) => {
+      if (block.type !== 'text' || !['h1', 'h2', 'h3'].includes(block.variant)) return block
+      return {
+        ...block,
+        html: block.html
+          .replace(exercisePrefix, `Vežba ${to}`)
+          .replace(sectionPrefix, String(to)),
+      }
+    }),
+  }))
+}
+
 function plain(html: string) {
   return html.replace(/<[^>]+>/g, '').trim()
 }
@@ -114,7 +135,7 @@ function pageContainsHeading(page: DocumentPage, needle: string) {
 }
 
 function contentsPage(body: DocumentPage[]): DocumentPage {
-  const exerciseNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const exerciseNumbers = Array.from({ length: 9 }, (_, index) => index + 1)
   const wanted = [
     ['Uvod i način rada', '0.1. Kako koristiti praktikum'],
     ['Tok semestra i projekta', '0.2. Tok semestra i projekta'],
@@ -140,21 +161,21 @@ function contentsPage(body: DocumentPage[]): DocumentPage {
 
 const bodyPages = [
   ...chapter(introPages(), 'Uvod'),
-  ...chapter(exercise2(), 'Vežba 2'),
-  ...chapter(exercise3(), 'Vežba 3'),
-  ...chapter(exercise4(), 'Vežba 4'),
-  ...chapter(exercise5(), 'Vežba 5'),
-  ...chapter(exercise6(), 'Vežba 6'),
-  ...chapter(exercise7(), 'Vežba 7'),
-  ...chapter(exercise8(), 'Vežba 8'),
-  ...chapter(exercise9(), 'Vežba 9'),
-  ...chapter(exercise10(), 'Vežba 10'),
+  ...chapter(renumberExercisePages(exercise2(), 2, 1), 'Vežba 1'),
+  ...chapter(renumberExercisePages(exercise3(), 3, 2), 'Vežba 2'),
+  ...chapter(renumberExercisePages(exercise4(), 4, 3), 'Vežba 3'),
+  ...chapter(renumberExercisePages(exercise5(), 5, 4), 'Vežba 4'),
+  ...chapter(renumberExercisePages(exercise6(), 6, 5), 'Vežba 5'),
+  ...chapter(renumberExercisePages(exercise7(), 7, 6), 'Vežba 6'),
+  ...chapter(renumberExercisePages(exercise8(), 8, 7), 'Vežba 7'),
+  ...chapter(renumberExercisePages(exercise9(), 9, 8), 'Vežba 8'),
+  ...chapter(renumberExercisePages(exercise10(), 10, 9), 'Vežba 9'),
   ...chapter(summaryPages(), 'Zaključak'),
   ...chapter(literaturePages(), 'Literatura'),
 ]
 
 export const practicum2026: CourseDocument = {
-  version: 5,
+  version: 6,
   id: 'ers-praktikum-2026-27-current',
   title: 'Praktikum 2026/27',
   subtitle: 'Elementi razvoja softvera',
@@ -163,7 +184,7 @@ export const practicum2026: CourseDocument = {
   headerText: 'Elementi razvoja softvera',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-09-05T20:35:00.000Z',
+  updatedAt: '2026-09-05T20:45:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), contentsPage(bodyPages), ...bodyPages],
 }
