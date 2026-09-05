@@ -3,10 +3,13 @@ import type { Block, CourseDocument, DiagramBlock, TextBlock } from './types'
 import { practicum2026 } from './content/canvaPracticum'
 import { projectSpec2026Reflowed } from './content/projectSpecReflow'
 import { teamProject2026 } from './content/teamProject'
+import { presentationDecks, type PresentationDeck } from './content/presentations'
 import { ACCENTS, highlightCode } from './utils'
 import './static-site.css'
+import './presentations.css'
 
 type DocumentKey = 'praktikum' | 'specifikacija' | 'projekat'
+type ActiveKey = DocumentKey | 'prezentacije'
 type ArtifactKind = 'figure' | 'listing' | 'table'
 
 type PreparedBlock = {
@@ -299,25 +302,109 @@ function StaticDocument({ doc }: { doc: CourseDocument }) {
   )
 }
 
+function PresentationsView() {
+  const [deckId, setDeckId] = useState(presentationDecks[0].id)
+  const [slideIndex, setSlideIndex] = useState(0)
+  const deck = presentationDecks.find((item) => item.id === deckId) || presentationDecks[0]
+  const slide = deck.slides[slideIndex] || deck.slides[0]
+
+  const chooseDeck = (nextDeck: PresentationDeck) => {
+    setDeckId(nextDeck.id)
+    setSlideIndex(0)
+  }
+
+  const previousSlide = () => setSlideIndex((current) => Math.max(0, current - 1))
+  const nextSlide = () => setSlideIndex((current) => Math.min(deck.slides.length - 1, current + 1))
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') previousSlide()
+      if (event.key === 'ArrowRight') nextSlide()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [deck.slides.length])
+
+  return (
+    <main className="presentations-shell">
+      <section className="presentations-hero">
+        <span className="eyebrow">Nastavnički materijal</span>
+        <h1>Prezentacije za vežbe</h1>
+        <p>Svaka prezentacija prati jednu vežbu iz praktikuma. Slajdovi su kratki i služe kao oslonac tokom objašnjavanja gradiva, dok beleške daju smernice za razgovor, primere i pitanja za studente.</p>
+      </section>
+
+      <section className="presentation-grid">
+        <aside className="deck-list" aria-label="Prezentacije po vežbama">
+          {presentationDecks.map((item) => (
+            <button className={`deck-tab ${item.id === deck.id ? 'active' : ''}`} key={item.id} onClick={() => chooseDeck(item)}>
+              <strong>Vežba {item.exercise}</strong>
+              <span>{item.title}</span>
+            </button>
+          ))}
+        </aside>
+
+        <section className="deck-stage">
+          <div className="deck-toolbar">
+            <div className="deck-toolbar-title">
+              <strong>{deck.title}</strong>
+              <span>{deck.subtitle} · {deck.duration}</span>
+            </div>
+            <div className="slide-controls" aria-label="Kontrole slajdova">
+              <button onClick={previousSlide} disabled={slideIndex === 0}>Prethodni</button>
+              <span>{slideIndex + 1} / {deck.slides.length}</span>
+              <button onClick={nextSlide} disabled={slideIndex === deck.slides.length - 1}>Sledeći</button>
+            </div>
+          </div>
+
+          <article className="slide-canvas" aria-live="polite">
+            <span className="slide-kicker">Vežba {deck.exercise}</span>
+            <h2>{slide.title}</h2>
+            {slide.lead && <p className="slide-lead">{slide.lead}</p>}
+            {slide.points && slide.points.length > 0 && (
+              <ul className="slide-points">
+                {slide.points.map((point) => <li key={point}>{point}</li>)}
+              </ul>
+            )}
+            {slide.example && <div className="slide-example"><strong>Primer</strong>{slide.example}</div>}
+            {slide.question && <div className="slide-question"><strong>Pitanje za studente</strong>{slide.question}</div>}
+            {slide.note && <div className="speaker-note"><strong>Beleška za izlaganje</strong>{slide.note}</div>}
+          </article>
+
+          <aside className="deck-overview">
+            <h3>Cilj prezentacije</h3>
+            <p>{deck.goal}</p>
+            <ol>
+              {deck.slides.map((item, index) => <li key={`${deck.id}-${item.title}`}>{index + 1}. {item.title}</li>)}
+            </ol>
+          </aside>
+        </section>
+      </section>
+    </main>
+  )
+}
+
 export default function StaticApp() {
-  const initial: DocumentKey = window.location.hash.startsWith('#specifikacija')
+  const initial: ActiveKey = window.location.hash.startsWith('#specifikacija')
     ? 'specifikacija'
     : window.location.hash.startsWith('#projekat')
       ? 'projekat'
-      : 'praktikum'
-  const [active, setActive] = useState<DocumentKey>(initial)
-  const doc = documents[active]
+      : window.location.hash.startsWith('#prezentacije')
+        ? 'prezentacije'
+        : 'praktikum'
+  const [active, setActive] = useState<ActiveKey>(initial)
+  const doc = active === 'prezentacije' ? undefined : documents[active]
 
   useEffect(() => {
-    const titles: Record<DocumentKey, string> = {
+    const titles: Record<ActiveKey, string> = {
       praktikum: 'ERS — Praktikum',
       specifikacija: 'ERS — Specifikacija projektnog zadatka',
       projekat: 'ERS — Projekat',
+      prezentacije: 'ERS — Prezentacije',
     }
     document.title = titles[active]
   }, [active])
 
-  const choose = (key: DocumentKey) => {
+  const choose = (key: ActiveKey) => {
     setActive(key)
     history.replaceState(null, '', `#${key}`)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -334,9 +421,10 @@ export default function StaticApp() {
           <button className={active === 'praktikum' ? 'active' : ''} onClick={() => choose('praktikum')}>Praktikum</button>
           <button className={active === 'specifikacija' ? 'active' : ''} onClick={() => choose('specifikacija')}>Specifikacija</button>
           <button className={active === 'projekat' ? 'active' : ''} onClick={() => choose('projekat')}>Projekat</button>
+          <button className={active === 'prezentacije' ? 'active' : ''} onClick={() => choose('prezentacije')}>Prezentacije</button>
         </nav>
       </header>
-      <StaticDocument doc={doc} />
+      {active === 'prezentacije' ? <PresentationsView /> : doc && <StaticDocument doc={doc} />}
     </div>
   )
 }
