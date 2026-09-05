@@ -111,7 +111,7 @@ function renumberExercisePages(pages: DocumentPage[], from: number, to: number):
 
   return pages.map((sourcePage) => ({
     ...sourcePage,
-    label: sourcePage.label
+    label: (sourcePage.label || '')
       .replace(exercisePrefix, `Vežba ${to}`)
       .replace(sectionPrefix, String(to)),
     blocks: sourcePage.blocks.map((block) => {
