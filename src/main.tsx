@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import StaticApp from './StaticApp'
+import './presentationEnhancements'
 
 document.documentElement.lang = 'sr'
 document.body.style.margin = '0'
