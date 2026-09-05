@@ -1,5 +1,5 @@
 import type { Block, CourseDocument, DocumentPage } from '../types'
-import { text, list, callout, code, table, diagram, page } from './canvaPracticumShared'
+import { text, list, callout, table, diagram, page } from './canvaPracticumShared'
 
 let sequence = 0
 const id = (prefix: string) => `spec-${prefix}-${String(++sequence).padStart(3, '0')}`
@@ -22,213 +22,228 @@ const cover = (): DocumentPage => ({
     institution(),
     { id: id('title'), type: 'text', variant: 'title', html: 'Specifikacija projektnog zadatka', align: 'center' },
     { id: id('subtitle'), type: 'text', variant: 'subtitle', html: 'Elementi razvoja softvera · 2026/2027', align: 'center' },
-    { id: id('quote'), type: 'text', variant: 'quote', html: 'Projekat povezuje zahteve, SOLID i Clean Architecture, testiranje, Git trag i kontrolisanu AI integraciju kroz jedan kontinuirani razvojni proces.', align: 'center' },
+    { id: id('quote'), type: 'text', variant: 'quote', html: 'Zvanični opšti uslovi za izradu, predaju i odbranu semestralnog projekta.', align: 'center' },
     { id: id('caption'), type: 'text', variant: 'caption', html: 'Fakultet tehničkih nauka · Primenjeno softversko inženjerstvo', align: 'center' },
   ],
 })
 
 const pages = (): DocumentPage[] => [
-  page('1. Svrha projektnog zadatka', [
-    text('h1', '1. Svrha projektnog zadatka'),
-    text('paragraph', 'Projektni zadatak predstavlja glavni praktični artefakt predmeta. Tim tokom semestra razvija softverski sistem po sopstveno izabranoj temi i na istom repozitorijumu postepeno primenjuje principe sa vežbi. Cilj nije maksimalan broj ekrana ili CRUD operacija, već pokazivanje da studenti umeju da razumeju zahtev, projektuju granice, implementiraju poslovno ponašanje, napišu testove i uvedu AI alat bez gubitka odgovornosti za konačan rezultat.'),
-    callout('warning', 'Starter template se ne dobija', 'Tim sam kreira solution, projekte, foldere, ugovore i composition root. Ocenjuje se sposobnost da se struktura obrazloži. Kopiranje nastavnog primera bez prilagođavanja domenu ne predstavlja projektovanje.'),
+  page('1. Status i svrha specifikacije', [
+    text('h1', '1. Status i svrha specifikacije'),
+    text('paragraph', 'Ovaj dokument predstavlja zvaničnu opštu specifikaciju semestralnog projektnog zadatka iz predmeta Elementi razvoja softvera. Pravila važe nezavisno od izabrane projektne teme. Konkretne ponuđene teme objavljuju se odvojeno i ne menjaju tehničke, procesne i kvalitativne uslove navedene u ovoj specifikaciji.'),
+    callout('info', 'Specifikacija nije template', 'Ne propisuje se gotova struktura foldera, broj klasa niti jedan model rešenja koji treba kopirati. Ocenjuje se sposobnost tima da primeni principe predmeta na sopstveni domen i da svoje odluke argumentuje.'),
     list([
-      'Tema treba da predstavlja realan poslovni, organizacioni ili institucionalni problem sa više smislenih pravila.',
-      'Sistem se razvija kontinuirano kroz Git; završna verzija bez istorije rada nije dovoljna.',
-      'AI se uvodi po fazama: rano za analizu i review, kasnije za kontrolisane izmene uz testove, tools i guardrails.',
-      'Svaki član tima mora razumeti ključne delove projekta bez obzira na internu podelu rada.'
+      'Projektni zadatak je kontinuirani razvojni rad, a ne jednokratna završna predaja.',
+      'Kvalitet arhitekture, poslovnog modela, testova i razumevanja ima prednost nad pukim brojem funkcionalnosti.',
+      'Svi članovi tima odgovorni su za razumevanje ključnih delova sistema, bez obzira na internu podelu posla.',
+      'Sve obavezne zahteve iz ovog dokumenta treba moći pokazati kroz repozitorijum, izvršivu aplikaciju, testove, dokumentaciju i odbranu.'
     ]),
   ]),
-  page('2. Očekivani ishodi učenja', [
-    text('h1', '2. Očekivani ishodi učenja'),
-    text('paragraph', 'Uspešno završen projekat treba da pokaže povezivanje koncepata iz celog predmeta. Ishodi se dokazuju kodom, testovima, istorijom razvoja, dokumentacijom i usmenim objašnjenjem.'),
+
+  page('2. Opšti uslovi projektnog sistema', [
+    text('h1', '2. Opšti uslovi projektnog sistema'),
+    text('paragraph', 'Tema i domen mogu biti različiti, ali projekat mora biti dovoljno sadržajan da omogući primenu principa sa predmeta. Jednostavan CRUD nad nekoliko tabela bez poslovnih pravila i smislenih promena stanja nije dovoljan.'),
     list([
-      'Formulisanje User Story-ja i testabilnih acceptance criteria iz nejasnog zahteva.',
-      'Projektovanje arhitektonskih granica i objašnjavanje dozvoljenog smera zavisnosti.',
-      'Primena SOLID principa na konkretne promene umesto formalnog dodavanja interfejsa.',
-      'Modelovanje use-case-ova, domenskih pravila i eksplicitnih poslovnih ishoda.',
-      'Pisanje NUnit testova i promišljeno korišćenje Moq-a.',
-      'Korišćenje coverage-a kao razvojnog signala, ne kao jedine metrike kvaliteta.',
-      'Uredan Git/GitHub tok sa issue-ima, granama, commit-ima i review tragom.',
-      'Projektovanje instrukcija, skills, agentnih uloga i MCP integracije.',
-      'Uvođenje hooks/guardrail provera i eval scenarija za AI workflow.',
-      'Kritička procena AI predloga i nezavisna verifikacija kroz kod, diff i testove.'
+      'Sistem mora rešavati jasan poslovni, organizacioni, institucionalni ili drugi realističan problem.',
+      'Mora postojati više smislenih korisničkih tokova i najmanje nekoliko pravila koja mogu dovesti do pozitivnog i negativnog ishoda.',
+      'Stanje sistema mora se menjati kroz eksplicitne use-case operacije, uz validaciju ulaza i poslovnih ograničenja.',
+      'Korisničke uloge i autorizacija uvode se kada ih domen opravdava; ne dodaju se veštački samo radi ispunjavanja forme.',
+      'Obim projekta treba da bude kontrolisan: manji sistem sa dobrim granicama i testovima vredniji je od velikog sistema sa slabim dizajnom.',
+      'Starter template se ne dobija. Tim samostalno postavlja solution, projekte, konfiguraciju i composition root.'
     ]),
+    callout('warning', 'CRUD nije poslovno pravilo', 'Operacije Create/Read/Update/Delete same po sebi ne dokazuju modelovanje domena. Potrebno je pokazati pravila, dozvole, konflikte, ograničenja, promene stanja i očekivane neuspehe koji pripadaju problemu koji sistem rešava.'),
   ]),
-  page('3. Projektna tema i funkcionalni obim', [
-    text('h1', '3. Projektna tema i funkcionalni obim'),
-    text('paragraph', 'Tema mora imati jasne korisničke uloge, stanje koje se menja i najmanje nekoliko netrivijalnih pravila. Nije potrebno praviti veliki sistem; važnije je da odabrani domen omogućava diskusiju o odgovornostima, greškama, dozvolama, konfliktima i promeni zahteva.'),
+
+  page('3. Zahtevi i funkcionalni obim', [
+    text('h1', '3. Zahtevi i funkcionalni obim'),
+    text('paragraph', 'Funkcionalnosti treba da proisteknu iz korisničkih potreba i da budu opisane na način koji omogućava proveru. Zahtev nije završen dok nije jasno šta predstavlja prihvatljiv ishod i kako se ponašanje proverava.'),
     list([
-      'Najmanje 2–3 smisleno različite korisničke uloge.',
-      'Najmanje 6 domenskih pojmova ili entiteta na nivou tima, bez veštačkog usitnjavanja radi brojanja.',
-      'Najmanje 5 netrivijalnih poslovnih pravila koja mogu dati pozitivan ili negativan ishod.',
-      'Autentifikacija i osnovna autorizacija po ulogama kada domen to zahteva.',
-      'Najmanje jedan kompleksniji use-case po članu tima, uz zajedničko razumevanje svih ključnih tokova.',
-      'Validacija ulaza i eksplicitno modelovanje očekivanih poslovnih neuspeha.'
+      'Glavne funkcionalnosti voditi kroz User Story-je, use-case opise ili ekvivalentne zahteve sa jasnom korisničkom vrednošću.',
+      'Za ključne zahteve definisati testabilne acceptance criteria, uključujući negativne i granične slučajeve kada su relevantni.',
+      'Eksplicitno modelovati očekivane poslovne neuspehe; ne koristiti izuzetke kao zamenu za svaki negativan poslovni ishod.',
+      'Kompleksniji use-case treba da orkestrira domenska pravila i spoljne zavisnosti bez skrivanja poslovne logike u UI-u, kontrolerima ili repozitorijumima.',
+      'Promena zahteva tokom semestra treba da bude lokalizovana koliko arhitektura dozvoljava i pokrivena odgovarajućom verifikacijom.'
     ]),
-    callout('info', 'Primer netrivijalnog pravila', '„Premium korisnik može dobiti kupon, ali kupon ne može da se kombinuje sa sezonskim popustom“ jeste poslovno pravilo. „Entitet ima Create/Read/Update/Delete“ samo po sebi nije dovoljno poslovno ponašanje.'),
   ]),
-  page('4. Arhitektonski i tehnički zahtevi', [
-    text('h1', '4. Arhitektonski i tehnički zahtevi'),
-    text('paragraph', 'Projekat se realizuje u .NET/C# okruženju. Tačan broj projekata nije unapred propisan, ali struktura mora jasno da razdvoji poslovno jezgro od UI-a i infrastrukturnih detalja. Tim treba da ume da pokaže gde se nalazi use-case, gde domenska pravila, gde ugovori, a gde konkretne implementacije.'),
-    table(['Oblast', 'Očekivanje'], [
-      ['Domain / jezgro', 'Modeli, invarijante i stabilni poslovni pojmovi bez zavisnosti od UI/baze/framework detalja.'],
-      ['Application / use-case', 'Orkestracija korisničkih operacija, eksplicitni rezultati i ugovori za spoljne potrebe.'],
-      ['Infrastructure', 'Repozitorijumi, fajlovi, baza, spoljni API adapteri i druge promenljive implementacije.'],
-      ['Presentation', 'Konzola, desktop/web/API sloj; mapiranje ulaza/izlaza bez skrivene poslovne logike.'],
-      ['Composition root', 'Jedno jasno mesto koje bira konkretne implementacije i sastavlja graf zavisnosti.'],
+
+  page('4. Clean Architecture i smer zavisnosti', [
+    text('h1', '4. Clean Architecture i smer zavisnosti'),
+    text('paragraph', 'Projekat se realizuje u .NET/C# okruženju i mora imati jasno razdvojeno poslovno jezgro, aplikacionu orkestraciju, infrastrukturne detalje i presentation sloj. Tačan broj projekata i foldera nije propisan; propisane su odgovornosti i dozvoljeni smer zavisnosti.'),
+    table(['Oblast', 'Opšti zahtev'], [
+      ['Domain / jezgro', 'Stabilni poslovni pojmovi, invarijante i pravila bez zavisnosti od UI-a, baze i framework detalja.'],
+      ['Application / use-case', 'Orkestracija korisničkih operacija, ugovori prema spoljnim potrebama i eksplicitni rezultati.'],
+      ['Infrastructure', 'Baza, fajlovi, spoljne usluge, repozitorijumi i adapteri kao promenljivi tehnički detalji.'],
+      ['Presentation', 'Web/API/desktop/console ulazi i izlazi bez skrivene domenske logike.'],
+      ['Composition root', 'Jedno jasno mesto u kome se biraju konkretne implementacije i sastavlja graf zavisnosti.'],
     ]),
-    callout('note', 'Clean Architecture nije folder šablon', 'Dozvoljena je struktura prilagođena temi ako tim može da obrazloži smer zavisnosti i pokaže da promene infrastrukture ne zahtevaju prepisivanje poslovnog jezgra.'),
+    callout('note', 'Clean Architecture nije raspored foldera', 'Struktura može biti prilagođena projektu ako tim može da pokaže da poslovno jezgro ne zavisi od promenljivih tehničkih detalja i da smer zavisnosti ima smisla.'),
   ]),
-  page('5. SOLID i kvalitet koda', [
-    text('h1', '5. SOLID i kvalitet koda'),
-    text('paragraph', 'SOLID se ocenjuje kroz konkretne posledice dizajna. Student treba da može da pokaže bar nekoliko mesta na kojima je promena lokalizovana zbog dobre granice ili gde je refaktorisanje uklonilo nepotrebnu zavisnost.'),
+
+  page('5. SOLID, Clean Code i kvalitet dizajna', [
+    text('h1', '5. SOLID, Clean Code i kvalitet dizajna'),
+    text('paragraph', 'SOLID principi i Clean Code smernice primenjuju se kroz stvarne projektantske odluke. Ne ocenjuje se broj interfejsa niti formalno označavanje obrazaca, već posledice dizajna pri razumevanju, testiranju i promeni sistema.'),
     list([
-      'Klase i servisi imaju koherentne odgovornosti i razumljive razloge za promenu.',
-      'Varijabilna ponašanja se po potrebi uvode kroz zamenjive ugovore umesto rastućih `switch` grananja.',
-      'Implementacije istog ugovora poštuju očekivano ponašanje klijenta.',
-      'Interfejsi nisu veštački veliki; klijenti ne zavise od operacija koje ne koriste.',
-      'Poslovni kod zavisi od apstrakcija prema promenljivim spoljnim detaljima.',
-      'Imenovanje, formatiranje i struktura koda treba da olakšaju review i budu dosledni kroz repozitorijum.'
+      'Klase, servisi i moduli treba da imaju koherentne odgovornosti i razumljive razloge za promenu.',
+      'Varijabilna ponašanja izdvajati iza odgovarajućih apstrakcija kada to smanjuje spregnutost i olakšava zamenu implementacije.',
+      'Implementacije istog ugovora moraju poštovati očekivanja klijenta; nasleđivanje i interfejsi ne uvode se samo radi forme.',
+      'Interfejsi treba da budu usmereni na potrebe klijenta i bez nepotrebnih operacija.',
+      'Poslovni kod ne treba direktno da zavisi od promenljivih infrastrukturnih detalja kada se ta zavisnost može smisleno invertovati.',
+      'Imenovanje, formatiranje, veličina metoda, kontrola grananja i organizacija koda moraju omogućiti efikasan review.',
+      'Dupliranje, magic vrednosti, skrivene globalne zavisnosti i prevelike klase treba refaktorisati kada predstavljaju stvarni rizik za održavanje.'
     ]),
-    callout('info', 'Dokaz na odbrani', 'Dovoljno je pokazati nekoliko kvalitetnih primera i objasniti njihov razlog. Nije potrebno svaku klasu proglasiti primerom svih SOLID principa.'),
+    callout('info', 'Dokaz na odbrani', 'Student treba da pokaže nekoliko konkretnih primera gde je dobra granica olakšala testiranje ili promenu, kao i najmanje jednu odluku gde je svesno izbegnuta nepotrebna apstrakcija.'),
   ]),
-  page('6. Testiranje i Code Coverage', [
-    text('h1', '6. Testiranje i Code Coverage'),
-    text('paragraph', 'Testovi treba da štite poslovno važna ponašanja i regresije. U fokusu su ključni use-case-ovi, negativni scenariji i granice pravila. Moq se koristi tamo gde je potrebno kontrolisati promenljivu spoljnu zavisnost.'),
+
+  page('6. Poslovna logika i modelovanje ishoda', [
+    text('h1', '6. Poslovna logika i modelovanje ishoda'),
+    text('paragraph', 'Ključni deo projekta je ponašanje sistema. Poslovna pravila treba da budu vidljiva u kodu, testabilna i odvojena od detalja prikaza i skladištenja podataka.'),
     list([
-      'NUnit testovi za ključne use-case-ove i domenska pravila.',
-      'Pozitivni, negativni i najmanje nekoliko graničnih scenarija izvedenih iz acceptance criteria.',
-      'Moq ili drugi test doubles samo za zavisnosti koje test želi da izoluje.',
-      'Najmanje jedan bug ili regresija demonstrirana testom pre korekcije, kada se takav slučaj pojavi tokom rada.',
-      'Coverage izveštaj pregledan uz kratak komentar najmanje jedne važne nepokrivene ili slabo pokrivene grane.'
+      'Use-case ulazi i izlazi treba da imaju jasne tipove i odgovornosti.',
+      'Očekivani neuspeh treba modelovati eksplicitno kada je deo normalnog poslovnog toka.',
+      'Validacija sintakse i formata ulaza razlikuje se od domenskih pravila i dozvola.',
+      'Transakcione i konkurentne situacije treba rešavati tamo gde su relevantne za izabrani domen.',
+      'Mapiranje između transportnih, aplikacionih i domenskih modela ne sme sakrivati poslovna pravila.',
+      'Spoljni API, baza ili fajl sistem ne određuju oblik poslovnog jezgra više nego što je neophodno.'
     ]),
-    callout('warning', 'Coverage procenat nije dovoljan', 'Visok procenat pokrivenosti ne garantuje dobre assert-e ni relevantne scenarije. Na odbrani student treba da objasni koje pravilo test štiti i zašto je scenario važan.'),
   ]),
-  page('7. Git i dokumentacija procesa', [
-    text('h1', '7. Git i dokumentacija procesa'),
-    text('paragraph', 'Repozitorijum mora da omogući rekonstrukciju razvoja. Istorija treba da pokaže kako je zahtev uveden, kako se implementacija menjala i gde su nastale ključne odluke.'),
+
+  page('7. Testiranje i verifikacija', [
+    text('h1', '7. Testiranje i verifikacija'),
+    text('paragraph', 'Testovi su dokaz ponašanja i zaštita od regresije. U fokusu su domenska pravila, ključni use-case-ovi i rizici, a ne samo procenat pokrivenosti koda.'),
     list([
-      'Redovni i smisleni commit-i tokom semestra.',
-      'Issue/User Story trag za glavne funkcionalnosti.',
-      'Feature grane i pull request/review trag za veće promene ili ekvivalentan uredan timski workflow.',
-      'Git tag `manual-core-baseline` nakon stabilizacije jezgra i osnovnih testova.',
-      'README sa opisom teme, pokretanjem i glavnim demo scenarijem.',
-      '`docs/architecture.md`, `AI_INSTRUCTIONS.md` i `AI_USAGE.md` kao obavezni projektni artefakti.'
+      'Koristiti NUnit za automatizovane testove ključnih use-case-ova i domenskih pravila.',
+      'Za važne zahteve pokriti pozitivne, negativne i relevantne granične scenarije.',
+      'Moq ili druge test doubles koristiti samo kada test treba da izoluje promenljivu spoljnu zavisnost ili proveri važnu interakciju.',
+      'Testovi treba da budu deterministički, čitljivi i nezavisni od redosleda izvršavanja.',
+      'Coverage izveštaj koristiti kao signal za pronalaženje slepih tačaka, ne kao jedinu metriku kvaliteta.',
+      'Kada se tokom rada otkrije bug ili regresija, poželjno je prvo reprodukovati problem testom, pa zatim izvršiti korekciju.'
     ]),
-    callout('note', 'Jedan završni commit nije razvojni proces', 'Masovno kopiranje završnog projekta u repozitorijum poslednjeg dana ne pruža dokaz kontinuiranog rada i značajno otežava procenu odluka i doprinosa.'),
+    callout('warning', 'Visok coverage nije dovoljan', 'Pokrivena linija koda nije isto što i provereno poslovno pravilo. Na odbrani student treba da objasni zašto je izabrani test relevantan i šta konkretno štiti.'),
   ]),
-  page('8. Pravila korišćenja AI alata', [
-    text('h1', '8. Pravila korišćenja AI alata'),
-    text('paragraph', 'AI je dozvoljen i očekivan kao deo predmeta, ali se njegova uloga uvodi postepeno. Student ne predaje projekat koji ne razume niti sme da koristi model kao neprovereni izvor konačnih odluka.'),
-    table(['Faza', 'Dozvoljena/poželjna AI uloga'], [
-      ['Pre manual-core-baseline', 'Analiza zahteva, pitanja za razjašnjenje, review plana, predlog test scenarija, objašnjenje postojećeg koda.'],
-      ['Posle manual-core-baseline', 'Kontrolisane izmene koda u okviru instrukcija, skills i agentnog workflow-a uz build/test/diff verifikaciju.'],
-      ['Završna faza', 'MCP, hooks/guardrails i evals koji povećavaju ponovljivost i proverljivost workflow-a.'],
-    ]),
+
+  page('8. Git, GitHub i razvojni proces', [
+    text('h1', '8. Git, GitHub i razvojni proces'),
+    text('paragraph', 'Repozitorijum je deo projektnog dokaza. Istorija treba da omogući rekonstrukciju razvoja i doprinosa, a ne da sadrži samo završno stanje projekta.'),
     list([
-      'Kompletna funkcionalnost i kompletna struktura projekta ne predaju se kao neprovereni generisani rezultat.',
-      'Svaka važna AI-promena mora imati razvojni dokaz: test, build, diff review ili drugi odgovarajući mehanizam.',
-      'Ne unositi credential-e, tajne ili osetljive podatke u spoljne modele.',
-      'Student na odbrani mora umeti da objasni i kod i AI artefakte koje je tim koristio.'
+      'Raditi kontinuirano kroz smislene commit-e sa opisima koji odražavaju stvarnu izmenu.',
+      'Glavne funkcionalnosti povezati sa issue/User Story tragom ili ekvivalentnom evidencijom zahteva.',
+      'Za veće izmene koristiti feature grane i pull request/review tok ili drugi uredan timski workflow sa uporedivim tragom.',
+      'Ne prepisivati istoriju na način koji uklanja dokaz rada neposredno pred predaju.',
+      'README mora sadržati opis sistema, preduslove, pokretanje, testiranje i reprezentativan demo scenario.',
+      'Tajne, lozinke, tokeni i privatni ključevi ne smeju biti commit-ovani u repozitorijum.'
     ]),
+    callout('warning', 'Jedan završni commit nije dovoljan', 'Masovno kopiranje gotovog projekta neposredno pred odbranu ne pokazuje razvojni proces, otežava procenu doprinosa i može biti razlog za dodatnu proveru autorstva i razumevanja.'),
   ]),
-  page('9. Obavezni AI artefakti', [
-    text('h1', '9. Obavezni AI artefakti'),
-    text('paragraph', 'Artefakti treba da podržavaju stvarni workflow, a ne da postoje samo radi checkliste. Ocenjuje se da li imaju jasnu namenu, ograničenje i način verifikacije.'),
-    list([
-      '`AI_INSTRUCTIONS.md` sa stabilnim arhitektonskim i radnim pravilima.',
-      '`AI_USAGE.md` sa reprezentativnim zapisima: zadatak, korišćen kontekst, sažetak predloga, odluka tima i verifikacija.',
-      'Najmanje dva custom skill-a ili ponovljive procedure.',
-      'Najmanje dve jasno razdvojene agentne uloge ili ekvivalentan agent-as-tool/handoff workflow.',
-      'Mali project-specific MCP server sa resursima/tool-ovima koji rešavaju realnu potrebu projekta.',
-      'Najmanje dva deterministička hook/guardrail pravila.',
-      'Najmanje tri eval scenarija, uključujući negativni ili failure slučaj.'
-    ]),
-    callout('info', 'Kvalitet iznad broja', 'Ako tim napravi mnogo agenata i skillova bez opravdanja, dodatna složenost ne nosi automatski više bodova. Bolji je manji workflow sa jasnim granicama i dokazima.'),
-  ]),
-  page('10. Projektni checkpoint-i', [
-    text('h1', '10. Projektni checkpoint-i'),
-    text('paragraph', 'Checkpoint-i raspoređuju rizik kroz semestar i omogućavaju povratnu informaciju pre nego što greška postane skupa za ispravljanje. Svi checkpoint-i odnose se na isti repozitorijum.'),
-    table(['Checkpoint', 'Minimalni dokaz'], [
-      ['P1', 'Problem, backlog, acceptance criteria, početne AI instrukcije i AI_USAGE zapis.'],
-      ['P2', 'Solution/slojevi, smer zavisnosti, najmanje jedan vertikalni prolaz i architecture beleška.'],
-      ['P3', 'Ključni use-case-ovi, poslovna pravila i eksplicitni rezultati.'],
-      ['P4', 'NUnit/Moq testovi, coverage pregled, bug/regression test i `manual-core-baseline` tag.'],
-      ['P5', 'Uređene instrukcije, structured output i proverljiv AI review/analysis workflow.'],
-      ['P6', 'Custom skills + najmanji smisleni agentni tok.'],
-      ['P7', 'MCP integracija sa projektnim resource/tool signalima.'],
-      ['P8', 'Hooks/guardrails, evals, peer QA i spremnost za odbranu.'],
-    ]),
-  ]),
-  page('11. Naknadni change request', [
-    text('h1', '11. Naknadni change request'),
-    text('paragraph', 'U završnoj fazi tim dobija dodatni zahtev ili izmenu postojećeg pravila. Cilj je da se proveri da li arhitektura i proces podržavaju promenu bez nekontrolisanog širenja diff-a i bez brisanja testova koji otkrivaju regresiju.'),
-    diagram('Očekivani tok izmene zahteva', [
-      ['Change request', 'razumeti novo pravilo', 'slate'],
-      ['Impact analysis', 'slojevi, testovi, rizici', 'cyan'],
-      ['Plan', 'mali koraci i dokaz', 'blue'],
-      ['Implementation', 'ograničen diff', 'violet'],
-      ['Verification', 'testovi, MCP signal, review', 'emerald'],
+
+  page('9. Korišćenje AI alata', [
+    text('h1', '9. Korišćenje AI alata'),
+    text('paragraph', 'AI alati su dozvoljeni i predstavljaju deo sadržaja predmeta, ali student ostaje odgovoran za svaku predatu izmenu. AI ne zamenjuje razumevanje zahteva, arhitekture, koda, testova i bezbednosnih posledica.'),
+    table(['Oblast', 'Opšti uslov'], [
+      ['Analiza i planiranje', 'AI se može koristiti za razjašnjenje zahteva, alternativne planove, review i predlog scenarija.'],
+      ['Izmena koda', 'Generisane ili izmenjene delove proveriti kroz diff, build, testove i razumevanje uticaja na arhitekturu.'],
+      ['Instrukcije', 'Stabilna projektna pravila zapisati u AI_INSTRUCTIONS.md ili ekvivalentnom dokumentu koji tim zaista koristi.'],
+      ['Evidencija', 'AI_USAGE.md ili ekvivalent treba da zabeleži reprezentativne upotrebe, odluke tima i način verifikacije.'],
+      ['Automatizacija', 'Skills/procedure, agentne uloge, MCP i hooks/guardrails uvoditi kada rešavaju stvarnu potrebu i imaju proverljiv rezultat.'],
+      ['Bezbednost', 'Ne slati credential-e, tajne ili osetljive podatke spoljnim modelima i alatima.'],
     ]),
     list([
-      'Analizirati uticaj promene na postojeće use-case-ove i poslovna pravila.',
-      'Pre implementacije navesti koje testove treba dodati ili izmeniti.',
-      'AI workflow se može koristiti, ali rezultat mora biti proverljiv kroz projekat.',
-      'Dokumentovati najmanje jednu odluku ili kompromis koji je change request izazvao.'
+      'Kompletan projekat ili ključna funkcionalnost ne smeju biti predati kao neprovereni generisani rezultat koji tim ne razume.',
+      'Svaka važna AI izmena mora imati odgovarajući signal verifikacije: test, build, statičku proveru, diff review ili drugi smislen dokaz.',
+      'AI artefakti se ocenjuju po korisnosti i pouzdanosti, a ne po količini promptova, agenata ili generisanog teksta.',
+      'Student na odbrani mora moći da objasni zašto je AI predlog prihvaćen, izmenjen ili odbijen.'
     ]),
   ]),
-  page('12. Peer QA i obavezna dokumentacija', [
-    text('h1', '12. Peer QA i obavezna dokumentacija'),
-    text('paragraph', 'Pre odbrane projekat prolazi kratak peer QA. Drugi student ili tim pokušava da pokrene sistem i prati jedan reprezentativan tok iz dokumentacije, bez oslanjanja na dodatna objašnjenja autora.'),
+
+  page('10. Obavezna dokumentacija i reproduktivnost', [
+    text('h1', '10. Obavezna dokumentacija i reproduktivnost'),
+    text('paragraph', 'Druga osoba treba da može da preuzme projekat, razume osnovnu strukturu i pokrene reprezentativan scenario bez dodatnih usmenih instrukcija autora.'),
     list([
-      'README: problem, pokretanje, konfiguracija i glavni demo scenario.',
-      '`docs/architecture.md`: slojevi/granice, smer zavisnosti i važne odluke.',
-      '`AI_INSTRUCTIONS.md`: stabilna pravila AI workflow-a.',
-      '`AI_USAGE.md`: reprezentativne AI sesije i način verifikacije.',
-      'Po potrebi README za MCP server, hooks i eval fixtures.',
-      'Peer QA zapis kao Markdown beleška, issue ili PR komentar sa konkretnim rezultatom pregleda.'
+      'README: problem koji sistem rešava, preduslovi, konfiguracija, pokretanje, testiranje i glavni demo scenario.',
+      '`docs/architecture.md` ili ekvivalent: granice sistema, smer zavisnosti, ključne odluke i bitni kompromisi.',
+      '`AI_INSTRUCTIONS.md` i `AI_USAGE.md` kada se koriste AI alati u okviru projektnog workflow-a.',
+      'Dodatna dokumentacija za MCP server, hooks, evals ili druge projektne alate kada oni nisu očigledni iz glavnog README-a.',
+      'Konfiguracione vrednosti koje nisu tajne obezbediti kroz primer konfiguracije, a tajne učitavati van repozitorijuma.',
+      'Komande navedene u dokumentaciji moraju biti proverene na finalnoj verziji projekta.'
     ]),
-    callout('info', 'Minimalni peer QA', 'Pregledati jedan use-case i test, pokretanje iz README-a, jednu arhitektonsku granicu i jedan AI workflow. Zabeležiti šta je provereno i najmanje jednu konkretnu sugestiju ili argumentovanu potvrdu da problem nije pronađen.'),
+    callout('info', 'Peer QA', 'Pre odbrane preporučuje se da drugi student ili tim pokrene projekat samo na osnovu README-a i zabeleži konkretan rezultat pregleda. Cilj je proveriti reproduktivnost, ne formalno proizvesti još jedan dokument.'),
   ]),
-  page('13. Odbrana projekta', [
-    text('h1', '13. Odbrana projekta'),
-    text('paragraph', 'Odbrana proverava da li studenti razumeju sistem koji predaju. Svi članovi tima treba da mogu da objasne ključne elemente arhitekture i jedan reprezentativan tok, iako je normalno da su tokom razvoja imali različite primarne odgovornosti.'),
+
+  page('11. Checkpoint-i i promena zahteva', [
+    text('h1', '11. Checkpoint-i i promena zahteva'),
+    text('paragraph', 'Rad se prati kroz semestar u fazama koje prate redosled sadržaja na predmetu. Konkretni termini se objavljuju kroz zvanične kanale predmeta; ovaj dokument definiše šta se kroz te faze očekuje da postane vidljivo u projektu.'),
+    table(['Faza', 'Očekivani dokaz'], [
+      ['Zahtevi', 'Problem, glavni korisnički tokovi, acceptance criteria i početni backlog.'],
+      ['Arhitektura', 'Solution struktura, smer zavisnosti, prvi vertikalni prolaz i obrazložene granice.'],
+      ['Poslovno jezgro', 'Ključni use-case-ovi, domenska pravila i eksplicitni ishodi.'],
+      ['Verifikacija', 'NUnit/Moq testovi, coverage pregled i dokaz regresionog razmišljanja.'],
+      ['AI engineering', 'Uređene instrukcije i najmanji smisleni proverljiv workflow sa alatima/automatizacijom prema sadržaju predmeta.'],
+      ['Finalizacija', 'Dokumentacija, peer QA, stabilno pokretanje i spremnost za individualnu odbranu.'],
+    ]),
+    text('h2', '11.1. Naknadni change request'),
+    text('paragraph', 'U završnoj fazi može biti zadat dodatni zahtev ili izmena postojećeg pravila. Cilj je provera da li tim ume da izvrši impact analysis, lokalizuje promenu, sačuva postojeće ponašanje i dokaže novu funkcionalnost.'),
+    diagram('Očekivani tok izmene', [
+      ['Zahtev', 'razumeti novo pravilo', 'slate'],
+      ['Uticaj', 'granice, rizici i testovi', 'cyan'],
+      ['Plan', 'mali proverljivi koraci', 'blue'],
+      ['Izmena', 'ograničen i razumljiv diff', 'violet'],
+      ['Provera', 'build, testovi i review', 'emerald'],
+    ]),
+  ]),
+
+  page('12. Predaja i finalna verzija', [
+    text('h1', '12. Predaja i finalna verzija'),
+    text('paragraph', 'Finalna predaja mora predstavljati jasno identifikovanu i reproduktivnu verziju projekta. Rokovi i način evidencije termina objavljuju se odvojeno; tehnički uslovi finalne verzije ostaju isti za sve teme.'),
     list([
-      'Demonstrirati glavni scenario i najmanje jedan negativni poslovni ishod.',
-      'Izabrati jedan User Story i pratiti ga od acceptance criteria do implementacije i testa.',
-      'Objasniti smer zavisnosti i jednu odluku zbog koje je određena granica uvedena.',
-      'Pokazati jedan relevantan Git/PR trag.',
-      'Pokazati jedan AI workflow, stvarni tool/test signal i način na koji je student procenio rezultat.',
-      'Odgovoriti na praktičnu izmenu ili pitanje koje proverava razumevanje koda, a ne memorisanje prezentacije.'
+      'Repozitorijum mora sadržati verziju koja se gradi i pokreće prema dokumentovanom postupku.',
+      'Preporučuje se tag ili release koji nedvosmisleno označava verziju namenjenu odbrani.',
+      'Svi obavezni testovi treba da prolaze na predatoj verziji ili da eventualno poznato ograničenje bude eksplicitno dokumentovano.',
+      'Ne ostavljati lokalne apsolutne putanje, development credential-e ili skrivene preduslove bez kojih projekat ne radi.',
+      'Dokumentacija, migracije, seed podaci i potrebne skripte moraju odgovarati predatoj verziji koda.',
+      'Naknadne izmene nakon zvanične predaje treba da budu jasno vidljive u Git istoriji.'
     ]),
-    callout('warning', 'Nepoznavanje sopstvenog projekta', 'Ako student ne može da objasni ključni deo predatog rešenja ili AI artefakta, postojanje tog koda u repozitorijumu ne smatra se dovoljnim dokazom usvojenog ishoda.'),
   ]),
-  page('14. Predlog kriterijuma ocenjivanja', [
-    text('h1', '14. Predlog kriterijuma ocenjivanja'),
-    text('paragraph', 'Bodovanje treba da favorizuje konzistentan inženjerski rad. Tačne težine mogu biti usklađene sa konačnim planom predmeta, ali kvalitet jezgra, procesa i AI integracije treba posmatrati odvojeno.'),
-    table(['Oblast', 'Predloženi udeo'], [
-      ['Softversko-inženjerska ispravnost', '40% — zahtevi, SOLID, arhitektura, poslovna logika, kvalitet implementacije.'],
-      ['Testiranje i verifikacija', '20% — NUnit/Moq, negativni scenariji, coverage interpretacija, regresije.'],
-      ['Git i razvojni proces', '15% — istorija, PR/review, dokumentacija odluka i checkpoint kontinuitet.'],
-      ['AI engineering', '20% — instructions, skills, agents, MCP, hooks/guardrails i evals sa opravdanjem.'],
-      ['Dokumentacija i odbrana', '5% — reproduktivnost projekta i sposobnost objašnjavanja odluka.'],
+
+  page('13. Odbrana i uslovi uspešnog polaganja projekta', [
+    text('h1', '13. Odbrana i uslovi uspešnog polaganja projekta'),
+    text('paragraph', 'Odbrana je individualna provera razumevanja rada koji je tim predao. Zajednički projekat ne znači zajedničku ocenu bez provere pojedinačnog znanja.'),
+    list([
+      'Demonstrirati reprezentativan korisnički scenario i najmanje jedan negativni ili granični poslovni ishod.',
+      'Pratiti najmanje jedan zahtev od acceptance criteria kroz use-case, implementaciju i test.',
+      'Objasniti smer zavisnosti i konkretnu SOLID/Clean Architecture odluku iz sopstvenog koda.',
+      'Pokazati relevantan deo Git istorije i objasniti kako je funkcionalnost nastajala ili menjana.',
+      'Objasniti način testiranja, izbor test doubles i značenje coverage rezultata za konkretan deo sistema.',
+      'Ako je AI korišćen, pokazati jedan stvarni workflow ili reprezentativnu upotrebu i način na koji je rezultat verifikovan.',
+      'Odgovoriti na pitanje ili manju izmenu koja proverava sposobnost snalaženja u sopstvenom kodu.'
     ]),
-    callout('note', 'Uslov kvaliteta', 'Veći broj funkcionalnosti ili agenata ne kompenzuje ozbiljne probleme u arhitekturi, testiranju ili razumevanju sopstvenog koda. Projekat se posmatra kao celina.'),
+    callout('warning', 'Minimalni uslovi', 'Projekat ne može uspešno da bude odbranjen ako se finalna verzija ne može razumno pokrenuti/proveriti, ako student ne razume ključne delove predatog rešenja ili ako nije moguće utvrditi autorstvo i razvojni proces kroz raspoložive dokaze.'),
+    callout('note', 'AI ne prenosi odgovornost', 'Činjenica da je određeni kod, test ili dokument generisao AI alat ne umanjuje obavezu studenta da razume njegovu ulogu, rizike i posledice u konačnom sistemu.'),
+  ]),
+
+  page('14. Kriterijumi ocenjivanja', [
+    text('h1', '14. Kriterijumi ocenjivanja'),
+    text('paragraph', 'Ocena projekta zasniva se na konzistentnom softversko-inženjerskom radu. Veći broj funkcionalnosti ne može da kompenzuje ozbiljne probleme u arhitekturi, testiranju ili razumevanju sopstvenog rešenja.'),
+    table(['Oblast', 'Udeo i fokus'], [
+      ['Softversko-inženjerska ispravnost', '40% — zahtevi, SOLID, Clean Architecture, poslovna logika i kvalitet implementacije.'],
+      ['Testiranje i verifikacija', '20% — NUnit/Moq, relevantni scenariji, coverage interpretacija i regresiona zaštita.'],
+      ['Git i razvojni proces', '15% — kontinuitet rada, istorija, review trag i dokumentovane odluke.'],
+      ['AI engineering', '20% — odgovorna i proverljiva upotreba AI-a, instrukcije i automatizacija u skladu sa sadržajem predmeta.'],
+      ['Dokumentacija i odbrana', '5% — reproduktivnost i sposobnost jasnog objašnjavanja sopstvenih odluka.'],
+    ]),
+    callout('info', 'Kvalitet iznad količine', 'Dodatni framework-i, veliki broj obrazaca, agenata, servisa ili ekrana ne donose sami po sebi dodatnu vrednost. Svaki element treba da ima jasnu svrhu i da bude proporcionalan problemu koji rešava.'),
   ]),
 ]
 
 export const projectSpec2026: CourseDocument = {
-  version: 2,
+  version: 3,
   id: 'ers-project-spec-2026-27-current',
   title: 'Specifikacija projektnog zadatka 2026/27',
-  subtitle: 'Elementi razvoja softvera',
+  subtitle: 'Zvanični opšti uslovi · Elementi razvoja softvera',
   subject: 'Elementi razvoja softvera',
   kind: 'specifikacija',
   headerText: 'Elementi razvoja softvera · 2026/2027',
   footerText: 'Primenjeno softversko inženjerstvo',
   createdAt: '2026-08-25T12:00:00.000Z',
-  updatedAt: '2026-08-25T14:00:00.000Z',
+  updatedAt: '2026-09-05T10:23:00.000Z',
   theme: { name: 'Academic Light', font: 'System', accent: 'blue', density: 'comfortable', codeTheme: 'light', pageSize: 'A4' },
   pages: [cover(), ...pages()],
 }
