@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { Block, CourseDocument, DiagramBlock, TextBlock } from './types'
 import { practicum2026 } from './content/canvaPracticum'
 import { projectSpec2026Reflowed } from './content/projectSpecReflow'
+import { projectTopics2026 } from './content/canvaProjectTopics'
 import { ACCENTS, highlightCode } from './utils'
 import './static-site.css'
 
-type DocumentKey = 'praktikum' | 'specifikacija'
+type DocumentKey = 'praktikum' | 'specifikacija' | 'teme'
 type ArtifactKind = 'figure' | 'listing' | 'table'
 
 type PreparedBlock = {
@@ -23,6 +24,7 @@ type TocEntry = {
 const documents: Record<DocumentKey, CourseDocument> = {
   praktikum: practicum2026,
   specifikacija: projectSpec2026Reflowed,
+  teme: projectTopics2026,
 }
 
 const calloutIcons = {
@@ -246,7 +248,21 @@ function BlockView({ item }: { item: PreparedBlock }) {
 }
 
 function DocumentCover({ doc }: { doc: CourseDocument }) {
-  const isPracticum = doc.kind === 'praktikum'
+  const copy = doc.kind === 'praktikum'
+    ? {
+        title: 'Praktikum',
+        description: 'Radni materijal za vežbe, samostalno ponavljanje i projektni rad.',
+      }
+    : doc.kind === 'specifikacija'
+      ? {
+          title: 'Specifikacija projektnog zadatka',
+          description: 'Zvanični opšti uslovi za izradu, predaju i odbranu semestralnog projekta.',
+        }
+      : {
+          title: 'Projektne teme',
+          description: 'Predlozi domena za semestralni projekat. Sve teme podležu istoj zvaničnoj specifikaciji.',
+        }
+
   return (
     <header className="document-cover">
       <div className="cover-institution">
@@ -260,8 +276,8 @@ function DocumentCover({ doc }: { doc: CourseDocument }) {
       </div>
       <div className="cover-copy">
         <span className="eyebrow">Elementi razvoja softvera</span>
-        <h1>{isPracticum ? 'Praktikum' : 'Specifikacija projektnog zadatka'}</h1>
-        <p>{isPracticum ? 'Radni materijal za vežbe, samostalno ponavljanje i projektni rad.' : 'Pravila, tehnički zahtevi, projektne kontrolne tačke i kriterijumi za semestralni projekat.'}</p>
+        <h1>{copy.title}</h1>
+        <p>{copy.description}</p>
       </div>
     </header>
   )
@@ -399,18 +415,33 @@ async function buildPdfPages(source: HTMLElement) {
 }
 
 export default function StaticApp() {
-  const initial = window.location.hash.startsWith('#specifikacija') ? 'specifikacija' : 'praktikum'
+  const hash = window.location.hash
+  const initial: DocumentKey = hash.startsWith('#specifikacija')
+    ? 'specifikacija'
+    : hash.startsWith('#teme')
+      ? 'teme'
+      : 'praktikum'
   const [active, setActive] = useState<DocumentKey>(initial)
   const [isExporting, setIsExporting] = useState(false)
   const doc = documents[active]
 
   useEffect(() => {
-    document.title = active === 'praktikum' ? 'ERS — Praktikum' : 'ERS — Specifikacija projektnog zadatka'
+    const titles: Record<DocumentKey, string> = {
+      praktikum: 'ERS — Praktikum',
+      specifikacija: 'ERS — Specifikacija projektnog zadatka',
+      teme: 'ERS — Projektne teme',
+    }
+    document.title = titles[active]
   }, [active])
 
   const choose = (key: DocumentKey) => {
     setActive(key)
-    history.replaceState(null, '', key === 'praktikum' ? '#praktikum' : '#specifikacija')
+    const hashes: Record<DocumentKey, string> = {
+      praktikum: '#praktikum',
+      specifikacija: '#specifikacija',
+      teme: '#teme',
+    }
+    history.replaceState(null, '', hashes[key])
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -449,10 +480,12 @@ export default function StaticApp() {
         pdf.addImage(image, 'JPEG', 0, 0, PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT, undefined, 'FAST')
       }
 
-      const filename = active === 'praktikum'
-        ? 'ERS-Praktikum-2026-27.pdf'
-        : 'ERS-Specifikacija-projektnog-zadatka-2026-27.pdf'
-      pdf.save(filename)
+      const filenames: Record<DocumentKey, string> = {
+        praktikum: 'ERS-Praktikum-2026-27.pdf',
+        specifikacija: 'ERS-Specifikacija-projektnog-zadatka-2026-27.pdf',
+        teme: 'ERS-Projektne-teme-2026-27.pdf',
+      }
+      pdf.save(filenames[active])
     } catch (error) {
       console.error('PDF export failed', error)
       window.alert('PDF trenutno nije moguće napraviti. Pokušajte ponovo nakon što se dokument u potpunosti učita.')
@@ -472,6 +505,7 @@ export default function StaticApp() {
         <nav className="document-switcher" aria-label="Dokumenti">
           <button className={active === 'praktikum' ? 'active' : ''} onClick={() => choose('praktikum')}>Praktikum</button>
           <button className={active === 'specifikacija' ? 'active' : ''} onClick={() => choose('specifikacija')}>Specifikacija</button>
+          <button className={active === 'teme' ? 'active' : ''} onClick={() => choose('teme')}>Teme</button>
         </nav>
         <button className="print-button" onClick={downloadPdf} disabled={isExporting}>
           {isExporting ? 'Pravim PDF…' : 'Preuzmi PDF'}
