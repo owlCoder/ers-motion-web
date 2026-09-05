@@ -1,54 +1,76 @@
 import './presentation-fullscreen.css'
 
-function setupPresentationView() {
+function updatePublicPresentationText() {
   const hero = document.querySelector<HTMLElement>('.presentations-hero')
   const eyebrow = hero?.querySelector<HTMLElement>('.eyebrow')
   const description = hero?.querySelector<HTMLParagraphElement>('p')
 
-  if (eyebrow) eyebrow.textContent = 'Materijal za vežbe'
-  if (description) {
-    description.textContent = 'Javne prezentacije prate osam vežbi iz praktikuma. Svaka prezentacija ima deset slajdova namenjenih neposrednom prikazu studentima tokom časa.'
+  if (eyebrow && eyebrow.textContent !== 'Materijal za vežbe') {
+    eyebrow.textContent = 'Materijal za vežbe'
   }
 
+  const publicDescription = 'Javne prezentacije prate osam vežbi iz praktikuma. Svaka prezentacija ima deset slajdova namenjenih neposrednom prikazu studentima tokom časa.'
+  if (description && description.textContent !== publicDescription) {
+    description.textContent = publicDescription
+  }
+}
+
+function updateFullscreenButton(button: HTMLButtonElement, stage: HTMLElement) {
+  const active = document.fullscreenElement === stage
+  button.textContent = active ? 'Izađi iz celog ekrana' : 'Ceo ekran'
+  button.setAttribute(
+    'aria-label',
+    active ? 'Izađi iz prikaza preko celog ekrana' : 'Otvori prezentaciju preko celog ekrana',
+  )
+}
+
+function ensurePresentationControls() {
+  updatePublicPresentationText()
   document.querySelectorAll<HTMLElement>('.speaker-note').forEach((note) => note.remove())
 
   const stage = document.querySelector<HTMLElement>('.deck-stage')
   const toolbar = stage?.querySelector<HTMLElement>('.deck-toolbar')
-  if (!stage || !toolbar || toolbar.querySelector('.fullscreen-button')) return
+  if (!stage || !toolbar) return
 
-  const button = document.createElement('button')
-  button.type = 'button'
-  button.className = 'fullscreen-button'
-  button.textContent = 'Ceo ekran'
-  button.setAttribute('aria-label', 'Otvori prezentaciju preko celog ekrana')
+  let button = toolbar.querySelector<HTMLButtonElement>('.fullscreen-button')
+  if (!button) {
+    button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'fullscreen-button'
 
-  const updateButton = () => {
-    const active = document.fullscreenElement === stage
-    button.textContent = active ? 'Izađi iz celog ekrana' : 'Ceo ekran'
-    button.setAttribute('aria-label', active ? 'Izađi iz prikaza preko celog ekrana' : 'Otvori prezentaciju preko celog ekrana')
+    button.addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement === stage) {
+          await document.exitFullscreen()
+        } else if (stage.requestFullscreen) {
+          await stage.requestFullscreen()
+        }
+      } catch {
+        // Browser može odbiti fullscreen ako korisnička akcija nije dostupna.
+      } finally {
+        updateFullscreenButton(button!, stage)
+      }
+    })
+
+    toolbar.appendChild(button)
   }
 
-  button.addEventListener('click', async () => {
-    try {
-      if (document.fullscreenElement === stage) {
-        await document.exitFullscreen()
-      } else if (stage.requestFullscreen) {
-        await stage.requestFullscreen()
-      }
-    } finally {
-      updateButton()
-    }
-  })
+  updateFullscreenButton(button, stage)
+}
 
-  document.addEventListener('fullscreenchange', updateButton)
-  toolbar.appendChild(button)
+function scheduleControlsRefresh() {
+  window.setTimeout(ensurePresentationControls, 0)
 }
 
 function installPresentationEnhancements() {
-  setupPresentationView()
+  ensurePresentationControls()
 
-  const observer = new MutationObserver(() => setupPresentationView())
-  observer.observe(document.body, { childList: true, subtree: true })
+  // React menja sadržaj taba bez ponovnog učitavanja stranice. Posle korisničke
+  // akcije proveravamo samo da li kontrola za ceo ekran postoji. Nema posmatranja
+  // celog DOM stabla, pa nema mogućnosti za rekurzivno aktiviranje izmena.
+  document.addEventListener('click', scheduleControlsRefresh)
+  window.addEventListener('hashchange', scheduleControlsRefresh)
+  document.addEventListener('fullscreenchange', ensurePresentationControls)
 
   window.addEventListener('keydown', (event) => {
     const stage = document.querySelector<HTMLElement>('.deck-stage')
@@ -61,10 +83,13 @@ function installPresentationEnhancements() {
     if (event.key === 'PageUp') {
       event.preventDefault()
       previous?.click()
+      scheduleControlsRefresh()
     }
+
     if (event.key === 'PageDown' || event.key === ' ') {
       event.preventDefault()
       next?.click()
+      scheduleControlsRefresh()
     }
   })
 }
