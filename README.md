@@ -2,10 +2,11 @@
 
 Javni statički sajt za predmet **Elementi razvoja softvera** na studijskom programu Primenjeno softversko inženjerstvo, Fakultet tehničkih nauka, Univerzitet u Novom Sadu.
 
-Sajt sadrži dva dokumenta:
+Sajt sadrži tri dokumenta:
 
-- **Praktikum 2026/27**
-- **Specifikacija projektnog zadatka 2026/27**
+- **Praktikum 2026/27** — nastavni materijal za vežbe i samostalni rad
+- **Specifikacija projektnog zadatka 2026/27** — zvanični opšti uslovi za izradu, predaju i odbranu projekta
+- **Projektne teme 2026/27** — predlozi domena izdvojeni od opšte specifikacije
 
 Produkcijska verzija je predviđena za GitHub Pages:
 
@@ -52,7 +53,7 @@ Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages 
 ## Organizacija sajta
 
 - `src/main.tsx` — minimalni entry point
-- `src/StaticApp.tsx` — read-only prikaz Praktikuma i Specifikacije i direktan PDF export
+- `src/StaticApp.tsx` — read-only prikaz Praktikuma, Specifikacije i Projektnih tema i direktan PDF export
 - `src/static-site.css` — web i print stilovi
 - `src/content/` — strukturirani nastavni sadržaj
 - `public/course-assets/` — nastavne ilustracije i TAPIZ screenshots
