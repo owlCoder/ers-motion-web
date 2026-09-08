@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import StaticApp from './StaticApp'
 import './presentationEnhancements'
+import './ui-refresh.css'
 
 document.documentElement.lang = 'sr'
 document.body.style.margin = '0'
