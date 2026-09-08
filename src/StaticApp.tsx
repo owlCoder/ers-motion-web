@@ -1,15 +1,12 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { Block, CourseDocument, DiagramBlock, TextBlock } from './types'
 import { practicum2026 } from './content/canvaPracticum'
-import { projectSpec2026Reflowed } from './content/projectSpecReflow'
-import { teamProject2026 } from './content/teamProject'
 import { presentationDecks, type PresentationDeck } from './content/presentations'
 import { ACCENTS, highlightCode } from './utils'
 import './static-site.css'
 import './presentations.css'
 
-type DocumentKey = 'praktikum' | 'specifikacija' | 'projekat'
-type ActiveKey = DocumentKey | 'prezentacije'
+type ActiveKey = 'praktikum' | 'prezentacije'
 type ArtifactKind = 'figure' | 'listing' | 'table'
 
 type PreparedBlock = {
@@ -22,12 +19,6 @@ type TocEntry = {
   id: string
   label: string
   level: 1 | 2 | 3
-}
-
-const documents: Record<DocumentKey, CourseDocument> = {
-  praktikum: practicum2026,
-  specifikacija: projectSpec2026Reflowed,
-  projekat: teamProject2026,
 }
 
 const calloutIcons = {
@@ -244,16 +235,7 @@ function BlockView({ item }: { item: PreparedBlock }) {
   return <hr className="doc-divider" />
 }
 
-function DocumentCover({ doc }: { doc: CourseDocument }) {
-  const isPracticum = doc.kind === 'praktikum'
-  const isProject = doc.id === 'ers-team-project-2026-27'
-  const title = isPracticum ? 'Praktikum' : isProject ? 'Projekat' : 'Specifikacija projektnog zadatka'
-  const description = isPracticum
-    ? 'Radni materijal za vežbe, samostalno ponavljanje i projektni rad.'
-    : isProject
-      ? 'Organizacija timskog rada, zajedničkog repozitorijuma, backlog-a, kvaliteta, automatizacije i razvoja uz podršku AI alata.'
-      : 'Pravila, tehnički zahtevi, projektne kontrolne tačke i kriterijumi za semestralni projekat.'
-
+function DocumentCover() {
   return (
     <header className="document-cover">
       <div className="cover-institution">
@@ -267,8 +249,8 @@ function DocumentCover({ doc }: { doc: CourseDocument }) {
       </div>
       <div className="cover-copy">
         <span className="eyebrow">Elementi razvoja softvera</span>
-        <h1>{title}</h1>
-        <p>{description}</p>
+        <h1>Praktikum</h1>
+        <p>Radni materijal za vežbe, samostalno ponavljanje i projektni rad.</p>
       </div>
     </header>
   )
@@ -289,7 +271,7 @@ function StaticDocument({ doc }: { doc: CourseDocument }) {
       </aside>
 
       <main className="document-paper">
-        <DocumentCover doc={doc} />
+        <DocumentCover />
         <article className="document-body">
           {prepared.map((item, index) => <BlockView item={item} key={`${item.block.id}-${index}`} />)}
         </article>
@@ -384,24 +366,11 @@ function PresentationsView() {
 }
 
 export default function StaticApp() {
-  const initial: ActiveKey = window.location.hash.startsWith('#specifikacija')
-    ? 'specifikacija'
-    : window.location.hash.startsWith('#projekat')
-      ? 'projekat'
-      : window.location.hash.startsWith('#prezentacije')
-        ? 'prezentacije'
-        : 'praktikum'
+  const initial: ActiveKey = window.location.hash.startsWith('#prezentacije') ? 'prezentacije' : 'praktikum'
   const [active, setActive] = useState<ActiveKey>(initial)
-  const doc = active === 'prezentacije' ? undefined : documents[active]
 
   useEffect(() => {
-    const titles: Record<ActiveKey, string> = {
-      praktikum: 'ERS — Praktikum',
-      specifikacija: 'ERS — Specifikacija projektnog zadatka',
-      projekat: 'ERS — Projekat',
-      prezentacije: 'ERS — Prezentacije',
-    }
-    document.title = titles[active]
+    document.title = active === 'prezentacije' ? 'ERS — Prezentacije' : 'ERS — Praktikum'
   }, [active])
 
   const choose = (key: ActiveKey) => {
@@ -419,12 +388,10 @@ export default function StaticApp() {
         </a>
         <nav className="document-switcher" aria-label="Dokumenti">
           <button className={active === 'praktikum' ? 'active' : ''} onClick={() => choose('praktikum')}>Praktikum</button>
-          <button className={active === 'specifikacija' ? 'active' : ''} onClick={() => choose('specifikacija')}>Specifikacija</button>
-          <button className={active === 'projekat' ? 'active' : ''} onClick={() => choose('projekat')}>Projekat</button>
           <button className={active === 'prezentacije' ? 'active' : ''} onClick={() => choose('prezentacije')}>Prezentacije</button>
         </nav>
       </header>
-      {active === 'prezentacije' ? <PresentationsView /> : doc && <StaticDocument doc={doc} />}
+      {active === 'prezentacije' ? <PresentationsView /> : <StaticDocument doc={practicum2026} />}
     </div>
   )
 }
