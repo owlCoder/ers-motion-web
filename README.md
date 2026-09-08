@@ -2,11 +2,10 @@
 
 Javni statički sajt za predmet **Elementi razvoja softvera** na studijskom programu Primenjeno softversko inženjerstvo, Fakultet tehničkih nauka, Univerzitet u Novom Sadu.
 
-Sajt sadrži tri dokumenta:
+Sajt sadrži:
 
-- **Praktikum 2026/27** — nastavni materijal za vežbe i samostalni rad;
-- **Specifikacija projektnog zadatka 2026/27** — zvanični uslovi za izradu, predaju i odbranu projekta;
-- **Projekat 2026/27** — jedna zajednička projektna tema, jedan proizvod i više razvojnih timova.
+- **Praktikum 2026/27** — nastavni materijal za vežbe, samostalni rad i projektni rad;
+- **Prezentacije za vežbe** — nastavnički materijal koji prati sadržaj praktikuma.
 
 Produkcijska verzija je predviđena za GitHub Pages:
 
@@ -53,22 +52,15 @@ Vite koristi relativni `base`, pa isti `dist/` radi i lokalno i na GitHub Pages 
 ## Organizacija sajta
 
 - `src/main.tsx` — minimalna ulazna tačka aplikacije;
-- `src/StaticApp.tsx` — prikaz Praktikuma, Specifikacije i Projekta samo za čitanje, sa direktnim izvozom u PDF;
+- `src/StaticApp.tsx` — prikaz Praktikuma i Prezentacija;
 - `src/static-site.css` — stilovi za prikaz na ekranu i štampu;
 - `src/content/` — strukturirani nastavni sadržaj;
-- `src/content/teamProject.ts` — pravila i organizacija zajedničkog timskog projekta;
 - `public/course-assets/` — nastavne ilustracije i snimci ekrana iz Tapiz Boards;
 - `public/brand/` — institucionalni logotipi;
 - `.github/workflows/build.yml` — automatska provera izgradnje;
 - `.github/workflows/pages.yml` — automatsko objavljivanje na GitHub Pages.
 
 Statički prikaz automatski generiše navigaciju kroz naslove, numeraciju slika, listinga i tabela, blokove koda sa označavanjem sintakse, akademske tabele, napomene, dijagrame i slike.
-
-## Projektni model
-
-Tab **Projekat** opisuje jednu zajedničku temu: razvoj integrisanog poslovnog informacionog sistema. Studenti rade u više timova nad istim proizvodom i istim repozitorijumom. Svaki tim preuzima odgovornost za jedan modul, na primer Finansije, Podršku korisnicima, CRM, Zalihe, Ljudske resurse, Projekte, Platformu ili Analitiku. To nisu zasebne teme, već delovi istog sistema koji moraju da se integrišu u jednu celinu.
-
-Zvanični uslovi nalaze se u tabu **Specifikacija**. Tab **Projekat** opisuje organizaciju rada: Tapiz Boards, podelu odgovornosti, Git i zahteve za spajanje, pregled koda, testiranje, automatizaciju, arhitektonske odluke i saradnju između timova. Pravila iz Specifikacije imaju prednost ako postoji razlika u tumačenju.
 
 ## Tapiz Boards — snimci ekrana
 
